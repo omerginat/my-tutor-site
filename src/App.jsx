@@ -6,7 +6,15 @@ const WAIcon = () => (
     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
   </svg>
 );
+const EmailIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{flexShrink:0}}>
+    <rect x="2" y="4" width="20" height="16" rx="2"/>
+    <path d="M2 7l10 7 10-7"/>
+  </svg>
+);
 const WHATSAPP = "https://wa.me/447932365990";
+const EMAIL = "mailto:hello@omermaths.com";
+const FORMSPREE_URL = "https://formspree.io/f/mnjrrqba";
 const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 const DAYS_SHORT = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
 const TIMES = ["9:00 AM","10:00 AM","11:00 AM","2:00 PM","3:00 PM","4:00 PM","5:00 PM","6:00 PM"];
@@ -35,12 +43,12 @@ const SCHOOLS = [
 ];
 
 const ALL_REVIEWS = [
-  { id:1,  stars:5, text:"Omer has been an outstanding GCSE Maths tutor for our son. He combines real mastery of the subject with exceptional patience and clarity, and he is equally strong at teaching exam technique - identifying where marks are lost and showing precisely how to secure them. Under his guidance, our son's confidence and performance have grown significantly, and he now approaches even difficult topics with real assurance. Omer is reliable, supportive, and highly effective. I recommend him without hesitation.", author:"Peter, Parent of GCSE student", date:"February 2026" },
-  { id:2,  stars:5, text:"Thanks so much for the Oxford Interview Prep sessions. Delighted to have been accepted to study Maths, and genuinely don't think I would have gotten my offer without your support.", author:"Matt, Oxford Admissions", date:"January 2025" },
-  { id:3,  stars:5, text:"Omer has been an excellent tutor from the very beginning. Within just a few months we could already see a huge improvement in both grades and confidence. He explains things clearly, is always friendly and approachable, and really knows how to make difficult topics easier to understand. Maths has become much more enjoyable thanks to his support. I never thought I would ever say this, but I've now decided to take it for A-Level!", author:"Oli, GCSE student", date:"November 2025" },
   { id:4,  stars:5, text:"Omer completely changed the way I felt about A-Level Maths. Before starting tuition, I was struggling badly with confidence and found certain topics overwhelming. Thanks to Omer's patient teaching style and clear explanations, everything gradually started to make sense. I ended up improving far beyond my predicted grade and achieved an A in the end. What really stood out was how supportive and encouraging he was throughout the whole process, especially during exam season. I always felt comfortable asking questions and never felt judged for getting things wrong. I would highly recommend Omer to anyone looking for a knowledgeable and approachable tutor.", author:"Tom, A-Level student", date:"April 2026" },
-  { id:5,  stars:5, text:"I can't recommend Omer highly enough. My son was really struggling with GCSE Maths and had lost confidence in his own ability. After only a short time working with Omer, his grades started improving and, more importantly, his attitude towards maths became much more positive. Omer has a real talent for identifying where students are struggling and adapting his teaching style to suit them individually. He's an excellent tutor and someone young people feel comfortable working with.", author:"Grace, Parent of GCSE student", date:"April 2025" },
-  { id:6,  stars:5, text:"We are absolutely delighted to have found Omer. He has been a fantastic tutor for our daughter and has completely transformed her attitude towards Maths. His calm, patient approach and ability to tailor lessons to her individual needs have made a huge difference to both her confidence and grades. Omer is reliable, professional, and genuinely invested in helping his students succeed. We would highly recommend him.", author:"Sarah, Parent of A-Level student", date:"April 2024" },
+  { id:1,  stars:5, text:"Omer has been an outstanding GCSE Maths tutor for our son. He combines real mastery of the subject with exceptional patience and clarity, and he is equally strong at teaching exam technique - identifying where marks are lost and showing precisely how to secure them. Under his guidance, our son's confidence and performance have grown significantly, and he now approaches even difficult topics with real assurance. Omer is reliable, supportive, and highly effective. I recommend him without hesitation.", author:"Peter, Parent of GCSE student", date:"February 2026" },
+  { id:3,  stars:5, text:"Omer has been an excellent tutor from the very beginning. Within just a few months we could already see a huge improvement in both grades and confidence. He explains things clearly, is always friendly and approachable, and really knows how to make difficult topics easier to understand. Maths has become much more enjoyable thanks to his support. I never thought I would ever say this, but I've now decided to take it for A-Level!", author:"Oli, GCSE student", date:"November 2025" },
+  { id:2,  stars:5, text:"Thanks so much for the Oxford Interview Prep sessions. Delighted to have been accepted to study Maths, and genuinely don't think I would have gotten my offer without your support.\n\nMy confidence has hugely increased throughout our sessions, and being able to learn through our mock interviews meant that I was so much sharper for the real thing.\n\nI actually ended up being given a similar question to one of those we did together, which of course helped too!\n\nThanks for everything Omer - really appreciate your guidance and advice. I'm lucky to have found you as a tutor.", author:"Matt, Oxford Admissions", date:"January 2025" },
+  { id:6,  stars:5, text:"We are absolutely delighted to have found Omer. He has been a fantastic tutor for our daughter and has completely transformed her attitude towards Maths. His calm, patient approach and ability to tailor lessons to her individual needs have made a huge difference to both her confidence and grades. Omer is reliable, professional, and genuinely invested in helping his students succeed. We would highly recommend him.", author:"Sarah, Parent of A-Level student", date:"June 2024" },
+  { id:5,  stars:5, text:"I can't recommend Omer highly enough. My son was really struggling with GCSE Maths and had lost confidence in his own ability. After only a short time working with Omer, his grades started improving and, more importantly, his attitude towards maths became much more positive. Omer has a real talent for identifying where students are struggling and adapting his teaching style to suit them individually. He's an excellent tutor and someone young people feel comfortable working with.", author:"Grace, Parent of GCSE student", date:"March 2024" },
   { id:7,  stars:5, text:"I highly recommend Omer. He has been tutoring my son for over a year and, along with his confidence, has improved his grades considerably. My son never complains about doing his sessions with Omer and likes him very much. Omer is reliable and flexible when asked. It's always a pleasure to interact with Omer.", author:"Anna, Parent of GCSE student", date:"September 2023" },
   { id:8,  stars:5, text:"Omer is a first class tutor with a calm, thoughtful and structured approach to the work he does with his students. Our daughter really benefited from his tuition which greatly assisted her in achieving her place at university to read Maths. In addition, he made lessons fun and inspiring and developed a great rapport with her during their time working together. In short, we couldn't recommend him highly enough!", author:"Estelle, Parent of A-Level student", date:"September 2023" },
   { id:9,  stars:5, text:"Omer has been helping me prepare for a professional exam as an adult learner, and I've found him to be patient, organised, and extremely knowledgeable. He took the time to understand the exam requirements before our first lesson and worked with me to create a clear study plan. He's also been very accommodating around my work schedule, which I really appreciate.", author:"Nancy, Adult Learner", date:"August 2022" },
@@ -83,7 +91,14 @@ const CSS = `
   .nav-btn.active{color:var(--gold2);}
   .nav-cta{background:var(--gold);color:var(--white)!important;padding:0.45rem 1.15rem;border-radius:6px;border:none;font-size:0.87rem;font-weight:500;letter-spacing:0.04em;text-transform:uppercase;cursor:pointer;transition:background 0.2s,color 0.2s;}
   .nav-cta:hover{background:var(--gold2);color:var(--navy)!important;}
-  @media(max-width:900px){.nav-links{display:none;}}
+  .hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:0.5rem;}
+  .hamburger span{display:block;width:24px;height:2px;background:rgba(255,255,255,0.85);border-radius:2px;transition:all 0.2s;}
+  .mobile-menu{display:none;position:fixed;top:68px;left:0;right:0;background:rgba(26,37,64,0.98);backdrop-filter:blur(16px);z-index:99;padding:1rem 5vw 1.5rem;border-bottom:1px solid rgba(201,148,58,0.2);}
+  .mobile-menu.open{display:block;}
+  .mobile-menu ul{list-style:none;display:flex;flex-direction:column;gap:0.25rem;}
+  .mobile-menu .nav-btn{font-size:1rem;padding:0.75rem 1rem;width:100%;text-align:left;border-radius:8px;}
+  .mobile-cta{margin-top:0.75rem;width:100%;display:block;text-align:center;background:var(--gold);color:white;border:none;padding:0.85rem;border-radius:8px;font-size:1rem;font-weight:600;cursor:pointer;}
+  @media(max-width:900px){.nav-links{display:none;}.hamburger{display:flex;}.nav-cta{display:none;}}
 
   /* PAGE WRAPPER */
   .page{padding-top:68px;min-height:100vh;}
@@ -95,11 +110,13 @@ const CSS = `
   .btn-primary:hover{background:var(--gold2);color:var(--navy);transform:translateY(-1px);}
   .btn-wa{background:var(--gold);color:var(--white);}
   .btn-wa:hover{background:var(--gold2);color:var(--navy);}
-  .hero-btns .btn-primary, .hero-btns .btn-ghost{min-width:240px;justify-content:center;}
+  .hero-btns .btn-primary, .hero-btns .btn-ghost, .hero-btns .btn-email{min-width:240px;justify-content:center;}
   .btn-ghost{background:transparent;color:rgba(255,255,255,0.85);padding:0.88rem 2.1rem;border-radius:8px;font-size:1rem;font-weight:500;border:1.5px solid rgba(255,255,255,0.3);cursor:pointer;transition:border-color 0.2s,color 0.2s;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;min-width:210px;}
   .btn-ghost:hover{border-color:var(--gold2);color:var(--gold2);}
-  .btn-ghost-dark{background:transparent;color:var(--navy);padding:0.88rem 2.1rem;border-radius:8px;font-size:1rem;font-weight:500;border:1.5px solid rgba(23,32,56,0.25);cursor:pointer;transition:all 0.2s;display:inline-flex;align-items:center;justify-content:center;min-width:210px;}
-  .btn-ghost-dark:hover{border-color:var(--gold);color:var(--gold);}
+  .btn-email{background:transparent;color:rgba(255,255,255,0.85);padding:0.88rem 2.1rem;border-radius:8px;font-size:1rem;font-weight:500;border:1.5px solid rgba(255,255,255,0.3);cursor:pointer;transition:border-color 0.2s,color 0.2s;display:inline-flex;align-items:center;justify-content:center;gap:0.5rem;text-decoration:none;min-width:210px;}
+  .btn-email:hover{border-color:var(--gold2);color:var(--gold2);}
+  .btn-email-dark{background:transparent;color:var(--navy);padding:0.88rem 2.1rem;border-radius:8px;font-size:1rem;font-weight:500;border:1.5px solid rgba(23,32,56,0.25);cursor:pointer;transition:all 0.2s;display:inline-flex;align-items:center;justify-content:center;gap:0.5rem;text-decoration:none;min-width:210px;}
+  .btn-email-dark:hover{border-color:var(--gold);color:var(--gold);}
   .btn-outline-gold{background:transparent;color:var(--gold2);padding:0.88rem 2.1rem;border-radius:8px;font-size:1rem;font-weight:500;border:1.5px solid rgba(201,148,58,0.5);cursor:pointer;transition:all 0.2s;display:inline-block;text-decoration:none;}
   .btn-outline-gold:hover{background:rgba(201,148,58,0.15);border-color:var(--gold2);}
   .btn-sm{padding:0.6rem 1.4rem;font-size:0.9rem;}
@@ -127,8 +144,8 @@ const CSS = `
   .page-hero p{font-size:1.05rem;color:rgba(255,255,255,0.68);line-height:1.8;max-width:560px;margin:0 auto;}
 
   /* TRUST BAR */
-  .trust-bar{background:var(--navy2);padding:1.1rem 5vw;display:flex;justify-content:center;align-items:center;gap:2.5rem;flex-wrap:wrap;border-bottom:1px solid rgba(201,148,58,0.12);}
-  .trust-item{display:flex;align-items:center;gap:0.55rem;color:rgba(255,255,255,0.72);font-size:0.86rem;}
+  .trust-bar{background:var(--sage2);padding:1.3rem 5vw;display:flex;justify-content:center;align-items:center;gap:3rem;flex-wrap:wrap;border-bottom:1px solid rgba(92,124,106,0.2);}
+  .trust-item{display:flex;align-items:center;gap:0.6rem;color:var(--navy);font-size:0.9rem;white-space:nowrap;font-weight:500;}
 
   /* ── HOME PAGE ── */
   .hero-full{background:linear-gradient(160deg,#1a2540 0%,#243058 50%,#1e3060 100%);display:flex;flex-direction:column;justify-content:center;align-items:center;padding:80px 5vw 60px;position:relative;overflow:hidden;text-align:center;}
@@ -137,14 +154,17 @@ const CSS = `
   .hero-dots{position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(rgba(201,148,58,0.12) 1px,transparent 1px);background-size:36px 36px;}
   .hero-free-pill{display:inline-flex;align-items:center;gap:0.5rem;background:rgba(92,124,106,0.25);border:1px solid rgba(92,124,106,0.5);color:#9fd4b0;font-size:0.8rem;font-weight:500;padding:0.38rem 1rem;border-radius:100px;margin-bottom:0.75rem;position:relative;}
   .hero-badge{display:inline-flex;align-items:center;gap:0.5rem;background:rgba(201,148,58,0.15);border:1px solid rgba(201,148,58,0.35);color:var(--gold2);font-size:0.8rem;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;padding:0.38rem 1rem;border-radius:100px;margin-bottom:1.6rem;position:relative;}
-  .hero-full h1{font-size:clamp(2.3rem,4.8vw,4rem);color:var(--white);max-width:820px;position:relative;margin-bottom:0.45em;letter-spacing:-0.01em;}
+  .hero-full h1{font-size:clamp(2.6rem,5.5vw,4.6rem);color:var(--white);max-width:860px;position:relative;margin-bottom:0.45em;letter-spacing:-0.02em;line-height:1.15;}
   .hero-full h1 em{color:var(--gold2);font-style:italic;}
   .hero-sub{font-size:clamp(1rem,2vw,1.18rem);color:rgba(255,255,255,0.68);max-width:720px;margin:0 auto 2.5rem;position:relative;line-height:1.8;}
-  .hero-btns{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;position:relative;}
-  .hero-stats{display:flex;gap:3.5rem;margin-top:2rem;position:relative;flex-wrap:wrap;justify-content:center;}
-  .hero-stat{text-align:center;}
-  .hero-stat-num{font-family:'Playfair Display',serif;font-size:2.4rem;font-weight:700;color:var(--gold2);display:block;line-height:1;}
-  .hero-stat-label{font-size:0.78rem;color:rgba(255,255,255,0.5);letter-spacing:0.06em;text-transform:uppercase;margin-top:0.3rem;}
+  .hero-btns{display:flex;gap:1rem;justify-content:center;position:relative;flex-wrap:nowrap;}
+  .hero-btns > *{flex:1;max-width:320px;min-width:0;text-align:center;justify-content:center;white-space:nowrap;}
+  .hero-stats{display:flex;gap:0;margin-top:2.5rem;position:relative;flex-wrap:wrap;justify-content:center;background:rgba(255,255,255,0.06);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:1.5rem 3rem;}
+  .hero-stat{text-align:center;padding:0 2rem;}
+  .hero-stat+.hero-stat{border-left:1px solid rgba(255,255,255,0.12);}
+  .hero-stat-num{font-family:'Playfair Display',serif;font-size:2.6rem;font-weight:700;color:var(--gold2);display:block;line-height:1;}
+  .hero-stat-label{font-size:0.78rem;color:rgba(255,255,255,0.5);letter-spacing:0.06em;text-transform:uppercase;margin-top:0.4rem;}
+  @media(max-width:600px){.hero-stats{padding:1.2rem 1rem;gap:0;}.hero-stat{padding:0 1.2rem;}.hero-stat-num{font-size:2rem;}}
 
   /* HOME TEASERS */
   .home-teasers{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;}
@@ -203,6 +223,7 @@ const CSS = `
 
   /* SERVICES */
   .services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;max-width:1100px;margin:2.5rem auto 0;}
+  @media(max-width:700px){.services-grid{grid-template-columns:1fr;}.service-card{padding:1.5rem;}}
   .service-card{background:var(--white);border-radius:var(--radius);padding:2rem;box-shadow:var(--shadow);border:1px solid rgba(23,32,56,0.07);transition:transform 0.2s,box-shadow 0.2s;position:relative;overflow:hidden;}
   .service-card:hover{transform:translateY(-5px);box-shadow:var(--shadow-lg);}
   .service-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:var(--gold);}
@@ -234,7 +255,7 @@ const CSS = `
   .oxbridge-banner-body p{font-size:0.92rem;color:rgba(255,255,255,0.72);line-height:1.75;margin:0 0 1.2rem;}
   .oxbridge-banner-photo{width:130px;height:130px;border-radius:50%;object-fit:cover;border:3px solid rgba(201,148,58,0.45);flex-shrink:0;}
   .oxbridge-price-note{display:inline-block;font-size:0.85rem;color:rgba(255,255,255,0.55);margin-left:1rem;}
-  @media(max-width:900px){.uni-hero-row{grid-template-columns:1fr;gap:2.5rem;}.uni-cards{grid-template-columns:1fr;}.oxbridge-banner{flex-direction:column;text-align:center;}.oxbridge-banner-photo{width:90px;height:90px;}}
+  @media(max-width:900px){.uni-hero-row{grid-template-columns:1fr;gap:2.5rem;}.uni-cards{grid-template-columns:1fr;}.oxbridge-banner{flex-direction:column;text-align:center;padding:1.5rem;}.oxbridge-banner-photo{display:none;}}
 
   /* APPROACH */
   .approach-cols{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start;max-width:1100px;margin:3rem auto 0;}
@@ -270,8 +291,8 @@ const CSS = `
   .review-qs{font-size:3.5rem;line-height:1;color:var(--gold2);font-family:'Playfair Display',serif;position:absolute;top:0.8rem;right:1.4rem;opacity:0.3;}
   .review-stars{color:var(--gold);font-size:0.95rem;margin-bottom:0.9rem;letter-spacing:2px;flex-shrink:0;}
   .review-text-wrap{flex:1;overflow:hidden;position:relative;margin-bottom:0.8rem;}
-  .review-text{font-family:'Lora',serif;font-size:0.94rem;color:var(--text);line-height:1.8;font-style:italic;margin:0;}
-  .review-text.clamped{display:-webkit-box;-webkit-line-clamp:9;-webkit-box-orient:vertical;overflow:hidden;}
+  .review-text{font-family:'Lora',serif;font-size:0.94rem;color:var(--text);line-height:1.8;font-style:italic;margin:0;white-space:pre-line;}
+  .review-text.clamped{display:-webkit-box;-webkit-line-clamp:11;-webkit-box-orient:vertical;overflow:hidden;}
   .see-more-btn{background:none;border:none;color:var(--gold);font-size:0.82rem;font-weight:600;cursor:pointer;padding:0.3rem 0 0;display:block;}
   .see-more-btn:hover{color:var(--navy);}
   .review-footer{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding-top:0.9rem;border-top:1px solid rgba(23,32,56,0.07);flex-shrink:0;}
@@ -353,9 +374,9 @@ const CSS = `
   .ci-val{font-size:0.93rem;color:white;}
   .ci-val a{color:var(--gold2);text-decoration:none;}
   .ci-val a:hover{text-decoration:underline;}
-  .cf input,.cf textarea{width:100%;padding:0.7rem 1rem;font-size:0.9rem;background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.13);border-radius:8px;color:white;margin-bottom:0.75rem;}
-  .cf input::placeholder,.cf textarea::placeholder{color:rgba(255,255,255,0.3);}
-  .cf input:focus,.cf textarea:focus{outline:none;border-color:var(--gold);}
+  .cf input,.cf textarea,.cf-input{width:100%;padding:0.7rem 1rem;font-size:0.9rem;background:rgba(255,255,255,0.07);border:1.5px solid rgba(255,255,255,0.13);border-radius:8px;color:white;margin-bottom:0.75rem;font-family:'Lora',serif;}
+  .cf input::placeholder,.cf textarea::placeholder,.cf-input::placeholder{color:rgba(255,255,255,0.3);}
+  .cf input:focus,.cf textarea:focus,.cf-input:focus{outline:none;border-color:var(--gold);}
   .cf textarea{min-height:110px;resize:vertical;}
   .footer-strip{margin-top:5rem;border-top:1px solid rgba(255,255,255,0.06);padding:2.5rem 5vw 1.5rem;background:var(--navy);color:rgba(255,255,255,0.55);}
   .footer-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:2.5rem;margin-bottom:2rem;}
@@ -411,6 +432,7 @@ function Nav({ page, setPage }) {
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+  const [menuOpen, setMenuOpen] = useState(false);
   const links = [
     ["about","About Me"],
     ["services","Services"],
@@ -418,27 +440,43 @@ function Nav({ page, setPage }) {
     ["reviews","Reviews"],
     ["faq","FAQ"],
   ];
+  const navigate = (id) => { setPage(id); setMenuOpen(false); };
   return (
+    <>
     <nav className={`nav${scrolled ? " scrolled" : ""}`}>
-      <div className="nav-logo" onClick={() => setPage("home")}>Omer <span>Maths Tuition</span></div>
+      <div className="nav-logo" onClick={() => navigate("home")}>Omer <span>Maths Tuition</span></div>
       <ul className="nav-links">
         {links.map(([id, label]) => (
           <li key={id}>
-            <button className={`nav-btn${page === id ? " active" : ""}`} onClick={() => setPage(id)}>
+            <button className={`nav-btn${page === id ? " active" : ""}`} onClick={() => navigate(id)}>
               {label}
             </button>
           </li>
         ))}
         <li>
-          <button className="nav-cta" onClick={() => setPage("booking")}>Book a Session</button>
+          <button className="nav-cta" onClick={() => navigate("booking")}>Book a Session</button>
         </li>
       </ul>
+      <button className="hamburger" onClick={() => setMenuOpen(o => !o)} aria-label="Menu">
+        <span/><span/><span/>
+      </button>
     </nav>
+    <div className={`mobile-menu${menuOpen ? " open" : ""}`}>
+      <ul>
+        {links.map(([id, label]) => (
+          <li key={id}>
+            <button className={`nav-btn${page === id ? " active" : ""}`} onClick={() => navigate(id)}>{label}</button>
+          </li>
+        ))}
+      </ul>
+      <button className="mobile-cta" onClick={() => navigate("booking")}>Book a Session</button>
+    </div>
+    </>
   );
 }
 
 // ─── Home ─────────────────────────────────────────────────────────────────
-function HomePage({ setPage }) {
+function HomePage({ setPage, openContact }) {
   const homeReviewsRef = useRef(null);
   const homeScroll = (dir) => {
     const el = homeReviewsRef.current;
@@ -458,7 +496,7 @@ function HomePage({ setPage }) {
         </p>
         <div className="hero-btns">
           <a href={WHATSAPP} target="_blank" rel="noopener" className="btn-primary btn-wa"><WAIcon /> Message me on WhatsApp</a>
-          <button className="btn-ghost" onClick={() => setPage("about")}>More About Me</button>
+          <button className="btn-email" onClick={() => openContact()}><EmailIcon/> Email Me</button>
         </div>
         <div className="hero-stats">
           <div className="hero-stat"><span className="hero-stat-num">5,000+</span><span className="hero-stat-label">Hours of Lessons</span></div>
@@ -511,29 +549,29 @@ function HomePage({ setPage }) {
         </div>
       </section>
       <div className="footer-strip" style={{background:"var(--navy)",marginTop:0}}>
-        © {new Date().getFullYear()} Omer Ginat Maths Tuition &nbsp;·&nbsp; All sessions online · Available Worldwide &nbsp;·&nbsp; First lesson always free &nbsp;·&nbsp;
-        omer.ginat@gmail.com
+        © {new Date().getFullYear()} Omer Maths Tuition &nbsp;·&nbsp; All sessions online · Available Worldwide &nbsp;·&nbsp; First lesson always free &nbsp;·&nbsp;
+        hello@omermaths.com
       </div>
     </div>
   );
 }
 
 // ─── About ────────────────────────────────────────────────────────────────
-function AboutPage({ setPage }) {
+function AboutPage({ setPage, openContact }) {
   return (
     <div className="page">
       <div className="page-hero">
         <div className="page-hero-dots"/>
         <div className="page-hero-inner">
           <span className="section-label" style={{color:"var(--gold2)"}}>About Me</span>
-          <h1>Hello - I'm <em>Omer Ginat</em></h1>
+          <h1>Hello - I'm <em>Omer</em></h1>
           <p>Oxford Mathematics graduate, experienced tutor, and someone who genuinely loves helping students build their confidence in maths.</p>
         </div>
       </div>
       <section className="section">
         <div className="about-grid">
           <div className="about-photo-wrap">
-            <img src={PHOTO_SRC} alt="Omer Ginat" className="about-photo" />
+            <img src={PHOTO_SRC} alt="Omer" className="about-photo" />
             <div className="about-bullet-card">
               <div className="about-bullet-item"><span>⏱</span><span>5,000+ hours of lessons</span></div>
               <div className="about-bullet-item"><span>📅</span><span>10+ years tutoring</span></div>
@@ -554,7 +592,7 @@ function AboutPage({ setPage }) {
             <p>Every new student starts with a <strong>completely free first session</strong>. The way I like to run it: you pick a topic your child has been finding difficult, and we work through it together properly in the lesson. By the end, they should feel noticeably more comfortable with it - so you get a real sense of how I work, with no pressure or obligation.</p>
             <div className="btn-row" style={{marginTop:"1.3rem"}}>
               <a href={WHATSAPP} target="_blank" rel="noopener" className="btn-primary btn-wa"><WAIcon /> Message me on WhatsApp</a>
-              <button className="btn-ghost-dark" onClick={() => setPage("booking")}>Book a Session</button>
+              <button className="btn-email-dark" onClick={() => openContact()}><EmailIcon/> Email Me</button>
             </div>
           </div>
         </div>
@@ -572,13 +610,13 @@ function AboutPage({ setPage }) {
           </div>
         </div>
       </section>
-      <PageFooter setPage={setPage} />
+      <PageFooter setPage={setPage} openContact={openContact} />
     </div>
   );
 }
 
 // ─── Services ─────────────────────────────────────────────────────────────
-function ServicesPage({ setPage }) {
+function ServicesPage({ setPage, openContact }) {
   return (
     <div className="page">
       <div className="page-hero">
@@ -623,7 +661,7 @@ function ServicesPage({ setPage }) {
               <p>I have a suite of real interview questions that have been asked as part of Oxford and Cambridge admissions. Sessions focus on working through these together - developing the ability to think mathematically under pressure and communicate reasoning clearly - before finishing with a mock interview to prepare students for the real thing.</p>
               <div className="btn-row" style={{marginTop:"1.5rem"}}>
                 <a href={WHATSAPP} target="_blank" rel="noopener" className="btn-primary btn-wa"><WAIcon /> Message me on WhatsApp</a>
-                <button className="btn-ghost-dark" onClick={() => setPage("booking")}>Book a Session</button>
+                <button className="btn-email-dark" onClick={() => openContact()}><EmailIcon/> Email Me</button>
               </div>
               <p style={{marginTop:"0.9rem",fontSize:"0.88rem",color:"var(--muted)"}}>University admissions sessions: <strong>£150/hour</strong></p>
             </div>
@@ -651,17 +689,17 @@ function ServicesPage({ setPage }) {
                 <span className="oxbridge-price-note">£150 / hour</span>
               </div>
             </div>
-            <img src={PHOTO_SRC} alt="Omer Ginat" className="oxbridge-banner-photo" />
+            <img src={PHOTO_SRC} alt="Omer" className="oxbridge-banner-photo" />
           </div>
         </div>
       </section>
-      <PageFooter setPage={setPage} />
+      <PageFooter setPage={setPage} openContact={openContact} />
     </div>
   );
 }
 
 // ─── Approach ─────────────────────────────────────────────────────────────
-function ApproachPage({ setPage }) {
+function ApproachPage({ setPage, openContact }) {
   return (
     <div className="page">
       <div className="page-hero">
@@ -683,7 +721,7 @@ function ApproachPage({ setPage }) {
             <p>Throughout, I keep parents informed. You'll always know what we've been working on, how your child is progressing, and what we're planning to focus on next.</p>
             <div className="btn-row" style={{marginTop:"1.5rem"}}>
               <a href={WHATSAPP} target="_blank" rel="noopener" className="btn-primary btn-wa"><WAIcon /> Message me on WhatsApp</a>
-              <button className="btn-ghost-dark" onClick={() => setPage("booking")}>Book a Session</button>
+              <button className="btn-email-dark" onClick={() => openContact()}><EmailIcon/> Email Me</button>
             </div>
           </div>
           <div className="approach-items">
@@ -713,7 +751,7 @@ function ApproachPage({ setPage }) {
           <a href={WHATSAPP} target="_blank" rel="noopener" className="btn-primary" style={{whiteSpace:"nowrap"}}>Book a Free Session →</a>
         </div>
       </section>
-      <PageFooter setPage={setPage} />
+      <PageFooter setPage={setPage} openContact={openContact} />
     </div>
   );
 }
@@ -723,14 +761,31 @@ const CLAMP_THRESHOLD = 510;
 function ReviewCard({ r }) {
   const [expanded, setExpanded] = useState(false);
   const isLong = r.text.length > CLAMP_THRESHOLD;
+
+  // If clamp falls at a paragraph break, compute the visible paragraphs so
+  // we can render them without line-clamp (avoiding the browser's native ...)
+  const visibleParas = (() => {
+    const paras = r.text.split("\n\n");
+    let count = 0;
+    for (let i = 0; i < paras.length - 1; i++) {
+      count += paras[i].length + 2;
+      if (count > 280 && count < 700) return paras.slice(0, i + 1).join("\n\n");
+    }
+    return null;
+  })();
+
+  const endsAtBreak = visibleParas !== null;
+  const displayText = isLong && !expanded && endsAtBreak ? visibleParas : r.text;
+  const useClamped = isLong && !expanded && !endsAtBreak;
+
   return (
     <div className="review-card">
       <div className="review-qs">"</div>
       <div className="review-stars">{"★".repeat(r.stars)}{"☆".repeat(5-r.stars)}</div>
       <div className="review-text-wrap">
-        <p className={`review-text${isLong && !expanded ? " clamped" : ""}`}>{r.text}</p>
+        <p className={`review-text${useClamped ? " clamped" : ""}`}>{displayText}</p>
         {isLong && !expanded && (
-          <button className="see-more-btn" onClick={() => setExpanded(true)}>Read more...</button>
+          <button className="see-more-btn" onClick={() => setExpanded(true)}>{endsAtBreak ? "Read more" : "Read more..."}</button>
         )}
         {isLong && expanded && (
           <button className="see-more-btn" onClick={() => setExpanded(false)}>Read less</button>
@@ -743,10 +798,10 @@ function ReviewCard({ r }) {
     </div>
   );
 }
-function ReviewsPage({ setPage }) {
+function ReviewsPage({ setPage, openContact }) {
   const [reviews, setReviews] = useState(ALL_REVIEWS);
   const [showModal, setShowModal] = useState(false);
-  const [rForm, setRForm] = useState({ stars:5, text:"", author:"", school:"" });
+  const [rForm, setRForm] = useState({ stars:5, text:"", name:"", level:"GCSE" });
   const [rDone, setRDone] = useState(false);
   const scrollRef = useRef(null);
 
@@ -758,10 +813,13 @@ function ReviewsPage({ setPage }) {
   };
 
   const submitReview = () => {
-    if (!rForm.text || !rForm.author) return;
-    setReviews(r => [...r, { id:Date.now(), stars:rForm.stars, text:rForm.text, author:rForm.author, school:rForm.school, date:new Date().toLocaleDateString("en-GB",{month:"long",year:"numeric"}) }]);
+    if (!rForm.text || !rForm.name) return;
+    const date = new Date().toLocaleDateString("en-GB", {month:"long", year:"numeric"});
+    const subject = encodeURIComponent("New Review Submission - Omer Maths Tuition");
+    const body = encodeURIComponent(`New review submitted ${date}\n\nName: ${rForm.name}\nLevel: ${rForm.level}\nRating: ${"★".repeat(rForm.stars)}\n\nReview:\n${rForm.text}`);
+    window.open(`mailto:hello@omermaths.com?subject=${subject}&body=${body}`);
     setRDone(true);
-    setTimeout(() => { setShowModal(false); setRForm({stars:5,text:"",author:"",school:""}); setRDone(false); }, 2200);
+    setTimeout(() => { setShowModal(false); setRForm({stars:5,text:"",name:"",level:"GCSE"}); setRDone(false); }, 2500);
   };
 
   return (
@@ -796,22 +854,22 @@ function ReviewsPage({ setPage }) {
           <div className="modal">
             <button className="modal-close" onClick={() => setShowModal(false)}>×</button>
             <h3>Share Your Experience</h3>
-            <p className="modal-sub">Your review helps other families find the right support for their child.</p>
+            <p className="modal-sub">Reviews are checked before being published. Thank you for taking the time!</p>
             <div className="form-row"><label>Your Rating</label><div className="star-picker">{[1,2,3,4,5].map(s => <button key={s} className={rForm.stars >= s ? "lit" : ""} onClick={() => setRForm(f => ({...f, stars:s}))}>★</button>)}</div></div>
+            <div className="form-row"><label>Your Name *</label><input placeholder="e.g. Sarah" value={rForm.name} onChange={e => setRForm(f => ({...f, name:e.target.value}))} /></div>
+            <div className="form-row"><label>Level</label><select value={rForm.level} onChange={e => setRForm(f => ({...f, level:e.target.value}))}><option>GCSE</option><option>A-Level</option><option>University Admissions</option><option>Adult Learner</option></select></div>
             <div className="form-row"><label>Your Review *</label><textarea placeholder="Tell other parents about your experience..." value={rForm.text} onChange={e => setRForm(f => ({...f, text:e.target.value}))} /></div>
-            <div className="form-row"><label>Your Name / Role *</label><input placeholder="e.g. Parent of Year 11 student" value={rForm.author} onChange={e => setRForm(f => ({...f, author:e.target.value}))} /></div>
-            <div className="form-row"><label>School (optional)</label><input placeholder="Your child's school name" value={rForm.school} onChange={e => setRForm(f => ({...f, school:e.target.value}))} /></div>
-            {rDone ? <div className="success-msg">✓ Thank you - your review has been posted!</div> : <button className="submit-btn" onClick={submitReview}>Post Review</button>}
+            {rDone ? <div className="success-msg">✓ Thank you - your review will appear on the website shortly!</div> : <button className="submit-btn" onClick={submitReview}>Submit Review</button>}
           </div>
         </div>
       )}
-      <PageFooter setPage={setPage} />
+      <PageFooter setPage={setPage} openContact={openContact} />
     </div>
   );
 }
 
 // ─── FAQ ──────────────────────────────────────────────────────────────────
-function FaqPage({ setPage }) {
+function FaqPage({ setPage, openContact }) {
   const [openFaq, setOpenFaq] = useState(null);
   return (
     <div className="page">
@@ -838,17 +896,17 @@ function FaqPage({ setPage }) {
           <p style={{color:"var(--muted)",marginBottom:"1.2rem"}}>Still have a question? I'll always reply promptly.</p>
           <div className="btn-row" style={{justifyContent:"center"}}>
             <a href={WHATSAPP} target="_blank" rel="noopener" className="btn-primary btn-wa"><WAIcon /> Message me on WhatsApp</a>
-            <button className="btn-ghost-dark" onClick={() => setPage("booking")}>Book a Session</button>
+            <button className="btn-email-dark" onClick={() => openContact()}><EmailIcon/> Email Me</button>
           </div>
         </div>
       </section>
-      <PageFooter setPage={setPage} />
+      <PageFooter setPage={setPage} openContact={openContact} />
     </div>
   );
 }
 
 // ─── Booking ──────────────────────────────────────────────────────────────
-function BookingPage({ setPage }) {
+function BookingPage({ setPage, openContact }) {
   const today = new Date();
   const [calY, setCalY] = useState(today.getFullYear());
   const [calM, setCalM] = useState(today.getMonth());
@@ -857,6 +915,21 @@ function BookingPage({ setPage }) {
   const [bkForm, setBkForm] = useState({ name:"", email:"", level:"" });
   const [bkDone, setBkDone] = useState(false);
   const [ctDone, setCtDone] = useState(false);
+  const [ctForm, setCtForm] = useState({ name:"", email:"", phone:"", message:"" });
+  const [ctSending, setCtSending] = useState(false);
+
+  const submitContact = async () => {
+    if (!ctForm.name || !ctForm.email || !ctForm.message) return;
+    setCtSending(true);
+    try {
+      await fetch(FORMSPREE_URL, {
+        method:"POST",
+        headers:{"Content-Type":"application/json","Accept":"application/json"},
+        body: JSON.stringify({ name:ctForm.name, email:ctForm.email, phone:ctForm.phone, message:ctForm.message })
+      });
+      setCtDone(true);
+    } catch(e) { setCtSending(false); }
+  };
 
   const daysIn = (y,m) => new Date(y,m+1,0).getDate();
   const firstDow = (y,m) => { let d = new Date(y,m,1).getDay(); return d === 0 ? 6 : d-1; };
@@ -887,7 +960,7 @@ function BookingPage({ setPage }) {
               ["🌐","Format","Online (interactive whiteboard)"],
               ["👤","Sessions","1-to-1 only"],
               ["💬","WhatsApp", <a href={WHATSAPP} target="_blank" rel="noopener">Message Omer directly</a>],
-              ["📧","Email","omer.ginat@gmail.com"],
+              ["📧","Email","hello@omermaths.com"],
             ].map(([icon,label,val]) => (
               <div className="bl-item" key={label}>
                 <div className="bl-icon">{icon}</div>
@@ -936,7 +1009,7 @@ function BookingPage({ setPage }) {
             <p>Choosing a tutor is an important decision. If you'd like to talk through your child's situation before booking - what year they're in, what they're struggling with, what you're hoping to achieve - please do get in touch. WhatsApp is the easiest way to reach me.</p>
             {[
               ["💬","WhatsApp (preferred)", <a href={WHATSAPP} target="_blank" rel="noopener">Message me on WhatsApp</a>],
-              ["📧","Email","omer.ginat@gmail.com"],
+              ["📧","Email","hello@omermaths.com"],
               ["🌐","Sessions","Online · Available Worldwide"],
               ["🎁","First lesson","Always free - no obligation"],
             ].map(([icon,label,val]) => (
@@ -949,18 +1022,24 @@ function BookingPage({ setPage }) {
           <div className="cf">
             {ctDone
               ? <div className="success-msg" style={{background:"rgba(92,124,106,0.25)",borderColor:"rgba(92,124,106,0.4)",color:"#9cd4af"}}>✓ Message received - I'll be in touch very soon.</div>
-              : <><input placeholder="Your name" /><input placeholder="Email address" type="email" /><input placeholder="Your child's year group / level" /><textarea placeholder="Tell me a little about what you're looking for..." /><button className="submit-btn" onClick={() => setCtDone(true)}>Send Message</button></>
+              : <>
+                  <input className="cf-input" placeholder="Your name *" value={ctForm.name} onChange={e=>setCtForm(f=>({...f,name:e.target.value}))} />
+                  <input className="cf-input" placeholder="Email address *" type="email" value={ctForm.email} onChange={e=>setCtForm(f=>({...f,email:e.target.value}))} />
+                  <input className="cf-input" placeholder="Phone number (optional)" type="tel" value={ctForm.phone} onChange={e=>setCtForm(f=>({...f,phone:e.target.value}))} />
+                  <textarea className="cf-input" placeholder="Tell me a little about what you're looking for... *" value={ctForm.message} onChange={e=>setCtForm(f=>({...f,message:e.target.value}))} style={{minHeight:"110px",resize:"vertical"}} />
+                  <button className="submit-btn" onClick={submitContact} disabled={ctSending}>{ctSending ? "Sending..." : "Send Message"}</button>
+                </>
             }
           </div>
         </div>
       </section>
-      <PageFooter dark setPage={setPage} />
+      <PageFooter dark setPage={setPage} openContact={openContact} />
     </div>
   );
 }
 
 // ─── Shared Footer ─────────────────────────────────────────────────────────
-function PageFooter({ dark, setPage }) {
+function PageFooter({ dark, setPage, openContact }) {
   return (
     <div className="footer-strip" style={{background:"var(--navy)",marginTop:0}}>
       <div className="footer-inner">
@@ -968,6 +1047,7 @@ function PageFooter({ dark, setPage }) {
           <div className="nav-logo">Omer <span>Maths Tuition</span></div>
           <p>Warm, patient, one-to-one online maths tuition for GCSE, A-Level, and university admissions.</p>
           <p style={{marginTop:"0.75rem"}}><a href={WHATSAPP} target="_blank" rel="noopener" style={{color:"var(--gold)",textDecoration:"none",fontSize:"0.88rem"}}>💬 Message on WhatsApp →</a></p>
+          <p style={{marginTop:"0.4rem"}}><button onClick={() => openContact && openContact()} style={{background:"none",border:"none",color:"var(--gold)",textDecoration:"none",fontSize:"0.88rem",display:"inline-flex",alignItems:"center",gap:"0.4rem",cursor:"pointer",padding:0,fontFamily:"inherit"}}><EmailIcon/> Email Me →</button></p>
         </div>
         <div className="footer-col">
           <h5>Pages</h5>
@@ -978,13 +1058,54 @@ function PageFooter({ dark, setPage }) {
         <div className="footer-col">
           <h5>Contact</h5>
           <a href={WHATSAPP} target="_blank" rel="noopener">WhatsApp</a>
-          <a href="mailto:omer.ginat@gmail.com">omer.ginat@gmail.com</a>
+          <a href="mailto:hello@omermaths.com">hello@omermaths.com</a>
           <p style={{marginTop:"0.75rem"}} className="footer-free">🎁 First lesson always free</p>
         </div>
       </div>
       <div className="footer-bottom">
-        <p>© {new Date().getFullYear()} Omer Ginat Maths Tuition · Online · Worldwide</p>
-        <p style={{color:"rgba(255,255,255,0.22)",fontSize:"0.78rem"}}>omer.ginat@gmail.com</p>
+        <p>© {new Date().getFullYear()} Omer Maths Tuition · Online · Worldwide</p>
+        <p style={{color:"rgba(255,255,255,0.22)",fontSize:"0.78rem"}}>hello@omermaths.com</p>
+      </div>
+    </div>
+  );
+}
+
+// ─── Contact Modal ─────────────────────────────────────────────────────────
+function ContactModal({ onClose }) {
+  const [form, setForm] = useState({ name:"", email:"", phone:"", message:"" });
+  const [done, setDone] = useState(false);
+  const [sending, setSending] = useState(false);
+
+  const submit = async () => {
+    if (!form.name || !form.email || !form.message) return;
+    setSending(true);
+    try {
+      await fetch(FORMSPREE_URL, {
+        method:"POST",
+        headers:{"Content-Type":"application/json","Accept":"application/json"},
+        body: JSON.stringify(form)
+      });
+      setDone(true);
+      setTimeout(onClose, 2500);
+    } catch(e) { setSending(false); }
+  };
+
+  return (
+    <div className="modal-overlay" onClick={e => e.target === e.currentTarget && onClose()}>
+      <div className="modal">
+        <button className="modal-close" onClick={onClose}>×</button>
+        <h3>Get in Touch</h3>
+        <p className="modal-sub">I'll reply promptly — usually within a few hours.</p>
+        {done
+          ? <div className="success-msg">✓ Message sent - I'll be in touch very soon!</div>
+          : <>
+              <div className="form-row"><label>Your Name *</label><input placeholder="e.g. Sarah" value={form.name} onChange={e=>setForm(f=>({...f,name:e.target.value}))} /></div>
+              <div className="form-row"><label>Email Address *</label><input type="email" placeholder="your@email.com" value={form.email} onChange={e=>setForm(f=>({...f,email:e.target.value}))} /></div>
+              <div className="form-row"><label>Phone Number (optional)</label><input type="tel" placeholder="+44..." value={form.phone} onChange={e=>setForm(f=>({...f,phone:e.target.value}))} /></div>
+              <div className="form-row"><label>Message *</label><textarea placeholder="Tell me a little about what you're looking for..." value={form.message} onChange={e=>setForm(f=>({...f,message:e.target.value}))} /></div>
+              <button className="submit-btn" onClick={submit} disabled={sending}>{sending ? "Sending..." : "Send Message"}</button>
+            </>
+        }
       </div>
     </div>
   );
@@ -993,6 +1114,7 @@ function PageFooter({ dark, setPage }) {
 // ─── App Root ──────────────────────────────────────────────────────────────
 export default function App() {
   const [page, setPage] = useState("home");
+  const [showContact, setShowContact] = useState(false);
 
   const navigate = (p) => {
     setPage(p);
@@ -1004,20 +1126,21 @@ export default function App() {
   }, [page]);
 
   const pages = {
-    home:     <HomePage setPage={navigate} />,
-    about:    <AboutPage setPage={navigate} />,
-    services: <ServicesPage setPage={navigate} />,
-    approach: <ApproachPage setPage={navigate} />,
-    reviews:  <ReviewsPage setPage={navigate} />,
-    faq:      <FaqPage setPage={navigate} />,
-    booking:  <BookingPage setPage={navigate} />,
+    home:     <HomePage setPage={navigate} openContact={() => setShowContact(true)} />,
+    about:    <AboutPage setPage={navigate} openContact={() => setShowContact(true)} />,
+    services: <ServicesPage setPage={navigate} openContact={() => setShowContact(true)} />,
+    approach: <ApproachPage setPage={navigate} openContact={() => setShowContact(true)} />,
+    reviews:  <ReviewsPage setPage={navigate} openContact={() => setShowContact(true)} />,
+    faq:      <FaqPage setPage={navigate} openContact={() => setShowContact(true)} />,
+    booking:  <BookingPage setPage={navigate} openContact={() => setShowContact(true)} />,
   };
 
   return (
     <>
       <style>{CSS}</style>
-      <Nav page={page} setPage={navigate} />
+      <Nav page={page} setPage={navigate} openContact={() => setShowContact(true)} />
       {pages[page] || pages.home}
+      {showContact && <ContactModal onClose={() => setShowContact(false)} />}
     </>
   );
 }

@@ -278,7 +278,7 @@ const CSS = `
   /* REVIEWS CAROUSEL */
   .reviews-carousel{display:flex;align-items:stretch;gap:1.5rem;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:1.5rem;max-width:1100px;margin:0 auto;-ms-overflow-style:none;scrollbar-width:none;}
   .reviews-carousel::-webkit-scrollbar{display:none;}
-  .reviews-carousel .review-card{flex:0 0 360px;scroll-snap-align:start;}
+  .reviews-carousel .review-card{flex:0 0 340px;scroll-snap-align:start;}
   .scroll-arrow{width:40px;height:40px;border-radius:50%;background:var(--white);border:1.5px solid rgba(23,32,56,0.15);color:var(--navy);font-size:1.3rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s;box-shadow:var(--shadow);}
   .scroll-arrow:hover{background:var(--navy);color:var(--white);border-color:var(--navy);}
   @media(max-width:600px){.reviews-carousel .review-card{flex:0 0 85vw;}}
@@ -547,6 +547,7 @@ function HomePage({ setPage, openContact }) {
           <div className="reviews-carousel" ref={homeReviewsRef}>
             {ALL_REVIEWS.map(r => <ReviewCard key={r.id} r={r} />)}
           </div>
+        </div>
       </section>
       <div className="footer-strip" style={{background:"var(--navy)",marginTop:0}}>
         © {new Date().getFullYear()} Omer Maths Tuition &nbsp;·&nbsp; All sessions online · Available Worldwide &nbsp;·&nbsp; First lesson always free &nbsp;·&nbsp;

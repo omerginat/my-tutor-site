@@ -276,15 +276,16 @@ const CSS = `
   @media(max-width:900px){.approach-cols{grid-template-columns:1fr;gap:2.5rem;}.online-callout{grid-template-columns:1fr;}}
 
   /* REVIEWS CAROUSEL */
-  .reviews-carousel{display:flex;align-items:stretch;gap:1.5rem;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:1.5rem;max-width:1100px;margin:0 auto;-ms-overflow-style:none;scrollbar-width:none;}
+  .reviews-carousel-wrap{overflow:hidden;max-width:1100px;margin:0 auto;}
+  .reviews-carousel{display:flex;align-items:stretch;gap:1.5rem;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:1.5rem;-ms-overflow-style:none;scrollbar-width:none;}
   .reviews-carousel::-webkit-scrollbar{display:none;}
-  .reviews-carousel .review-card{flex:0 0 360px;scroll-snap-align:start;}
+  .reviews-carousel .review-card{flex:0 0 calc(33.333% - 1rem);scroll-snap-align:start;}
   .scroll-arrow{width:40px;height:40px;border-radius:50%;background:var(--white);border:1.5px solid rgba(23,32,56,0.15);color:var(--navy);font-size:1.3rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s;box-shadow:var(--shadow);}
   .scroll-arrow:hover{background:var(--navy);color:var(--white);border-color:var(--navy);}
   .scroll-dots{display:none;justify-content:center;gap:0.5rem;margin-top:1rem;}
   .scroll-dot{width:7px;height:7px;border-radius:50%;background:rgba(23,32,56,0.15);border:none;cursor:pointer;padding:0;transition:background 0.2s;}
   .scroll-dot.active{background:var(--gold);}
-  @media(max-width:600px){
+  @media(max-width:700px){
     .reviews-carousel .review-card{flex:0 0 85vw;}
     .scroll-dots{display:flex;}
   }
@@ -550,10 +551,11 @@ function HomePage({ setPage, openContact }) {
               <button className="btn-primary btn-sm" onClick={() => setPage("reviews")}>All Reviews →</button>
             </div>
           </div>
+          <div className="reviews-carousel-wrap">
           <div className="reviews-carousel" ref={homeReviewsRef}>
             {ALL_REVIEWS.map(r => <ReviewCard key={r.id} r={r} />)}
           </div>
-        </div>
+          </div>
       </section>
       <div className="footer-strip" style={{background:"var(--navy)",marginTop:0}}>
         © {new Date().getFullYear()} Omer Maths Tuition &nbsp;·&nbsp; All sessions online · Available Worldwide &nbsp;·&nbsp; First lesson always free &nbsp;·&nbsp;
@@ -865,8 +867,10 @@ function ReviewsPage({ setPage, openContact }) {
             <button className="add-review-btn" onClick={() => setShowModal(true)}>+ Leave a Review</button>
           </div>
         </div>
+        <div className="reviews-carousel-wrap">
         <div className="reviews-carousel" ref={scrollRef}>
           {reviews.map(r => <ReviewCard key={r.id} r={r} />)}
+        </div>
         </div>
         <div className="scroll-dots">
           {reviews.map((r, i) => (

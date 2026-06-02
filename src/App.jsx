@@ -157,8 +157,9 @@ const CSS = `
   .hero-full h1{font-size:clamp(2.6rem,5.5vw,4.6rem);color:var(--white);max-width:860px;position:relative;margin-bottom:0.45em;letter-spacing:-0.02em;line-height:1.15;}
   .hero-full h1 em{color:var(--gold2);font-style:italic;}
   .hero-sub{font-size:clamp(1rem,2vw,1.18rem);color:rgba(255,255,255,0.68);max-width:720px;margin:0 auto 2.5rem;position:relative;line-height:1.8;}
-  .hero-btns{display:flex;gap:1rem;justify-content:center;position:relative;flex-wrap:nowrap;}
-  .hero-btns > *{flex:1;max-width:320px;min-width:0;text-align:center;justify-content:center;white-space:nowrap;}
+  .hero-btns{display:flex;gap:1rem;justify-content:center;position:relative;flex-wrap:wrap;}
+  .hero-btns > *{flex:1;max-width:320px;min-width:260px;text-align:center;justify-content:center;white-space:nowrap;}
+  @media(max-width:580px){.hero-btns > *{flex:unset;width:100%;max-width:340px;white-space:normal;}}
   .hero-stats{display:flex;gap:0;margin-top:2.5rem;position:relative;flex-wrap:wrap;justify-content:center;background:rgba(255,255,255,0.06);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:1.5rem 3rem;}
   .hero-stat{text-align:center;padding:0 2rem;}
   .hero-stat+.hero-stat{border-left:1px solid rgba(255,255,255,0.12);}
@@ -280,7 +281,14 @@ const CSS = `
   .reviews-carousel .review-card{flex:0 0 360px;scroll-snap-align:start;}
   .scroll-arrow{width:40px;height:40px;border-radius:50%;background:var(--white);border:1.5px solid rgba(23,32,56,0.15);color:var(--navy);font-size:1.3rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s;box-shadow:var(--shadow);}
   .scroll-arrow:hover{background:var(--navy);color:var(--white);border-color:var(--navy);}
-  @media(max-width:600px){.reviews-carousel .review-card{flex:0 0 85vw;}}
+  .scroll-dots{display:none;justify-content:center;gap:0.5rem;margin-top:1rem;}
+  .scroll-dot{width:7px;height:7px;border-radius:50%;background:rgba(23,32,56,0.15);border:none;cursor:pointer;padding:0;transition:background 0.2s;}
+  .scroll-dot.active{background:var(--gold);}
+  @media(max-width:600px){
+    .reviews-carousel{padding:0 5vw 1.5rem;margin:0 -5vw;}
+    .reviews-carousel .review-card{flex:0 0 82vw;}
+    .scroll-dots{display:flex;}
+  }
 
   /* REVIEWS GRID (home page preview) */
   /* REVIEWS GRID (home page preview) */
@@ -804,6 +812,7 @@ function ReviewsPage({ setPage, openContact }) {
   const [rForm, setRForm] = useState({ stars:5, text:"", name:"", level:"GCSE" });
   const [rDone, setRDone] = useState(false);
   const scrollRef = useRef(null);
+  const [activeDot, setActiveDot] = useState(0);
 
   const scroll = (dir) => {
     const el = scrollRef.current;
@@ -811,6 +820,18 @@ function ReviewsPage({ setPage, openContact }) {
     const card = el.querySelector(".review-card");
     el.scrollBy({ left: dir * ((card ? card.offsetWidth : 340) + 24), behavior:"smooth" });
   };
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const onScroll = () => {
+      const card = el.querySelector(".review-card");
+      const cardW = card ? card.offsetWidth + 24 : 364;
+      setActiveDot(Math.round(el.scrollLeft / cardW));
+    };
+    el.addEventListener("scroll", onScroll);
+    return () => el.removeEventListener("scroll", onScroll);
+  }, []);
 
   const submitReview = () => {
     if (!rForm.text || !rForm.name) return;
@@ -848,9 +869,18 @@ function ReviewsPage({ setPage, openContact }) {
         <div className="reviews-carousel" ref={scrollRef}>
           {reviews.map(r => <ReviewCard key={r.id} r={r} />)}
         </div>
+        <div className="scroll-dots">
+          {reviews.map((r, i) => (
+            <button key={r.id} className={`scroll-dot${activeDot === i ? " active" : ""}`} onClick={() => {
+              const el = scrollRef.current;
+              const card = el && el.querySelector(".review-card");
+              if (el && card) el.scrollTo({ left: i * (card.offsetWidth + 24), behavior:"smooth" });
+            }} />
+          ))}
+        </div>
       </section>
       {showModal && (
-        <div className="modal-overlay" onClick={e => e.target === e.currentTarget && setShowModal(false)}>
+        <div className="modal-overlay">
           <div className="modal">
             <button className="modal-close" onClick={() => setShowModal(false)}>×</button>
             <h3>Share Your Experience</h3>
@@ -1091,7 +1121,7 @@ function ContactModal({ onClose }) {
   };
 
   return (
-    <div className="modal-overlay" onClick={e => e.target === e.currentTarget && onClose()}>
+    <div className="modal-overlay">
       <div className="modal">
         <button className="modal-close" onClick={onClose}>×</button>
         <h3>Get in Touch</h3>

@@ -276,19 +276,12 @@ const CSS = `
   @media(max-width:900px){.approach-cols{grid-template-columns:1fr;gap:2.5rem;}.online-callout{grid-template-columns:1fr;}}
 
   /* REVIEWS CAROUSEL */
-  .reviews-carousel-wrap{overflow:hidden;max-width:1100px;margin:0 auto;}
-  .reviews-carousel{display:flex;align-items:stretch;gap:1.5rem;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:1.5rem;-ms-overflow-style:none;scrollbar-width:none;}
+  .reviews-carousel{display:flex;align-items:stretch;gap:1.5rem;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:1.5rem;max-width:1100px;margin:0 auto;-ms-overflow-style:none;scrollbar-width:none;}
   .reviews-carousel::-webkit-scrollbar{display:none;}
-  .reviews-carousel .review-card{flex:0 0 calc(33.333% - 1rem);scroll-snap-align:start;}
+  .reviews-carousel .review-card{flex:0 0 360px;scroll-snap-align:start;}
   .scroll-arrow{width:40px;height:40px;border-radius:50%;background:var(--white);border:1.5px solid rgba(23,32,56,0.15);color:var(--navy);font-size:1.3rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s;box-shadow:var(--shadow);}
   .scroll-arrow:hover{background:var(--navy);color:var(--white);border-color:var(--navy);}
-  .scroll-dots{display:none;justify-content:center;gap:0.5rem;margin-top:1rem;}
-  .scroll-dot{width:7px;height:7px;border-radius:50%;background:rgba(23,32,56,0.15);border:none;cursor:pointer;padding:0;transition:background 0.2s;}
-  .scroll-dot.active{background:var(--gold);}
-  @media(max-width:700px){
-    .reviews-carousel .review-card{flex:0 0 85vw;}
-    .scroll-dots{display:flex;}
-  }
+  @media(max-width:600px){.reviews-carousel .review-card{flex:0 0 85vw;}}
 
   /* REVIEWS GRID (home page preview) */
   /* REVIEWS GRID (home page preview) */
@@ -551,10 +544,8 @@ function HomePage({ setPage, openContact }) {
               <button className="btn-primary btn-sm" onClick={() => setPage("reviews")}>All Reviews →</button>
             </div>
           </div>
-          <div className="reviews-carousel-wrap">
           <div className="reviews-carousel" ref={homeReviewsRef}>
             {ALL_REVIEWS.map(r => <ReviewCard key={r.id} r={r} />)}
-          </div>
           </div>
       </section>
       <div className="footer-strip" style={{background:"var(--navy)",marginTop:0}}>
@@ -813,7 +804,6 @@ function ReviewsPage({ setPage, openContact }) {
   const [rForm, setRForm] = useState({ stars:5, text:"", name:"", level:"GCSE" });
   const [rDone, setRDone] = useState(false);
   const scrollRef = useRef(null);
-  const [activeDot, setActiveDot] = useState(0);
 
   const scroll = (dir) => {
     const el = scrollRef.current;
@@ -821,18 +811,6 @@ function ReviewsPage({ setPage, openContact }) {
     const card = el.querySelector(".review-card");
     el.scrollBy({ left: dir * ((card ? card.offsetWidth : 340) + 24), behavior:"smooth" });
   };
-
-  useEffect(() => {
-    const el = scrollRef.current;
-    if (!el) return;
-    const onScroll = () => {
-      const card = el.querySelector(".review-card");
-      const cardW = card ? card.offsetWidth + 24 : 364;
-      setActiveDot(Math.round(el.scrollLeft / cardW));
-    };
-    el.addEventListener("scroll", onScroll);
-    return () => el.removeEventListener("scroll", onScroll);
-  }, []);
 
   const submitReview = () => {
     if (!rForm.text || !rForm.name) return;
@@ -867,19 +845,8 @@ function ReviewsPage({ setPage, openContact }) {
             <button className="add-review-btn" onClick={() => setShowModal(true)}>+ Leave a Review</button>
           </div>
         </div>
-        <div className="reviews-carousel-wrap">
         <div className="reviews-carousel" ref={scrollRef}>
           {reviews.map(r => <ReviewCard key={r.id} r={r} />)}
-        </div>
-        </div>
-        <div className="scroll-dots">
-          {reviews.map((r, i) => (
-            <button key={r.id} className={`scroll-dot${activeDot === i ? " active" : ""}`} onClick={() => {
-              const el = scrollRef.current;
-              const card = el && el.querySelector(".review-card");
-              if (el && card) el.scrollTo({ left: i * (card.offsetWidth + 24), behavior:"smooth" });
-            }} />
-          ))}
         </div>
       </section>
       {showModal && (

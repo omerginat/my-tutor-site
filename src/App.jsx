@@ -285,8 +285,7 @@ const CSS = `
   .scroll-dot{width:7px;height:7px;border-radius:50%;background:rgba(23,32,56,0.15);border:none;cursor:pointer;padding:0;transition:background 0.2s;}
   .scroll-dot.active{background:var(--gold);}
   @media(max-width:600px){
-    .reviews-carousel{padding:0 5vw 1.5rem;margin:0 -5vw;}
-    .reviews-carousel .review-card{flex:0 0 82vw;}
+    .reviews-carousel .review-card{flex:0 0 85vw;}
     .scroll-dots{display:flex;}
   }
 

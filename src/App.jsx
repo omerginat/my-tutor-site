@@ -386,7 +386,7 @@ const CSS = `
   .cf input::placeholder,.cf textarea::placeholder,.cf-input::placeholder{color:rgba(255,255,255,0.3);}
   .cf input:focus,.cf textarea:focus,.cf-input:focus{outline:none;border-color:var(--gold);}
   .cf textarea{min-height:110px;resize:vertical;}
-  .footer-strip{margin-top:5rem;border-top:1px solid rgba(255,255,255,0.06);padding:2.5rem 5vw 1.5rem;background:var(--navy);color:rgba(255,255,255,0.55);}
+  .footer-strip{margin-top:5rem;border-top:1px solid rgba(255,255,255,0.06);padding:2.5rem 5vw 1.5rem;background:var(--navy);color:rgba(255,255,255,0.55);text-align:center;}
   .footer-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:2.5rem;margin-bottom:2rem;}
   .footer-brand p{font-size:0.88rem;color:rgba(255,255,255,0.45);margin-top:0.6rem;line-height:1.7;}
   .footer-brand .nav-logo{font-size:1.1rem;}

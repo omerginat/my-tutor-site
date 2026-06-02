@@ -43,17 +43,17 @@ const SCHOOLS = [
 ];
 
 const ALL_REVIEWS = [
-  { id:4,  stars:5, text:"Omer completely changed the way I felt about A-Level Maths. Before starting tuition, I was struggling badly with confidence and found certain topics overwhelming. Thanks to Omer's patient teaching style and clear explanations, everything gradually started to make sense. I ended up improving far beyond my predicted grade and achieved an A in the end. What really stood out was how supportive and encouraging he was throughout the whole process, especially during exam season. I always felt comfortable asking questions and never felt judged for getting things wrong. I would highly recommend Omer to anyone looking for a knowledgeable and approachable tutor.", author:"Tom, A-Level student", date:"April 2026" },
-  { id:1,  stars:5, text:"Omer has been an outstanding GCSE Maths tutor for our son. He combines real mastery of the subject with exceptional patience and clarity, and he is equally strong at teaching exam technique - identifying where marks are lost and showing precisely how to secure them. Under his guidance, our son's confidence and performance have grown significantly, and he now approaches even difficult topics with real assurance. Omer is reliable, supportive, and highly effective. I recommend him without hesitation.", author:"Peter, Parent of GCSE student", date:"February 2026" },
-  { id:3,  stars:5, text:"Omer has been an excellent tutor from the very beginning. Within just a few months we could already see a huge improvement in both grades and confidence. He explains things clearly, is always friendly and approachable, and really knows how to make difficult topics easier to understand. Maths has become much more enjoyable thanks to his support. I never thought I would ever say this, but I've now decided to take it for A-Level!", author:"Oli, GCSE student", date:"November 2025" },
-  { id:2,  stars:5, text:"Thanks so much for the Oxford Interview Prep sessions. Delighted to have been accepted to study Maths, and genuinely don't think I would have gotten my offer without your support.\n\nMy confidence has hugely increased throughout our sessions, and being able to learn through our mock interviews meant that I was so much sharper for the real thing.\n\nI actually ended up being given a similar question to one of those we did together, which of course helped too!\n\nThanks for everything Omer - really appreciate your guidance and advice. I'm lucky to have found you as a tutor.", author:"Matt, Oxford Admissions", date:"January 2025" },
-  { id:6,  stars:5, text:"We are absolutely delighted to have found Omer. He has been a fantastic tutor for our daughter and has completely transformed her attitude towards Maths. His calm, patient approach and ability to tailor lessons to her individual needs have made a huge difference to both her confidence and grades. Omer is reliable, professional, and genuinely invested in helping his students succeed. We would highly recommend him.", author:"Sarah, Parent of A-Level student", date:"June 2024" },
-  { id:5,  stars:5, text:"I can't recommend Omer highly enough. My son was really struggling with GCSE Maths and had lost confidence in his own ability. After only a short time working with Omer, his grades started improving and, more importantly, his attitude towards maths became much more positive. Omer has a real talent for identifying where students are struggling and adapting his teaching style to suit them individually. He's an excellent tutor and someone young people feel comfortable working with.", author:"Grace, Parent of GCSE student", date:"March 2024" },
-  { id:7,  stars:5, text:"I highly recommend Omer. He has been tutoring my son for over a year and, along with his confidence, has improved his grades considerably. My son never complains about doing his sessions with Omer and likes him very much. Omer is reliable and flexible when asked. It's always a pleasure to interact with Omer.", author:"Anna, Parent of GCSE student", date:"September 2023" },
-  { id:8,  stars:5, text:"Omer is a first class tutor with a calm, thoughtful and structured approach to the work he does with his students. Our daughter really benefited from his tuition which greatly assisted her in achieving her place at university to read Maths. In addition, he made lessons fun and inspiring and developed a great rapport with her during their time working together. In short, we couldn't recommend him highly enough!", author:"Estelle, Parent of A-Level student", date:"September 2023" },
-  { id:9,  stars:5, text:"Omer has been helping me prepare for a professional exam as an adult learner, and I've found him to be patient, organised, and extremely knowledgeable. He took the time to understand the exam requirements before our first lesson and worked with me to create a clear study plan. He's also been very accommodating around my work schedule, which I really appreciate.", author:"Nancy, Adult Learner", date:"August 2022" },
-  { id:10, stars:5, text:"He explains things well and clearly, and is very adaptable in his teaching. Exactly the kind of tutor you hope to find.", author:"Aasiya, A-Level student", date:"April 2022" },
-  { id:11, stars:5, text:"Omer was a huge support in the lead up to my A-Level Maths exams. He helped me realise I understood far more than I thought and gave me the confidence to stay calm under pressure. His explanations were always clear and he never rushed through anything until I fully understood it. Thanks to his help, I achieved the grades I needed for university. I've already recommended him to several friends.", author:"Olivia, A-Level student", date:"October 2021" },
+  { id:4,  stars:5, text:"Omer completely changed the way I felt about A-Level Maths. Before starting tuition, I was struggling badly with confidence and found certain topics overwhelming. Thanks to Omer's patient teaching style and clear explanations, everything gradually started to make sense. I ended up improving far beyond my predicted grade and achieved an A in the end. What really stood out was how supportive and encouraging he was throughout the whole process, especially during exam season. I always felt comfortable asking questions and never felt judged for getting things wrong. I would highly recommend Omer to anyone looking for a knowledgeable and approachable tutor.", author:"Tom, A-Level student", date:"Apr 2026" },
+  { id:1,  stars:5, text:"Omer has been an outstanding GCSE Maths tutor for our son. He combines real mastery of the subject with exceptional patience and clarity, and he is equally strong at teaching exam technique - identifying where marks are lost and showing precisely how to secure them. Under his guidance, our son's confidence and performance have grown significantly, and he now approaches even difficult topics with real assurance. Omer is reliable, supportive, and highly effective. I recommend him without hesitation.", author:"Peter, Parent of GCSE student", date:"Feb 2026" },
+  { id:3,  stars:5, text:"Omer has been an excellent tutor from the very beginning. Within just a few months we could already see a huge improvement in both grades and confidence. He explains things clearly, is always friendly and approachable, and really knows how to make difficult topics easier to understand. Maths has become much more enjoyable thanks to his support. I never thought I would ever say this, but I've now decided to take it for A-Level!", author:"Oli, GCSE student", date:"Nov 2025" },
+  { id:2,  stars:5, text:"Thanks so much for the Oxford Interview Prep sessions. Delighted to have been accepted to study Maths, and genuinely don't think I would have gotten my offer without your support.\n\nMy confidence has hugely increased throughout our sessions, and being able to learn through our mock interviews meant that I was so much sharper for the real thing.\n\nI actually ended up being given a similar question to one of those we did together, which of course helped too!\n\nThanks for everything Omer - really appreciate your guidance and advice. I'm lucky to have found you as a tutor.", author:"Matt, Oxford Admissions", date:"Jan 2025" },
+  { id:6,  stars:5, text:"We are absolutely delighted to have found Omer. He has been a fantastic tutor for our daughter and has completely transformed her attitude towards Maths. His calm, patient approach and ability to tailor lessons to her individual needs have made a huge difference to both her confidence and grades. Omer is reliable, professional, and genuinely invested in helping his students succeed. We would highly recommend him.", author:"Sarah, Parent of A-Level student", date:"Jun 2024" },
+  { id:5,  stars:5, text:"I can't recommend Omer highly enough. My son was really struggling with GCSE Maths and had lost confidence in his own ability. After only a short time working with Omer, his grades started improving and, more importantly, his attitude towards maths became much more positive. Omer has a real talent for identifying where students are struggling and adapting his teaching style to suit them individually. He's an excellent tutor and someone young people feel comfortable working with.", author:"Grace, Parent of GCSE student", date:"Mar 2024" },
+  { id:7,  stars:5, text:"I highly recommend Omer. He has been tutoring my son for over a year and, along with his confidence, has improved his grades considerably. My son never complains about doing his sessions with Omer and likes him very much. Omer is reliable and flexible when asked. It's always a pleasure to interact with Omer.", author:"Anna, Parent of GCSE student", date:"Sep 2023" },
+  { id:8,  stars:5, text:"Omer is a first class tutor with a calm, thoughtful and structured approach to the work he does with his students. Our daughter really benefited from his tuition which greatly assisted her in achieving her place at university to read Maths. In addition, he made lessons fun and inspiring and developed a great rapport with her during their time working together. In short, we couldn't recommend him highly enough!", author:"Estelle, Parent of A-Level student", date:"Sep 2023" },
+  { id:9,  stars:5, text:"Omer has been helping me prepare for a professional exam as an adult learner, and I've found him to be patient, organised, and extremely knowledgeable. He took the time to understand the exam requirements before our first lesson and worked with me to create a clear study plan. He's also been very accommodating around my work schedule, which I really appreciate.", author:"Nancy, Adult Learner", date:"Aug 2022" },
+  { id:10, stars:5, text:"He explains things well and clearly, and is very adaptable in his teaching. Exactly the kind of tutor you hope to find.", author:"Aasiya, A-Level student", date:"Apr 2022" },
+  { id:11, stars:5, text:"Omer was a huge support in the lead up to my A-Level Maths exams. He helped me realise I understood far more than I thought and gave me the confidence to stay calm under pressure. His explanations were always clear and he never rushed through anything until I fully understood it. Thanks to his help, I achieved the grades I needed for university. I've already recommended him to several friends.", author:"Olivia, A-Level student", date:"Oct 2021" },
 ];
 
 const FAQS = [
@@ -278,7 +278,14 @@ const CSS = `
   /* REVIEWS CAROUSEL */
   .reviews-carousel{display:flex;align-items:stretch;gap:1.5rem;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:1.5rem;max-width:1100px;margin:0 auto;-ms-overflow-style:none;scrollbar-width:none;}
   .reviews-carousel::-webkit-scrollbar{display:none;}
-  .reviews-carousel .review-card{flex:0 0 340px;scroll-snap-align:start;}
+  .reviews-carousel .review-card{flex:0 0 calc((100% - 3rem) / 3);scroll-snap-align:start;}
+  .carousel-dots{display:flex;justify-content:center;align-items:center;height:16px;margin-top:1rem;}
+  .carousel-dot{border-radius:50%;transition:width 0.3s cubic-bezier(0.4,0,0.2,1),height 0.3s cubic-bezier(0.4,0,0.2,1),background 0.3s ease,margin 0.3s ease;flex-shrink:0;}
+  .carousel-dot-active{width:9px;height:9px;background:var(--gold);margin:0 3px;}
+  .carousel-dot-full{width:7px;height:7px;background:rgba(23,32,56,0.35);margin:0 3px;}
+  .carousel-dot-small{width:5px;height:5px;background:rgba(23,32,56,0.22);margin:0 3px;}
+  .carousel-dot-tiny{width:3px;height:3px;background:rgba(23,32,56,0.15);margin:0 3px;}
+  .carousel-dot-hidden{width:0;height:0;background:transparent;margin:0;overflow:hidden;}
   .scroll-arrow{width:40px;height:40px;border-radius:50%;background:var(--white);border:1.5px solid rgba(23,32,56,0.15);color:var(--navy);font-size:1.3rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s;box-shadow:var(--shadow);}
   .scroll-arrow:hover{background:var(--navy);color:var(--white);border-color:var(--navy);}
   @media(max-width:600px){.reviews-carousel .review-card{flex:0 0 85vw;}}
@@ -293,11 +300,11 @@ const CSS = `
   .review-stars{color:var(--gold);font-size:0.95rem;margin-bottom:0.9rem;letter-spacing:2px;flex-shrink:0;}
   .review-text-wrap{flex:1;overflow:hidden;position:relative;margin-bottom:0.8rem;}
   .review-text{font-family:'Lora',serif;font-size:0.94rem;color:var(--text);line-height:1.8;font-style:italic;margin:0;white-space:pre-line;}
-  .review-text.clamped{display:-webkit-box;-webkit-line-clamp:11;-webkit-box-orient:vertical;overflow:hidden;}
+  .review-text.clamped{display:-webkit-box;-webkit-line-clamp:13;-webkit-box-orient:vertical;overflow:hidden;}
   .see-more-btn{background:none;border:none;color:var(--gold);font-size:0.82rem;font-weight:600;cursor:pointer;padding:0.3rem 0 0;display:block;}
   .see-more-btn:hover{color:var(--navy);}
   .review-footer{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding-top:0.9rem;border-top:1px solid rgba(23,32,56,0.07);flex-shrink:0;}
-  .review-author{font-family:'DM Sans',sans-serif;font-weight:600;font-size:0.85rem;color:var(--navy);}
+  .review-author{font-family:'DM Sans',sans-serif;font-weight:600;font-size:0.78rem;color:var(--navy);}
   .review-date{font-size:0.78rem;color:var(--muted);white-space:nowrap;}
   .add-review-btn{background:var(--navy);color:var(--white);padding:0.7rem 1.5rem;border-radius:8px;border:none;font-size:0.88rem;font-weight:500;cursor:pointer;transition:background 0.2s;white-space:nowrap;}
   .add-review-btn:hover{background:var(--gold);}
@@ -477,8 +484,32 @@ function Nav({ page, setPage }) {
 }
 
 // ─── Home ─────────────────────────────────────────────────────────────────
+// Distance-based dot sizing: each dot's size = distance from active dot
+// d=0→active(9px) d=1→full(7px) d=2→small(5px) d=3→tiny(3px) d≥4→hidden
+const MAX_DIST = 3;
+const renderDots = (activeDot, total) => {
+  return Array.from({ length: total }, (_, idx) => {
+    const d = Math.abs(idx - activeDot);
+    if (d > MAX_DIST) return <div key={idx} className="carousel-dot carousel-dot-hidden" />;
+    const cls = d === 0 ? 'active' : d === 1 ? 'full' : d === 2 ? 'small' : 'tiny';
+    return <div key={idx} className={`carousel-dot carousel-dot-${cls}`} />;
+  });
+};
+
 function HomePage({ setPage, openContact }) {
   const homeReviewsRef = useRef(null);
+  const [activeDot, setActiveDot] = useState(0);
+  useEffect(() => {
+    const el = homeReviewsRef.current;
+    if (!el) return;
+    const onScroll = () => {
+      const card = el.querySelector(".review-card");
+      const cardW = card ? card.offsetWidth + 24 : 364;
+      setActiveDot(Math.min(Math.round(el.scrollLeft / cardW), ALL_REVIEWS.length - 1));
+    };
+    el.addEventListener("scroll", onScroll);
+    return () => el.removeEventListener("scroll", onScroll);
+  }, []);
   const homeScroll = (dir) => {
     const el = homeReviewsRef.current;
     if (!el) return;
@@ -546,6 +577,9 @@ function HomePage({ setPage, openContact }) {
           </div>
           <div className="reviews-carousel" ref={homeReviewsRef}>
             {ALL_REVIEWS.map(r => <ReviewCard key={r.id} r={r} />)}
+          </div>
+          <div className="carousel-dots">
+            {renderDots(activeDot, ALL_REVIEWS.length)}
           </div>
         </div>
       </section>
@@ -763,30 +797,14 @@ function ReviewCard({ r }) {
   const [expanded, setExpanded] = useState(false);
   const isLong = r.text.length > CLAMP_THRESHOLD;
 
-  // If clamp falls at a paragraph break, compute the visible paragraphs so
-  // we can render them without line-clamp (avoiding the browser's native ...)
-  const visibleParas = (() => {
-    const paras = r.text.split("\n\n");
-    let count = 0;
-    for (let i = 0; i < paras.length - 1; i++) {
-      count += paras[i].length + 2;
-      if (count > 280 && count < 700) return paras.slice(0, i + 1).join("\n\n");
-    }
-    return null;
-  })();
-
-  const endsAtBreak = visibleParas !== null;
-  const displayText = isLong && !expanded && endsAtBreak ? visibleParas : r.text;
-  const useClamped = isLong && !expanded && !endsAtBreak;
-
   return (
     <div className="review-card">
       <div className="review-qs">"</div>
       <div className="review-stars">{"★".repeat(r.stars)}{"☆".repeat(5-r.stars)}</div>
       <div className="review-text-wrap">
-        <p className={`review-text${useClamped ? " clamped" : ""}`}>{displayText}</p>
+        <p className={`review-text${isLong && !expanded ? " clamped" : ""}`}>{r.text}</p>
         {isLong && !expanded && (
-          <button className="see-more-btn" onClick={() => setExpanded(true)}>{endsAtBreak ? "Read more" : "Read more..."}</button>
+          <button className="see-more-btn" onClick={() => setExpanded(true)}>Read more...</button>
         )}
         {isLong && expanded && (
           <button className="see-more-btn" onClick={() => setExpanded(false)}>Read less</button>
@@ -805,6 +823,7 @@ function ReviewsPage({ setPage, openContact }) {
   const [rForm, setRForm] = useState({ stars:5, text:"", name:"", level:"GCSE" });
   const [rDone, setRDone] = useState(false);
   const scrollRef = useRef(null);
+  const [activeDot, setActiveDot] = useState(0);
 
   const scroll = (dir) => {
     const el = scrollRef.current;
@@ -812,6 +831,18 @@ function ReviewsPage({ setPage, openContact }) {
     const card = el.querySelector(".review-card");
     el.scrollBy({ left: dir * ((card ? card.offsetWidth : 340) + 24), behavior:"smooth" });
   };
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const onScroll = () => {
+      const card = el.querySelector(".review-card");
+      const cardW = card ? card.offsetWidth + 24 : 364;
+      setActiveDot(Math.min(Math.round(el.scrollLeft / cardW), reviews.length - 1));
+    };
+    el.addEventListener("scroll", onScroll);
+    return () => el.removeEventListener("scroll", onScroll);
+  }, []);
 
   const submitReview = () => {
     if (!rForm.text || !rForm.name) return;
@@ -848,6 +879,9 @@ function ReviewsPage({ setPage, openContact }) {
         </div>
         <div className="reviews-carousel" ref={scrollRef}>
           {reviews.map(r => <ReviewCard key={r.id} r={r} />)}
+        </div>
+        <div className="carousel-dots">
+          {renderDots(activeDot, reviews.length)}
         </div>
       </section>
       {showModal && (

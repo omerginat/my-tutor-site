@@ -155,7 +155,7 @@ const CSS = `
   .hero-free-pill{display:inline-flex;align-items:center;gap:0.5rem;background:rgba(92,124,106,0.25);border:1px solid rgba(92,124,106,0.5);color:#9fd4b0;font-size:0.8rem;font-weight:500;padding:0.38rem 1rem;border-radius:100px;margin-bottom:0.75rem;position:relative;}
   .hero-badge{display:inline-flex;align-items:center;gap:0.5rem;background:rgba(201,148,58,0.15);border:1px solid rgba(201,148,58,0.35);color:var(--gold2);font-size:0.8rem;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;padding:0.38rem 1rem;border-radius:100px;margin-bottom:1.6rem;position:relative;}
   .hero-full h1{font-size:clamp(2.6rem,5.5vw,4.6rem);color:var(--white);max-width:860px;position:relative;margin-bottom:0.45em;letter-spacing:-0.02em;line-height:1.15;}
-  .hero-full h1 em{color:var(--gold2);font-style:italic;}
+  .hero-full h1 em{color:var(--gold2);font-style:italic;white-space:nowrap;}
   .hero-sub{font-size:clamp(1rem,2vw,1.18rem);color:rgba(255,255,255,0.68);max-width:720px;margin:0 auto 2.5rem;position:relative;line-height:1.8;}
   .hero-btns{display:flex;gap:1rem;justify-content:center;position:relative;flex-wrap:wrap;}
   .hero-btns > *{flex:1;max-width:320px;min-width:260px;text-align:center;justify-content:center;white-space:nowrap;}
@@ -212,10 +212,11 @@ const CSS = `
     .trust-bar{gap:1.2rem;}
     .btn-row{flex-direction:column;}
     .btn-row > *{min-width:unset;width:100%;}
+    .schools-grid{grid-template-columns:repeat(2,1fr);}
   }
 
   /* SCHOOLS */
-  .schools-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:1rem;margin-top:1.8rem;}
+  .schools-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1rem;margin-top:1.8rem;}
   .school-card{background:var(--white);border:1.5px solid rgba(23,32,56,0.08);border-radius:12px;padding:1.2rem 1rem;display:flex;flex-direction:column;align-items:center;gap:0.65rem;box-shadow:0 2px 8px rgba(23,32,56,0.06);transition:all 0.2s;text-align:center;}
   .school-card:hover{border-color:rgba(201,148,58,0.4);transform:translateY(-3px);box-shadow:0 8px 24px rgba(23,32,56,0.12),0 0 0 1px rgba(201,148,58,0.15);}
   .school-logo-lg{width:48px;height:48px;object-fit:contain;border-radius:6px;flex-shrink:0;}
@@ -259,12 +260,12 @@ const CSS = `
   @media(max-width:900px){.uni-hero-row{grid-template-columns:1fr;gap:2.5rem;}.uni-cards{grid-template-columns:1fr;}.oxbridge-banner{flex-direction:column;text-align:center;padding:1.5rem;}.oxbridge-banner-photo{display:none;}}
 
   /* APPROACH */
-  .approach-cols{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start;max-width:1100px;margin:3rem auto 0;}
+  .approach-cols{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;max-width:1100px;margin:3rem auto 0;}
   .approach-intro p{font-size:1.02rem;color:var(--muted);line-height:1.85;margin-bottom:1rem;}
   .approach-intro p strong{color:var(--text);}
-  .approach-items{display:flex;flex-direction:column;gap:1.5rem;}
-  .approach-item-row{display:flex;gap:1.2rem;align-items:flex-start;background:var(--white);border-radius:var(--radius);padding:1.4rem;box-shadow:var(--shadow);border:1px solid rgba(23,32,56,0.06);}
-  .approach-num-badge{width:36px;height:36px;background:var(--navy);color:var(--gold2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:0.9rem;font-weight:700;flex-shrink:0;}
+  .approach-items{display:flex;flex-direction:column;gap:1.8rem;}
+  .approach-item-row{display:flex;gap:1.4rem;align-items:flex-start;background:var(--white);border-radius:var(--radius);padding:1.8rem;box-shadow:var(--shadow);border:1px solid rgba(23,32,56,0.06);border-left:4px solid var(--gold);}
+  .approach-num-badge{width:44px;height:44px;background:var(--navy);color:var(--gold2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;flex-shrink:0;line-height:1;padding-bottom:5px;box-shadow:0 0 0 3px var(--gold);}
   .approach-item-row h4{font-size:1rem;color:var(--navy);margin-bottom:0.3rem;}
   .approach-item-row p{font-size:0.88rem;color:var(--muted);line-height:1.7;}
   .online-callout{background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 100%);border-radius:20px;padding:3rem;max-width:1100px;margin:3rem auto 0;display:grid;grid-template-columns:1fr auto;gap:2rem;align-items:center;}
@@ -386,17 +387,13 @@ const CSS = `
   .cf input::placeholder,.cf textarea::placeholder,.cf-input::placeholder{color:rgba(255,255,255,0.3);}
   .cf input:focus,.cf textarea:focus,.cf-input:focus{outline:none;border-color:var(--gold);}
   .cf textarea{min-height:110px;resize:vertical;}
-  .footer-strip{margin-top:5rem;border-top:1px solid rgba(255,255,255,0.06);padding:2.5rem 5vw 1.5rem;background:var(--navy);color:rgba(255,255,255,0.55);text-align:center;}
-  .footer-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:2.5rem;margin-bottom:2rem;}
-  .footer-brand p{font-size:0.88rem;color:rgba(255,255,255,0.45);margin-top:0.6rem;line-height:1.7;}
-  .footer-brand .nav-logo{font-size:1.1rem;}
-  .footer-col h5{font-size:0.78rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.35);margin-bottom:0.85rem;}
-  .footer-col a,.footer-col button{display:block;background:none;border:none;font-size:0.88rem;color:rgba(255,255,255,0.55);cursor:pointer;padding:0;margin-bottom:0.5rem;text-decoration:none;text-align:left;transition:color 0.2s;}
-  .footer-col a:hover,.footer-col button:hover{color:var(--gold2);}
+  .footer-strip{margin-top:5rem;border-top:1px solid rgba(255,255,255,0.06);padding:1.8rem 5vw;background:var(--navy);color:rgba(255,255,255,0.55);}
+  .footer-brand-links{margin-top:0.75rem;display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;}
+  .footer-brand-links a,.footer-brand-links button{background:none;border:none;color:var(--gold);font-size:0.88rem;cursor:pointer;padding:0;font-family:inherit;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;transition:opacity 0.2s;}
+  .footer-brand-links a:hover,.footer-brand-links button:hover{opacity:0.75;}
+  .footer-free{font-size:0.82rem;color:var(--gold);font-weight:400;}
   .footer-bottom{max-width:1100px;margin:0 auto;padding-top:1.2rem;border-top:1px solid rgba(255,255,255,0.06);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.5rem;}
   .footer-bottom p{font-size:0.78rem;color:rgba(255,255,255,0.22);}
-  .footer-free{font-size:0.82rem;color:var(--gold);font-weight:500;}
-  @media(max-width:700px){.footer-inner{grid-template-columns:1fr;gap:1.5rem;}}
   @media(max-width:800px){.contact-grid{grid-template-columns:1fr;gap:2.5rem;}}
 `;
 
@@ -510,11 +507,18 @@ function HomePage({ setPage, openContact }) {
     el.addEventListener("scroll", onScroll);
     return () => el.removeEventListener("scroll", onScroll);
   }, []);
+  const homeScrolling = useRef(false);
   const homeScroll = (dir) => {
+    const isMobile = window.matchMedia("(pointer: coarse)").matches;
+    if (isMobile && homeScrolling.current) return;
     const el = homeReviewsRef.current;
     if (!el) return;
     const card = el.querySelector(".review-card");
     const amount = card ? card.offsetWidth + 24 : 360;
+    if (isMobile) {
+      homeScrolling.current = true;
+      setTimeout(() => { homeScrolling.current = false; }, 300);
+    }
     el.scrollBy({ left: dir * amount, behavior: "smooth" });
   };
   return (
@@ -751,7 +755,7 @@ function ApproachPage({ setPage, openContact }) {
             <span className="section-label">How I Work</span>
             <div className="divider"/>
             <p>After ten years and 5,000 hours of tutoring, I know that what separates the students who improve from those who don't isn't ability - it's <strong>targeted, patient, one-to-one attention</strong>. In a classroom of thirty, there isn't time for a teacher to find out exactly where each student is struggling. That's what I do.</p>
-            <p>I start every new student with a careful diagnostic session - understanding not just what they don't know, but <strong>why</strong> they don't know it. From there, I put together a plan that's genuinely personal: the right topics, at the right pace, pitched at the right level.</p>
+            <p>I focus on the topics students are finding difficult and make sure they feel comfortable with what they're working on in class. From there, I put together a plan that's genuinely personal: the right topics, at the right pace, pitched at the right level.</p>
             <p>My sessions also have a strong focus on <strong>exam technique</strong>. Knowing the maths is necessary but not sufficient - students need to know how to read a question, where the marks are awarded, and how to show their working clearly.</p>
             <p>Throughout, I keep parents informed. You'll always know what we've been working on, how your child is progressing, and what we're planning to focus on next.</p>
             <div className="btn-row" style={{marginTop:"1.5rem"}}>
@@ -761,10 +765,9 @@ function ApproachPage({ setPage, openContact }) {
           </div>
           <div className="approach-items">
             {[
-              { n:"1", title:"Diagnosis before anything else", body:"Before teaching a single concept, I take time to understand exactly where the gaps are - and why they exist. A precise diagnosis means we never waste time on things a student already knows." },
-              { n:"2", title:"Confidence as the foundation", body:"Building genuine confidence is at the heart of how I work. A student who feels secure in their own ability will attempt harder problems, ask better questions, and perform far better under exam pressure." },
-              { n:"3", title:"Understanding, not memorisation", body:"I teach students to understand why a method works - not just to follow a procedure. Deep understanding holds up under the pressure of an unfamiliar exam question. Rote learning rarely does." },
-              { n:"4", title:"Exam technique as a teachable skill", body:"I teach students to read questions carefully, structure answers clearly, and secure every mark they're entitled to. Small improvements in technique can mean the difference between a grade 7 and a grade 9." },
+              { n:"1", title:"Confidence as the foundation", body:"Building genuine confidence is at the heart of how I work. A student who feels secure in their own ability will attempt harder problems, ask better questions, and perform far better under exam pressure." },
+              { n:"2", title:"Understanding, not memorisation", body:"I teach students to understand why a method works - not just to follow a procedure. Deep understanding holds up under the pressure of an unfamiliar exam question. Rote learning rarely does." },
+              { n:"3", title:"Exam technique as a teachable skill", body:"I teach students to read questions carefully, structure answers clearly, and secure every mark they're entitled to. Small improvements in technique can mean the difference between a grade 7 and a grade 9." },
             ].map(a => (
               <div className="approach-item-row" key={a.n}>
                 <div className="approach-num-badge">{a.n}</div>
@@ -825,10 +828,17 @@ function ReviewsPage({ setPage, openContact }) {
   const scrollRef = useRef(null);
   const [activeDot, setActiveDot] = useState(0);
 
+  const scrolling = useRef(false);
   const scroll = (dir) => {
+    const isMobile = window.matchMedia("(pointer: coarse)").matches;
+    if (isMobile && scrolling.current) return;
     const el = scrollRef.current;
     if (!el) return;
     const card = el.querySelector(".review-card");
+    if (isMobile) {
+      scrolling.current = true;
+      setTimeout(() => { scrolling.current = false; }, 300);
+    }
     el.scrollBy({ left: dir * ((card ? card.offsetWidth : 340) + 24), behavior:"smooth" });
   };
 
@@ -1077,29 +1087,17 @@ function BookingPage({ setPage, openContact }) {
 function PageFooter({ dark, setPage, openContact }) {
   return (
     <div className="footer-strip" style={{background:"var(--navy)",marginTop:0}}>
-      <div className="footer-inner">
-        <div className="footer-brand">
-          <div className="nav-logo">Omer <span>Maths Tuition</span></div>
-          <p>Warm, patient, one-to-one online maths tuition for GCSE, A-Level, and university admissions.</p>
-          <p style={{marginTop:"0.75rem"}}><a href={WHATSAPP} target="_blank" rel="noopener" style={{color:"var(--gold)",textDecoration:"none",fontSize:"0.88rem"}}>💬 Message on WhatsApp →</a></p>
-          <p style={{marginTop:"0.4rem"}}><button onClick={() => openContact && openContact()} style={{background:"none",border:"none",color:"var(--gold)",textDecoration:"none",fontSize:"0.88rem",display:"inline-flex",alignItems:"center",gap:"0.4rem",cursor:"pointer",padding:0,fontFamily:"inherit"}}><EmailIcon/> Email Me →</button></p>
+      <div style={{maxWidth:"1100px",margin:"0 auto"}}>
+        <div className="nav-logo" style={{marginBottom:"0.5rem"}}>Omer <span>Maths Tuition</span></div>
+        <div className="footer-brand-links">
+          <a href={WHATSAPP} target="_blank" rel="noopener">💬 Message on WhatsApp →</a>
+          <button onClick={() => openContact && openContact()}><EmailIcon/> Email Me →</button>
+          <span className="footer-free">🎁 First lesson always free</span>
         </div>
-        <div className="footer-col">
-          <h5>Pages</h5>
-          {[["about","About Me"],["services","Services"],["approach","Approach"],["reviews","Reviews"],["faq","FAQ"],["booking","Book a Session"]].map(([id,label]) => (
-            <button key={id} onClick={() => setPage && setPage(id)}>{label}</button>
-          ))}
+        <div style={{marginTop:"1.5rem",paddingTop:"1.2rem",borderTop:"1px solid rgba(255,255,255,0.06)",display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:"0.5rem"}}>
+          <p style={{fontSize:"0.78rem",color:"rgba(255,255,255,0.22)"}}>© {new Date().getFullYear()} Omer Maths Tuition · Online · Worldwide</p>
+          <p style={{fontSize:"0.78rem",color:"rgba(255,255,255,0.22)"}}>hello@omermaths.com</p>
         </div>
-        <div className="footer-col">
-          <h5>Contact</h5>
-          <a href={WHATSAPP} target="_blank" rel="noopener">WhatsApp</a>
-          <a href="mailto:hello@omermaths.com">hello@omermaths.com</a>
-          <p style={{marginTop:"0.75rem"}} className="footer-free">🎁 First lesson always free</p>
-        </div>
-      </div>
-      <div className="footer-bottom">
-        <p>© {new Date().getFullYear()} Omer Maths Tuition · Online · Worldwide</p>
-        <p style={{color:"rgba(255,255,255,0.22)",fontSize:"0.78rem"}}>hello@omermaths.com</p>
       </div>
     </div>
   );

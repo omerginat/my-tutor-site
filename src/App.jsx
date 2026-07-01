@@ -226,14 +226,14 @@ const CSS = `
   /* SERVICES */
   .services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;max-width:1100px;margin:2.5rem auto 0;}
   @media(max-width:700px){.services-grid{grid-template-columns:1fr;}.service-card{padding:1.5rem;}}
-  .service-card{background:var(--white);border-radius:var(--radius);padding:2rem;box-shadow:var(--shadow);border:1px solid rgba(23,32,56,0.07);transition:transform 0.2s,box-shadow 0.2s;position:relative;overflow:hidden;}
+  .service-card{background:var(--white);border-radius:var(--radius);padding:2rem;box-shadow:var(--shadow);border:1px solid rgba(23,32,56,0.07);transition:transform 0.2s,box-shadow 0.2s;position:relative;overflow:hidden;display:flex;flex-direction:column;}
   .service-card:hover{transform:translateY(-5px);box-shadow:var(--shadow-lg);}
   .service-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:var(--gold);}
   .service-card.card-oxbridge::before{background:linear-gradient(90deg,var(--gold),#8b5cf6);}
   .service-icon{width:50px;height:50px;background:var(--sage2);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin-bottom:1.2rem;}
   .service-card.card-oxbridge .service-icon{background:rgba(139,92,246,0.1);}
   .service-card h3{font-size:1.2rem;color:var(--navy);margin-bottom:0.5rem;}
-  .service-card p{font-size:0.92rem;color:var(--muted);line-height:1.75;}
+  .service-card p{font-size:0.92rem;color:var(--muted);line-height:1.75;flex:1 1 auto;}
   .service-tag{display:inline-block;margin-top:1rem;background:var(--cream2);color:var(--sage);font-size:0.78rem;font-weight:500;padding:0.28rem 0.75rem;border-radius:100px;}
   .service-tag-purple{display:inline-block;margin-top:1rem;background:rgba(139,92,246,0.1);color:#7c3aed;font-size:0.78rem;font-weight:500;padding:0.28rem 0.75rem;border-radius:100px;}
   .service-price{margin-top:1.3rem;padding-top:1rem;border-top:1px solid rgba(23,32,56,0.07);font-size:1.08rem;font-weight:600;color:var(--navy);display:flex;align-items:baseline;gap:0.4rem;flex-wrap:wrap;}
@@ -500,9 +500,10 @@ function HomePage({ setPage, openContact }) {
     const el = homeReviewsRef.current;
     if (!el) return;
     const onScroll = () => {
-      const card = el.querySelector(".review-card");
-      const cardW = card ? card.offsetWidth + 24 : 364;
-      setActiveDot(Math.min(Math.round(el.scrollLeft / cardW), ALL_REVIEWS.length - 1));
+      const maxScroll = el.scrollWidth - el.clientWidth;
+      const total = ALL_REVIEWS.length;
+      const progress = maxScroll > 0 ? el.scrollLeft / maxScroll : 0;
+      setActiveDot(Math.max(0, Math.min(total - 1, Math.round(progress * (total - 1)))));
     };
     el.addEventListener("scroll", onScroll);
     return () => el.removeEventListener("scroll", onScroll);
@@ -846,9 +847,10 @@ function ReviewsPage({ setPage, openContact }) {
     const el = scrollRef.current;
     if (!el) return;
     const onScroll = () => {
-      const card = el.querySelector(".review-card");
-      const cardW = card ? card.offsetWidth + 24 : 364;
-      setActiveDot(Math.min(Math.round(el.scrollLeft / cardW), reviews.length - 1));
+      const maxScroll = el.scrollWidth - el.clientWidth;
+      const total = reviews.length;
+      const progress = maxScroll > 0 ? el.scrollLeft / maxScroll : 0;
+      setActiveDot(Math.max(0, Math.min(total - 1, Math.round(progress * (total - 1)))));
     };
     el.addEventListener("scroll", onScroll);
     return () => el.removeEventListener("scroll", onScroll);
@@ -991,8 +993,11 @@ function BookingPage({ setPage, openContact }) {
         <div className="page-hero-dots"/>
         <div className="page-hero-inner">
           <span className="section-label" style={{color:"var(--gold2)"}}>Book a Session</span>
-          <h1>Find a Time<br/><em>That Works</em></h1>
+          <h1>Find a Time <em>That Works</em></h1>
+          {/* Original calendar intro — restore when the calendar comes back:
           <p>Choose a date and time below. I'll confirm within a few hours. New students always start with a completely free first session.</p>
+          */}
+          <p>Get in touch and I'll find a time that works around your schedule. I usually reply within a few hours, and new students always start with a completely free first session.</p>
         </div>
       </div>
       <section className="section">
@@ -1015,6 +1020,13 @@ function BookingPage({ setPage, openContact }) {
             <div className="booking-free-note">🎁 <strong>First session is completely free.</strong> No payment, no obligation - just a chance to meet and make sure it's the right fit.</div>
           </div>
           <div className="booking-right">
+            {/* ==== CALENDAR TEMPORARILY DISABLED — KEPT FOR LATER ====================
+                 The interactive calendar below is hidden for now because the
+                 availability it showed wasn't linked to a real calendar yet.
+                 TO RESTORE IT: delete this line (the opening comment marker) and
+                 the matching closing marker just below the calendar block, then
+                 remove the "Request a Time" panel that currently replaces it.
+
             <div className="cal-head">
               <button className="cal-nav-btn" onClick={prevM}>‹</button>
               <span className="cal-month-label">{MONTHS[calM]} {calY}</span>
@@ -1040,6 +1052,18 @@ function BookingPage({ setPage, openContact }) {
               </div>
             )}
             {bkDone && <div className="success-msg" style={{marginTop:"1rem"}}>✓ Booking request sent for {pickedTime}, {pickedDay} {MONTHS[calM]}. I'll be in touch very shortly to confirm.</div>}
+
+            ==== END OF DISABLED CALENDAR ========================================= */}
+
+            {/* Temporary "request a time" panel — shown while the calendar is off.
+                 Delete this whole block when you switch the calendar back on. */}
+            <div className="book-request" style={{display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"center",textAlign:"center",height:"100%",minHeight:"340px",gap:"1.1rem",padding:"1rem"}}>
+              <div style={{fontSize:"2.4rem",lineHeight:1}}>📅</div>
+              <h3 style={{fontSize:"1.3rem",color:"var(--navy)",margin:0,fontFamily:"'Playfair Display',serif"}}>Request a Time</h3>
+              <p style={{color:"var(--muted)",lineHeight:1.75,margin:0,maxWidth:"420px"}}>Sessions are arranged personally, around your schedule. Send me a quick message with the days and times that usually work for you, and I'll reply to confirm — normally within a few hours. Your first session is always free.</p>
+              <a href={WHATSAPP} target="_blank" rel="noopener" className="btn-primary" style={{whiteSpace:"nowrap"}}>Message me on WhatsApp →</a>
+              <div style={{fontSize:"0.85rem",color:"var(--muted)"}}>Prefer email? <a href="mailto:hello@omermaths.com" style={{color:"var(--gold)",fontWeight:600}}>hello@omermaths.com</a></div>
+            </div>
           </div>
         </div>
       </section>

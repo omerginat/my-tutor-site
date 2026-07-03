@@ -12,9 +12,10 @@ const EmailIcon = () => (
     <path d="M2 7l10 7 10-7"/>
   </svg>
 );
-const WHATSAPP = "https://wa.me/447932365990";
+const WHATSAPP = "https://wa.me/447932365990?text=Hi%20Omer%2C%20I%27m%20interested%20in%20maths%20tuition";
 const EMAIL = "mailto:hello@omermaths.com";
 const FORMSPREE_URL = "https://formspree.io/f/mnjrrqba";
+const isValidEmail = (e) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
 const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 const DAYS_SHORT = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
 const TIMES = ["9:00 AM","10:00 AM","11:00 AM","2:00 PM","3:00 PM","4:00 PM","5:00 PM","6:00 PM"];
@@ -68,7 +69,6 @@ const FAQS = [
 
 // ─── Shared CSS ────────────────────────────────────────────────────────────
 const CSS = `
-  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Lora:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap');
   :root {
     --navy:#1a2540; --navy2:#243058; --gold:#c9943a; --gold2:#f0c97a;
     --cream:#fdf8f0; --cream2:#f5ede0; --sage:#5c7c6a; --sage2:#e4ede8;
@@ -1036,7 +1036,7 @@ function BookingPage({ setPage, openContact }) {
 
   const submitContact = async () => {
     setCtTried(true);
-    if (!ctForm.name || !ctForm.email || !ctForm.message) return;
+    if (!ctForm.name || !ctForm.email || !isValidEmail(ctForm.email) || !ctForm.message) return;
     setCtSending(true);
     try {
       await fetch(FORMSPREE_URL, {
@@ -1164,8 +1164,9 @@ function BookingPage({ setPage, openContact }) {
               : <>
                   <input className={`cf-input${ctTried && !ctForm.name ? " field-error" : ""}`} placeholder="Your name *" value={ctForm.name} onChange={e=>setCtForm(f=>({...f,name:e.target.value}))} />
                   {ctTried && !ctForm.name && <div className="field-error-msg" style={{marginTop:"-0.5rem",marginBottom:"0.75rem"}}>Please enter your name</div>}
-                  <input className={`cf-input${ctTried && !ctForm.email ? " field-error" : ""}`} placeholder="Email address *" type="email" value={ctForm.email} onChange={e=>setCtForm(f=>({...f,email:e.target.value}))} />
+                  <input className={`cf-input${ctTried && (!ctForm.email || !isValidEmail(ctForm.email)) ? " field-error" : ""}`} placeholder="Email address *" type="email" value={ctForm.email} onChange={e=>setCtForm(f=>({...f,email:e.target.value}))} />
                   {ctTried && !ctForm.email && <div className="field-error-msg" style={{marginTop:"-0.5rem",marginBottom:"0.75rem"}}>Please enter your email address</div>}
+                  {ctTried && ctForm.email && !isValidEmail(ctForm.email) && <div className="field-error-msg" style={{marginTop:"-0.5rem",marginBottom:"0.75rem"}}>Please enter a valid email address</div>}
                   <input className="cf-input" placeholder="Phone number (optional)" type="tel" value={ctForm.phone} onChange={e=>setCtForm(f=>({...f,phone:e.target.value}))} />
                   <textarea className={`cf-input${ctTried && !ctForm.message ? " field-error" : ""}`} placeholder="Tell me a little about what you're looking for... *" value={ctForm.message} onChange={e=>setCtForm(f=>({...f,message:e.target.value}))} style={{minHeight:"110px",resize:"vertical"}} />
                   {ctTried && !ctForm.message && <div className="field-error-msg" style={{marginTop:"-0.5rem",marginBottom:"0.75rem"}}>Please enter a message</div>}
@@ -1217,7 +1218,7 @@ function ContactModal({ onClose }) {
 
   const submit = async () => {
     setTried(true);
-    if (!form.name || !form.email || !form.message) return;
+    if (!form.name || !form.email || !isValidEmail(form.email) || !form.message) return;
     setSending(true);
     try {
       await fetch(FORMSPREE_URL, {
@@ -1240,7 +1241,7 @@ function ContactModal({ onClose }) {
           ? <div className="success-msg">✓ Message sent - I'll be in touch very soon!</div>
           : <>
               <div className="form-row"><label>Your Name *</label><input className={tried && !form.name ? "field-error" : ""} placeholder="e.g. Sarah" value={form.name} onChange={e=>setForm(f=>({...f,name:e.target.value}))} />{tried && !form.name && <div className="field-error-msg">Please enter your name</div>}</div>
-              <div className="form-row"><label>Email Address *</label><input className={tried && !form.email ? "field-error" : ""} type="email" placeholder="your@email.com" value={form.email} onChange={e=>setForm(f=>({...f,email:e.target.value}))} />{tried && !form.email && <div className="field-error-msg">Please enter your email address</div>}</div>
+              <div className="form-row"><label>Email Address *</label><input className={tried && (!form.email || !isValidEmail(form.email)) ? "field-error" : ""} type="email" placeholder="your@email.com" value={form.email} onChange={e=>setForm(f=>({...f,email:e.target.value}))} />{tried && !form.email && <div className="field-error-msg">Please enter your email address</div>}{tried && form.email && !isValidEmail(form.email) && <div className="field-error-msg">Please enter a valid email address</div>}</div>
               <div className="form-row"><label>Phone Number (optional)</label><input type="tel" placeholder="+44..." value={form.phone} onChange={e=>setForm(f=>({...f,phone:e.target.value}))} /></div>
               <div className="form-row"><label>Message *</label><textarea className={tried && !form.message ? "field-error" : ""} placeholder="Tell me a little about what you're looking for..." value={form.message} onChange={e=>setForm(f=>({...f,message:e.target.value}))} />{tried && !form.message && <div className="field-error-msg">Please enter a message</div>}</div>
               <button className="submit-btn" onClick={submit} disabled={sending}>{sending ? "Sending..." : "Send Message"}</button>
@@ -1252,9 +1253,23 @@ function ContactModal({ onClose }) {
 }
 
 // ─── App Root ──────────────────────────────────────────────────────────────
+const FONT_URL = "https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Lora:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap";
+
 export default function App() {
   const [page, setPage] = useState("home");
   const [showContact, setShowContact] = useState(false);
+
+  useEffect(() => {
+    const link = document.createElement("link");
+    link.rel = "preload";
+    link.as = "style";
+    link.href = FONT_URL;
+    document.head.appendChild(link);
+    const stylesheet = document.createElement("link");
+    stylesheet.rel = "stylesheet";
+    stylesheet.href = FONT_URL;
+    document.head.appendChild(stylesheet);
+  }, []);
 
   const navigate = (p) => {
     setPage(p);
@@ -1278,7 +1293,7 @@ export default function App() {
   return (
     <>
       <style>{CSS}</style>
-      <Nav page={page} setPage={navigate} openContact={() => setShowContact(true)} />
+      <Nav page={page} setPage={navigate} />
       {pages[page] || pages.home}
       {showContact && <ContactModal onClose={() => setShowContact(false)} />}
     </>

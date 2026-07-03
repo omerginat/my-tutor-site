@@ -548,6 +548,8 @@ function HomePage({ setPage, openContact }) {
     if (isMobile && homeScrolling.current) return;
     const el = homeReviewsRef.current;
     if (!el) return;
+    if (dir === 1 && el.scrollLeft + el.clientWidth >= el.scrollWidth - 5) return;
+    if (dir === -1 && el.scrollLeft <= 5) return;
     const card = el.querySelector(".review-card");
     const amount = card ? card.offsetWidth + 24 : 360;
     if (isMobile) {
@@ -887,6 +889,8 @@ function ReviewsPage({ setPage, openContact }) {
     if (isMobile && scrolling.current) return;
     const el = scrollRef.current;
     if (!el) return;
+    if (dir === 1 && el.scrollLeft + el.clientWidth >= el.scrollWidth - 5) return;
+    if (dir === -1 && el.scrollLeft <= 5) return;
     const card = el.querySelector(".review-card");
     if (isMobile) {
       scrolling.current = true;

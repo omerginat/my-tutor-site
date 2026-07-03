@@ -95,10 +95,23 @@ const CSS = `
   .hamburger span{display:block;width:24px;height:2px;background:rgba(255,255,255,0.85);border-radius:2px;transition:all 0.2s;}
   .mobile-menu{display:none;position:fixed;top:68px;left:0;right:0;background:rgba(26,37,64,0.98);backdrop-filter:blur(16px);z-index:99;padding:1rem 5vw 1.5rem;border-bottom:1px solid rgba(201,148,58,0.2);}
   .mobile-menu.open{display:block;}
+  .mobile-menu-overlay{display:none;position:fixed;inset:0;top:68px;z-index:98;background:rgba(0,0,0,0.3);}
+  .mobile-menu-overlay.open{display:block;}
   .mobile-menu ul{list-style:none;display:flex;flex-direction:column;gap:0.25rem;}
   .mobile-menu .nav-btn{font-size:1rem;padding:0.75rem 1rem;width:100%;text-align:left;border-radius:8px;}
   .mobile-cta{margin-top:0.75rem;width:100%;display:block;text-align:center;background:var(--gold);color:white;border:none;padding:0.85rem;border-radius:8px;font-size:1rem;font-weight:600;cursor:pointer;}
   @media(max-width:900px){.nav-links{display:none;}.hamburger{display:flex;}.nav-cta{display:none;}}
+
+  /* MOBILE QUICK LINKS */
+  .mobile-quick-links{display:none;padding:2.5rem 5vw;background:var(--cream2);text-align:center;}
+  .mobile-quick-links h3{font-size:1.15rem;color:var(--navy);margin-bottom:0.35rem;font-family:'Playfair Display',serif;}
+  .mobile-quick-links p{font-size:0.88rem;color:var(--muted);margin-bottom:1.3rem;}
+  .mobile-quick-links-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.65rem;}
+  .mobile-quick-link{display:flex;align-items:center;justify-content:center;gap:0.5rem;background:var(--white);border:1.5px solid rgba(23,32,56,0.08);border-radius:10px;padding:0.85rem 0.75rem;font-size:0.88rem;font-weight:500;color:var(--navy);cursor:pointer;transition:all 0.15s;box-shadow:0 1px 4px rgba(23,32,56,0.06);}
+  .mobile-quick-link:hover{border-color:var(--gold);color:var(--gold);}
+  .mobile-quick-link.mql-cta{grid-column:1/-1;background:var(--gold);color:var(--white);border-color:var(--gold);font-weight:600;}
+  .mobile-quick-link.mql-cta:hover{background:var(--gold2);color:var(--navy);}
+  @media(max-width:900px){.mobile-quick-links{display:block;}}
 
   /* PAGE WRAPPER */
   .page{padding-top:68px;min-height:100vh;}
@@ -321,6 +334,9 @@ const CSS = `
   .form-row input,.form-row textarea,.form-row select{width:100%;padding:0.65rem 0.9rem;border:1.5px solid rgba(23,32,56,0.14);border-radius:8px;font-size:0.92rem;background:var(--cream);transition:border-color 0.2s;}
   .form-row input:focus,.form-row textarea:focus{outline:none;border-color:var(--gold);}
   .form-row textarea{min-height:95px;resize:vertical;}
+  .form-row input.field-error,.form-row textarea.field-error{border-color:#c9553a;}
+  .cf-input.field-error{border-color:#c9553a!important;}
+  .field-error-msg{font-size:0.76rem;color:#c9553a;margin-top:0.25rem;}
   .star-picker{display:flex;gap:0.35rem;margin-top:0.3rem;}
   .star-picker button{background:none;border:none;font-size:1.7rem;cursor:pointer;color:#ccc;padding:0;transition:transform 0.1s,color 0.1s;}
   .star-picker button.lit{color:var(--gold);}
@@ -397,29 +413,46 @@ const CSS = `
   @media(max-width:800px){.contact-grid{grid-template-columns:1fr;gap:2.5rem;}}
 `;
 
+// ─── Focus Trap Hook ─────────────────────────────────────────────────────
+function useTrapFocus(ref, active) {
+  useEffect(() => {
+    if (!active) return;
+    const el = ref.current;
+    if (!el) return;
+    const focusable = () => el.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+    const first = () => { const f = focusable(); return f[0]; };
+    const last = () => { const f = focusable(); return f[f.length - 1]; };
+    const saved = document.activeElement;
+    const f = first();
+    if (f) f.focus();
+    const onTab = (e) => {
+      if (e.key !== "Tab") return;
+      const items = focusable();
+      if (items.length === 0) return;
+      if (e.shiftKey) {
+        if (document.activeElement === items[0]) { e.preventDefault(); items[items.length - 1].focus(); }
+      } else {
+        if (document.activeElement === items[items.length - 1]) { e.preventDefault(); items[0].focus(); }
+      }
+    };
+    el.addEventListener("keydown", onTab);
+    return () => { el.removeEventListener("keydown", onTab); if (saved && saved.focus) saved.focus(); };
+  }, [active]);
+}
+
 // ─── School Card ──────────────────────────────────────────────────────────
 function SchoolCard({ school }) {
-  const [src, setSrc] = useState(school.logoUrl || `https://logo.clearbit.com/${school.domain}`);
   const [failed, setFailed] = useState(false);
   const initials = school.name.split(" ").slice(0,2).map(w => w[0]).join("");
-
-  const handleError = () => {
-    if (src === school.logoUrl) {
-      // Try Clearbit next
-      setSrc(`https://logo.clearbit.com/${school.domain}`);
-    } else {
-      setFailed(true);
-    }
-  };
 
   return (
     <div className="school-card">
       {!failed ? (
         <img
-          src={src}
+          src={school.logoUrl}
           alt={school.name}
           className="school-logo-lg"
-          onError={handleError}
+          onError={() => setFailed(true)}
         />
       ) : (
         <div className="school-logo-fallback">{initials}</div>
@@ -466,6 +499,7 @@ function Nav({ page, setPage }) {
         <span/><span/><span/>
       </button>
     </nav>
+    <div className={`mobile-menu-overlay${menuOpen ? " open" : ""}`} onClick={() => setMenuOpen(false)} />
     <div className={`mobile-menu${menuOpen ? " open" : ""}`}>
       <ul>
         {links.map(([id, label]) => (
@@ -572,7 +606,7 @@ function HomePage({ setPage, openContact }) {
           <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:"1rem",marginBottom:"1.5rem"}}>
             <div>
               <span className="section-label">Reviews</span>
-              <h2 className="section-title" style={{marginBottom:0}}>What Parents Say</h2>
+              <h2 className="section-title" style={{marginBottom:0}}>What Parents & Students Say</h2>
             </div>
             <div style={{display:"flex",gap:"0.75rem",alignItems:"center"}}>
               <button className="scroll-arrow" onClick={() => homeScroll(-1)}>‹</button>
@@ -588,10 +622,18 @@ function HomePage({ setPage, openContact }) {
           </div>
         </div>
       </section>
-      <div className="footer-strip" style={{background:"var(--navy)",marginTop:0}}>
-        © {new Date().getFullYear()} Omer Maths Tuition &nbsp;·&nbsp; All sessions online · Available Worldwide &nbsp;·&nbsp; First lesson always free &nbsp;·&nbsp;
-        hello@omermaths.com
+      <div className="mobile-quick-links">
+        <h3>Find Out More</h3>
+        <p>Learn about how I work and what families say</p>
+        <div className="mobile-quick-links-grid">
+          <div className="mobile-quick-link" onClick={() => setPage("about")}>👤 About Me</div>
+          <div className="mobile-quick-link" onClick={() => setPage("services")}>📊 Services</div>
+          <div className="mobile-quick-link" onClick={() => setPage("approach")}>💬 My Approach</div>
+          <div className="mobile-quick-link" onClick={() => setPage("faq")}>❓ FAQ & Pricing</div>
+          <div className="mobile-quick-link mql-cta" onClick={() => setPage("booking")}>📅 Book a Free Session</div>
+        </div>
       </div>
+      <PageFooter setPage={setPage} openContact={openContact} />
     </div>
   );
 }
@@ -624,7 +666,6 @@ function AboutPage({ setPage, openContact }) {
               <span className="qual-chip">3 A*s at A-Level</span>
               <span className="qual-chip">11 A*s at GCSE</span>
             </div>
-            <p>I graduated from <strong>Oxford University with a First Class degree in Mathematics</strong>, having achieved 3 A*s at A-Level and 11 A*s at GCSE - including 100% in most of my Maths and Further Maths papers. Over the past ten years and more than 5,000 hours of tutoring, I've had the privilege of working with students from some of the most demanding schools in London and beyond.</p>
             <p>I graduated from <strong>Oxford University with a First Class degree in Mathematics</strong>, having achieved 3 A*s at A-Level and 11 A*s at GCSE - including 100% in most of my Maths and Further Maths papers. Over the past ten years, I've had the privilege of working with students from some of the most demanding schools in London and beyond.</p>
             <p>I am genuinely passionate about Mathematics, and I always aim to share that enthusiasm through lessons. Lessons are calm, patient and judgement-free - somewhere it's safe to be stuck, and where we actively work towards genuine understanding and building confidence.</p>
             <p>As a result, my students consistently achieve strong results, with <strong>8/9s at GCSE and A/A*s at A-Level</strong>. I have a <strong>100% success rate</strong> in my students achieving their target grades.</p>
@@ -826,8 +867,19 @@ function ReviewsPage({ setPage, openContact }) {
   const [showModal, setShowModal] = useState(false);
   const [rForm, setRForm] = useState({ stars:5, text:"", name:"", level:"GCSE" });
   const [rDone, setRDone] = useState(false);
+  const [rSending, setRSending] = useState(false);
+  const [rTried, setRTried] = useState(false);
   const scrollRef = useRef(null);
+  const reviewModalRef = useRef(null);
   const [activeDot, setActiveDot] = useState(0);
+
+  useEffect(() => {
+    if (!showModal) return;
+    const onKey = (e) => { if (e.key === "Escape") setShowModal(false); };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [showModal]);
+  useTrapFocus(reviewModalRef, showModal);
 
   const scrolling = useRef(false);
   const scroll = (dir) => {
@@ -856,14 +908,25 @@ function ReviewsPage({ setPage, openContact }) {
     return () => el.removeEventListener("scroll", onScroll);
   }, []);
 
-  const submitReview = () => {
+  const submitReview = async () => {
+    setRTried(true);
     if (!rForm.text || !rForm.name) return;
-    const date = new Date().toLocaleDateString("en-GB", {month:"long", year:"numeric"});
-    const subject = encodeURIComponent("New Review Submission - Omer Maths Tuition");
-    const body = encodeURIComponent(`New review submitted ${date}\n\nName: ${rForm.name}\nLevel: ${rForm.level}\nRating: ${"★".repeat(rForm.stars)}\n\nReview:\n${rForm.text}`);
-    window.open(`mailto:hello@omermaths.com?subject=${subject}&body=${body}`);
-    setRDone(true);
-    setTimeout(() => { setShowModal(false); setRForm({stars:5,text:"",name:"",level:"GCSE"}); setRDone(false); }, 2500);
+    setRSending(true);
+    try {
+      await fetch(FORMSPREE_URL, {
+        method:"POST",
+        headers:{"Content-Type":"application/json","Accept":"application/json"},
+        body: JSON.stringify({
+          _subject: "New Review Submission - Omer Maths Tuition",
+          name: rForm.name,
+          level: rForm.level,
+          stars: "★".repeat(rForm.stars),
+          review: rForm.text
+        })
+      });
+      setRDone(true);
+      setTimeout(() => { setShowModal(false); setRForm({stars:5,text:"",name:"",level:"GCSE"}); setRDone(false); setRSending(false); setRTried(false); }, 2500);
+    } catch(e) { setRSending(false); }
   };
 
   return (
@@ -879,7 +942,7 @@ function ReviewsPage({ setPage, openContact }) {
       <section className="section section-sage">
         <div className="reviews-header">
           <div>
-            <span className="section-label">What Families Say</span>
+            <span className="section-label">What Parents & Students Say</span>
             <div className="divider"/>
             <h2 className="section-title">Parent & Student Reviews</h2>
           </div>
@@ -898,15 +961,15 @@ function ReviewsPage({ setPage, openContact }) {
       </section>
       {showModal && (
         <div className="modal-overlay">
-          <div className="modal">
-            <button className="modal-close" onClick={() => setShowModal(false)}>×</button>
+          <div className="modal" ref={reviewModalRef}>
+            <button className="modal-close" onClick={() => setShowModal(false)} aria-label="Close">×</button>
             <h3>Share Your Experience</h3>
             <p className="modal-sub">Reviews are checked before being published. Thank you for taking the time!</p>
-            <div className="form-row"><label>Your Rating</label><div className="star-picker">{[1,2,3,4,5].map(s => <button key={s} className={rForm.stars >= s ? "lit" : ""} onClick={() => setRForm(f => ({...f, stars:s}))}>★</button>)}</div></div>
-            <div className="form-row"><label>Your Name *</label><input placeholder="e.g. Sarah" value={rForm.name} onChange={e => setRForm(f => ({...f, name:e.target.value}))} /></div>
+            <div className="form-row"><label>Your Rating</label><div className="star-picker" role="group" aria-label="Rating">{[1,2,3,4,5].map(s => <button key={s} className={rForm.stars >= s ? "lit" : ""} onClick={() => setRForm(f => ({...f, stars:s}))} aria-label={`${s} star${s > 1 ? "s" : ""}`}>★</button>)}</div></div>
+            <div className="form-row"><label>Your Name *</label><input className={rTried && !rForm.name ? "field-error" : ""} placeholder="e.g. Sarah" value={rForm.name} onChange={e => setRForm(f => ({...f, name:e.target.value}))} />{rTried && !rForm.name && <div className="field-error-msg">Please enter your name</div>}</div>
             <div className="form-row"><label>Level</label><select value={rForm.level} onChange={e => setRForm(f => ({...f, level:e.target.value}))}><option>GCSE</option><option>A-Level</option><option>University Admissions</option><option>Adult Learner</option></select></div>
-            <div className="form-row"><label>Your Review *</label><textarea placeholder="Tell other parents about your experience..." value={rForm.text} onChange={e => setRForm(f => ({...f, text:e.target.value}))} /></div>
-            {rDone ? <div className="success-msg">✓ Thank you - your review will appear on the website shortly!</div> : <button className="submit-btn" onClick={submitReview}>Submit Review</button>}
+            <div className="form-row"><label>Your Review *</label><textarea className={rTried && !rForm.text ? "field-error" : ""} placeholder="Tell other parents about your experience..." value={rForm.text} onChange={e => setRForm(f => ({...f, text:e.target.value}))} />{rTried && !rForm.text && <div className="field-error-msg">Please enter your review</div>}</div>
+            {rDone ? <div className="success-msg">✓ Thank you - your review will appear on the website shortly!</div> : <button className="submit-btn" onClick={submitReview} disabled={rSending}>{rSending ? "Sending..." : "Submit Review"}</button>}
           </div>
         </div>
       )}
@@ -932,7 +995,7 @@ function FaqPage({ setPage, openContact }) {
         <div className="faq-list">
           {FAQS.map((f,i) => (
             <div className="faq-item" key={i}>
-              <button className="faq-q" onClick={() => setOpenFaq(openFaq === i ? null : i)}>
+              <button className="faq-q" onClick={() => setOpenFaq(openFaq === i ? null : i)} aria-expanded={openFaq === i}>
                 {f.q}<span className="faq-chevron">{openFaq === i ? "−" : "+"}</span>
               </button>
               {openFaq === i && <div className="faq-a">{f.a}</div>}
@@ -964,8 +1027,10 @@ function BookingPage({ setPage, openContact }) {
   const [ctDone, setCtDone] = useState(false);
   const [ctForm, setCtForm] = useState({ name:"", email:"", phone:"", message:"" });
   const [ctSending, setCtSending] = useState(false);
+  const [ctTried, setCtTried] = useState(false);
 
   const submitContact = async () => {
+    setCtTried(true);
     if (!ctForm.name || !ctForm.email || !ctForm.message) return;
     setCtSending(true);
     try {
@@ -1092,10 +1157,13 @@ function BookingPage({ setPage, openContact }) {
             {ctDone
               ? <div className="success-msg" style={{background:"rgba(92,124,106,0.25)",borderColor:"rgba(92,124,106,0.4)",color:"#9cd4af"}}>✓ Message received - I'll be in touch very soon.</div>
               : <>
-                  <input className="cf-input" placeholder="Your name *" value={ctForm.name} onChange={e=>setCtForm(f=>({...f,name:e.target.value}))} />
-                  <input className="cf-input" placeholder="Email address *" type="email" value={ctForm.email} onChange={e=>setCtForm(f=>({...f,email:e.target.value}))} />
+                  <input className={`cf-input${ctTried && !ctForm.name ? " field-error" : ""}`} placeholder="Your name *" value={ctForm.name} onChange={e=>setCtForm(f=>({...f,name:e.target.value}))} />
+                  {ctTried && !ctForm.name && <div className="field-error-msg" style={{marginTop:"-0.5rem",marginBottom:"0.75rem"}}>Please enter your name</div>}
+                  <input className={`cf-input${ctTried && !ctForm.email ? " field-error" : ""}`} placeholder="Email address *" type="email" value={ctForm.email} onChange={e=>setCtForm(f=>({...f,email:e.target.value}))} />
+                  {ctTried && !ctForm.email && <div className="field-error-msg" style={{marginTop:"-0.5rem",marginBottom:"0.75rem"}}>Please enter your email address</div>}
                   <input className="cf-input" placeholder="Phone number (optional)" type="tel" value={ctForm.phone} onChange={e=>setCtForm(f=>({...f,phone:e.target.value}))} />
-                  <textarea className="cf-input" placeholder="Tell me a little about what you're looking for... *" value={ctForm.message} onChange={e=>setCtForm(f=>({...f,message:e.target.value}))} style={{minHeight:"110px",resize:"vertical"}} />
+                  <textarea className={`cf-input${ctTried && !ctForm.message ? " field-error" : ""}`} placeholder="Tell me a little about what you're looking for... *" value={ctForm.message} onChange={e=>setCtForm(f=>({...f,message:e.target.value}))} style={{minHeight:"110px",resize:"vertical"}} />
+                  {ctTried && !ctForm.message && <div className="field-error-msg" style={{marginTop:"-0.5rem",marginBottom:"0.75rem"}}>Please enter a message</div>}
                   <button className="submit-btn" onClick={submitContact} disabled={ctSending}>{ctSending ? "Sending..." : "Send Message"}</button>
                 </>
             }
@@ -1132,8 +1200,18 @@ function ContactModal({ onClose }) {
   const [form, setForm] = useState({ name:"", email:"", phone:"", message:"" });
   const [done, setDone] = useState(false);
   const [sending, setSending] = useState(false);
+  const [tried, setTried] = useState(false);
+  const modalRef = useRef(null);
+
+  useEffect(() => {
+    const onKey = (e) => { if (e.key === "Escape") onClose(); };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+  useTrapFocus(modalRef, true);
 
   const submit = async () => {
+    setTried(true);
     if (!form.name || !form.email || !form.message) return;
     setSending(true);
     try {
@@ -1149,17 +1227,17 @@ function ContactModal({ onClose }) {
 
   return (
     <div className="modal-overlay">
-      <div className="modal">
-        <button className="modal-close" onClick={onClose}>×</button>
+      <div className="modal" ref={modalRef}>
+        <button className="modal-close" onClick={onClose} aria-label="Close">×</button>
         <h3>Get in Touch</h3>
         <p className="modal-sub">I'll reply promptly — usually within a few hours.</p>
         {done
           ? <div className="success-msg">✓ Message sent - I'll be in touch very soon!</div>
           : <>
-              <div className="form-row"><label>Your Name *</label><input placeholder="e.g. Sarah" value={form.name} onChange={e=>setForm(f=>({...f,name:e.target.value}))} /></div>
-              <div className="form-row"><label>Email Address *</label><input type="email" placeholder="your@email.com" value={form.email} onChange={e=>setForm(f=>({...f,email:e.target.value}))} /></div>
+              <div className="form-row"><label>Your Name *</label><input className={tried && !form.name ? "field-error" : ""} placeholder="e.g. Sarah" value={form.name} onChange={e=>setForm(f=>({...f,name:e.target.value}))} />{tried && !form.name && <div className="field-error-msg">Please enter your name</div>}</div>
+              <div className="form-row"><label>Email Address *</label><input className={tried && !form.email ? "field-error" : ""} type="email" placeholder="your@email.com" value={form.email} onChange={e=>setForm(f=>({...f,email:e.target.value}))} />{tried && !form.email && <div className="field-error-msg">Please enter your email address</div>}</div>
               <div className="form-row"><label>Phone Number (optional)</label><input type="tel" placeholder="+44..." value={form.phone} onChange={e=>setForm(f=>({...f,phone:e.target.value}))} /></div>
-              <div className="form-row"><label>Message *</label><textarea placeholder="Tell me a little about what you're looking for..." value={form.message} onChange={e=>setForm(f=>({...f,message:e.target.value}))} /></div>
+              <div className="form-row"><label>Message *</label><textarea className={tried && !form.message ? "field-error" : ""} placeholder="Tell me a little about what you're looking for..." value={form.message} onChange={e=>setForm(f=>({...f,message:e.target.value}))} />{tried && !form.message && <div className="field-error-msg">Please enter a message</div>}</div>
               <button className="submit-btn" onClick={submit} disabled={sending}>{sending ? "Sending..." : "Send Message"}</button>
             </>
         }

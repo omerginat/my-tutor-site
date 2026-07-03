@@ -63,6 +63,7 @@ const FAQS = [
   { q:"What do sessions look like?", a:"For the trial lesson, I suggest your child picks a topic they've been finding difficult - we focus on that together, and they should feel noticeably more confident with it by the end. For regular sessions, we typically start with a check-in on what's been covered at school and where things feel shaky, then work through it together. I use an iPad to write notes that we can both see in real time. I also set a small amount of follow-up work to consolidate things between sessions." },
   { q:"Which exam boards do you cover?", a:"I cover all major UK exam boards - AQA, Edexcel, OCR, and WJEC - at both GCSE and A-level. Teaching is always aligned specifically to the mark scheme and syllabus your child is working to." },
   { q:"What are your rates?", a:"GCSE and A-Level sessions are £100 per hour. University admissions sessions (MAT, TMUA, STEP, Oxbridge interviews) are £150 per hour. For GCSE and A-Level, the first session is always free. I invoice monthly, and payment is by bank transfer. I ask for 24 hours' notice if you need to cancel or rearrange." },
+  { q:"Are you DBS checked?", a:"Yes, I hold an Enhanced DBS Certificate, and am happy to share it on request." },
 ];
 
 // ─── Shared CSS ────────────────────────────────────────────────────────────

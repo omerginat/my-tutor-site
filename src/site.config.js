@@ -106,6 +106,32 @@ export const ROUTES = [
     description:
       "Book your free first online maths lesson. Message on WhatsApp or email and I will find a time that works around your schedule, usually replying within hours.",
   },
+
+  // ─── Specialist landing pages ──────────────────────────────────────────
+  // These are deliberately kept out of the top navigation. They exist so that
+  // someone searching for one specific thing lands on a page about exactly
+  // that, rather than on a general services page.
+  {
+    id: "tmua",
+    path: "/tmua-tutor",
+    title: "TMUA Tutor | Oxford & Imperial Maths Admissions Prep",
+    description:
+      "One-to-one TMUA preparation from an Oxford First Class Maths graduate. The TMUA replaced the MAT for Oxford Maths and Computer Science, and is required by Imperial.",
+  },
+  {
+    id: "interview",
+    path: "/oxbridge-maths-interview",
+    title: "Oxbridge Maths Interview Preparation | Oxford Graduate",
+    description:
+      "Oxford and Cambridge maths interview coaching from a First Class Oxford Mathematics graduate. Real past interview questions and full mock interviews.",
+  },
+  {
+    id: "london",
+    path: "/london-maths-tutor",
+    title: "London Maths Tutor | Online GCSE & A-Level Tuition",
+    description:
+      "Online maths tuition for London families. Oxford First Class Maths graduate tutoring students at St Paul's, Westminster, Highgate, UCS, Latymer and more.",
+  },
 ];
 
 export const ROUTE_BY_PATH = Object.fromEntries(ROUTES.map((r) => [r.path, r]));

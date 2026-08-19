@@ -299,6 +299,10 @@ const CSS = `
   .uni-card-icon{font-size:1.4rem;margin-bottom:0.3rem;}
   .uni-card h4{font-size:0.95rem;color:var(--navy);margin-bottom:0.3rem;font-weight:600;}
   .uni-card p{font-size:0.82rem;color:var(--muted);line-height:1.65;margin:0;}
+  .inline-link{color:var(--gold);text-decoration:none;font-weight:500;border-bottom:1px solid rgba(201,148,58,0.35);}
+  .inline-link:hover{color:var(--navy);border-bottom-color:var(--navy);}
+  .uni-card-link{display:inline-block;margin-top:0.7rem;font-family:'DM Sans',sans-serif;font-size:0.8rem;font-weight:600;color:var(--gold);text-decoration:none;}
+  .uni-card-link:hover{color:var(--navy);}
   .oxbridge-banner{margin-top:2.5rem;background:var(--navy);border-radius:18px;padding:2rem 2.5rem;display:flex;align-items:center;gap:2.5rem;overflow:hidden;}
   .oxbridge-banner-body{flex:1;}
   .oxbridge-banner-body h4{font-size:1.25rem;color:var(--gold2);margin-bottom:0.6rem;font-family:'Playfair Display',serif;font-weight:600;}
@@ -839,7 +843,7 @@ function AboutPage({ setPage, openContact }) {
           <span className="section-label">Students I've Worked With</span>
           <div className="divider"/>
           <h2 className="section-title">Schools Represented</h2>
-          <p className="section-lead">I tutor entirely online, working with students from some of the UK and Singapore's most competitive schools - wherever you are in the world, we can work together.</p>
+          <p className="section-lead">I tutor entirely online, working with students from some of the UK and Singapore's most competitive schools - wherever you are in the world, we can work together. Most of my students are in London: <Link to="london" className="inline-link">more on online maths tuition for London families</Link>.</p>
           <div className="schools-grid">
             {SCHOOLS.map(s => (
               <SchoolCard key={s.name} school={s} />
@@ -906,15 +910,16 @@ function ServicesPage({ setPage, openContact }) {
             </div>
             <div className="uni-cards">
               {[
-                { icon:"📏", title:"TMUA", body:"Test of Mathematics for University Admission - now the required test for Oxford Maths and Computer Science, and for Imperial. Logic, reasoning, and mathematical argument at speed." },
+                { icon:"📏", title:"TMUA", body:"Test of Mathematics for University Admission - now the required test for Oxford Maths and Computer Science, and for Imperial. Logic, reasoning, and mathematical argument at speed.", to:"tmua", more:"TMUA dates and preparation" },
                 { icon:"∑", title:"STEP", body:"Sixth Term Examination Paper - used in almost all Cambridge conditional offers for Maths and Maths with Physics. In-depth, open-ended problem solving that rewards deep understanding over memorisation." },
-                { icon:"🎙", title:"Oxbridge Interviews", body:"Coaching for the unique style of an Oxford or Cambridge Maths interview - thinking aloud, staying confident under questioning, and working through unseen problems calmly." },
-                { icon:"🔄", title:"Preparing for the MAT?", body:"Oxford ran the MAT from 2007 to 2025. From 2026 entry it no longer takes place - Oxford applicants sit the TMUA instead, as do Imperial's. If your school is still pointing you at MAT papers, I can explain what has changed and refocus preparation on the TMUA." },
+                { icon:"🎙", title:"Oxbridge Interviews", body:"Coaching for the unique style of an Oxford or Cambridge Maths interview - thinking aloud, staying confident under questioning, and working through unseen problems calmly.", to:"interview", more:"How I prepare students for interview" },
+                { icon:"🔄", title:"Preparing for the MAT?", body:"Oxford ran the MAT from 2007 to 2025. From 2026 entry it no longer takes place - Oxford applicants sit the TMUA instead, as do Imperial's. If your school is still pointing you at MAT papers, I can explain what has changed and refocus preparation on the TMUA.", to:"tmua", more:"What the TMUA involves" },
               ].map(c => (
                 <div className="uni-card" key={c.title}>
-                  <div className="uni-card-icon">{c.icon}</div>
+                  <div className="uni-card-icon" aria-hidden="true">{c.icon}</div>
                   <h4>{c.title}</h4>
                   <p>{c.body}</p>
+                  {c.to && <Link to={c.to} className="uni-card-link">{c.more} →</Link>}
                 </div>
               ))}
             </div>
@@ -1342,10 +1347,245 @@ function BookingPage({ setPage, openContact }) {
   );
 }
 
+// ─── Specialist Landing Pages ──────────────────────────────────────────────
+// Deliberately built from the same components and CSS classes as the rest of
+// the site, so they read as part of it rather than as bolt-on landing pages.
+
+/** Contact buttons used at the foot of each landing page. */
+function LandingCta({ openContact, dark }) {
+  return (
+    <div className="btn-row" style={{marginTop:"1.5rem"}}>
+      <a href={WHATSAPP} target="_blank" rel="noopener" className="btn-primary btn-wa"><WAIcon /> Message me on WhatsApp</a>
+      <button className={dark ? "btn-email" : "btn-email-dark"} onClick={() => openContact()}><EmailIcon/> Email Me</button>
+    </div>
+  );
+}
+
+function TmuaPage({ openContact }) {
+  const oxbridgeRate = price("oxbridge");
+  return (
+    <div className="page">
+      <div className="page-hero">
+        <div className="page-hero-inner">
+          <span className="section-label" style={{color:"var(--gold2)"}}>TMUA Preparation</span>
+          <h1>The Test That<br/><em>Replaced the MAT</em></h1>
+          <p>One-to-one TMUA preparation from an Oxford Mathematics graduate. From 2026 entry, the TMUA is the admissions test for Oxford Maths and Computer Science, and is required by Imperial.</p>
+        </div>
+      </div>
+
+      <section className="section">
+        <div style={{maxWidth:"1100px",margin:"0 auto"}}>
+          <span className="section-label">2027 Entry</span>
+          <div className="divider"/>
+          <h2 className="section-title">Key Dates</h2>
+          <p className="section-lead">Applicants to Oxford and Cambridge sit the October test. Booking does not stay open until the UCAS deadline &mdash; it closes at the end of September, and this catches people out every year.</p>
+        </div>
+        <div className="services-grid">
+          {[
+            { icon:"🗓", title:"Booking closes", value:"28 September 2026", note:"6pm UK time. Booking is done through the UAT-UK site. Check whether your school is registering you or whether you need to do it yourself - do not assume." },
+            { icon:"✏️", title:"October test window", value:"12–16 October 2026", note:"The sitting Oxford and Cambridge applicants need. A second window runs 4–8 January 2027, used by some other universities." },
+            { icon:"📩", title:"Results released", value:"16 November 2026", note:"Scores are sent to the universities you applied to and form part of your application." },
+          ].map(d => (
+            <div className="uni-card" key={d.title}>
+              <div className="uni-card-icon" aria-hidden="true">{d.icon}</div>
+              <h4>{d.title}</h4>
+              <p style={{fontFamily:"'Playfair Display',serif",fontSize:"1.05rem",color:"var(--gold)",fontWeight:600,margin:"0.2rem 0 0.4rem"}}>{d.value}</p>
+              <p>{d.note}</p>
+            </div>
+          ))}
+        </div>
+        <p style={{maxWidth:"1100px",margin:"1.2rem auto 0",fontSize:"0.82rem",color:"var(--muted)"}}>
+          Dates are for 2027 entry, published by UAT-UK. Always confirm against the official
+          site and your course pages before booking.
+        </p>
+      </section>
+
+      <section className="section section-alt">
+        <div style={{maxWidth:"1100px",margin:"0 auto"}}>
+          <span className="section-label">What It Is</span>
+          <div className="divider"/>
+          <h2 className="section-title">How the TMUA Works</h2>
+          <p className="section-lead">Two papers, both multiple choice, sat on a computer. Two and a half hours in total.</p>
+          <div className="uni-cards" style={{marginTop:"2rem"}}>
+            <div className="uni-card">
+              <div className="uni-card-icon" aria-hidden="true">📄</div>
+              <h4>Paper 1 &mdash; Applications of Mathematical Knowledge</h4>
+              <p>75 minutes, 20 multiple-choice questions. Familiar A-level material used in unfamiliar ways. The maths itself is rarely the hard part; recognising which tool applies is.</p>
+            </div>
+            <div className="uni-card">
+              <div className="uni-card-icon" aria-hidden="true">🧠</div>
+              <h4>Paper 2 &mdash; Mathematical Reasoning</h4>
+              <p>75 minutes, 20 multiple-choice questions. Logic, proof, and judging whether an argument actually holds. This is the paper most students have never been taught for.</p>
+            </div>
+          </div>
+          <div className="result-banner" style={{maxWidth:"1100px",margin:"1.6rem auto 0"}}>
+            <div className="rb-icon" aria-hidden="true">💡</div>
+            <div className="rb-text">
+              There is <strong>no negative marking</strong>, so never leave a question blank. Scores are
+              reported on a scale from <strong>1.0 to 9.0</strong> and there is no pass mark &mdash; universities
+              read your score alongside the rest of your application.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="section">
+        <div style={{maxWidth:"1100px",margin:"0 auto"}}>
+          <span className="section-label">Who Needs It</span>
+          <div className="divider"/>
+          <h2 className="section-title">Which Universities Ask for the TMUA</h2>
+          <p className="section-lead">
+            <strong>Oxford</strong> requires it for Mathematics and Computer Science, including joint
+            honours &mdash; it replaced the MAT from 2026 entry. <strong>Imperial</strong> requires it for
+            Mathematics, Computing, and Economics, Finance and Data Science. A number of other
+            universities use it too, so check the requirements for every course on your UCAS form.
+          </p>
+        </div>
+      </section>
+
+      <section className="section section-alt">
+        <div className="approach-cols">
+          <div className="approach-intro">
+            <span className="section-label">How I Prepare Students</span>
+            <div className="divider"/>
+            <p>I sat the Oxford admissions process myself and came out with a <strong>First Class degree in Mathematics</strong>. I know what these tests are actually looking for, which is not the same as knowing more A-level content.</p>
+            <p>Most students arrive able to do the maths but losing marks to pace and to Paper 2, which asks for a kind of reasoning school simply does not teach. That is usually where the biggest gains are.</p>
+            <p>Sessions are <strong>{oxbridgeRate} per hour</strong>, one-to-one and online, using an interactive whiteboard so we can work through problems together in real time.</p>
+            <LandingCta openContact={openContact} />
+          </div>
+          <div className="approach-items">
+            {[
+              { n:"1", title:"Diagnose before drilling", body:"We start with real questions under timed conditions to find out whether the problem is content, speed, or reasoning. There is no point grinding through papers until we know which of those is costing you marks." },
+              { n:"2", title:"Build the reasoning paper properly", body:"Proof, logic and argument-testing are the least familiar part of the TMUA for most A-level students. We treat this as a skill to be taught from the ground up, not as something you either have or you do not." },
+              { n:"3", title:"Practise at test pace", body:"Roughly three and a half minutes a question, with no negative marking. We work on when to commit, when to move on, and how to make a sensible choice under time pressure rather than freezing." },
+            ].map(a => (
+              <div className="approach-item-row" key={a.n}>
+                <div className="approach-num-badge" aria-hidden="true">{a.n}</div>
+                <div><h4>{a.title}</h4><p>{a.body}</p></div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+      <PageFooter openContact={openContact} />
+    </div>
+  );
+}
+
+function InterviewPage({ openContact }) {
+  const oxbridgeRate = price("oxbridge");
+  const interviewReview = ALL_REVIEWS.find(r => /Oxford Admissions/i.test(r.author));
+  return (
+    <div className="page">
+      <div className="page-hero">
+        <div className="page-hero-inner">
+          <span className="section-label" style={{color:"var(--gold2)"}}>Oxbridge Interviews</span>
+          <h1>Interview Preparation<br/><em>From the Inside</em></h1>
+          <p>One-to-one Oxford and Cambridge maths interview coaching from a First Class Oxford Mathematics graduate who has sat on the other side of the desk as a candidate.</p>
+        </div>
+      </div>
+
+      <section className="section">
+        <div className="approach-cols">
+          <div className="approach-intro">
+            <span className="section-label">What It Is Really Like</span>
+            <div className="divider"/>
+            <p>An Oxbridge maths interview is not a test of what you have memorised. You will be given a problem you have not seen, and the interviewer wants to watch you think about it &mdash; including the false starts.</p>
+            <p>That is genuinely disorienting for strong students, because being stuck in front of an expert feels like failing. It is not. <strong>Being stuck and still making progress out loud is the thing being assessed.</strong></p>
+            <p>I have a set of real questions that have been asked in Oxford and Cambridge maths interviews. We work through them together, then finish with full mock interviews so the real thing is not the first time you have done one.</p>
+            <p>Sessions are <strong>{oxbridgeRate} per hour</strong>, one-to-one and online.</p>
+            <LandingCta openContact={openContact} />
+          </div>
+          <div className="approach-items">
+            {[
+              { n:"1", title:"Thinking out loud", body:"The single most common reason strong candidates interview badly is silence. We practise narrating your reasoning as it happens, so the interviewer can follow you and nudge you when you drift." },
+              { n:"2", title:"Being stuck, well", body:"You will be pushed until you are stuck - that is the point. We rehearse what to do at that moment: what to try, what to say, and how to take a hint without losing your thread." },
+              { n:"3", title:"Full mock interviews", body:"Timed, unseen problems, in the format of the real thing, followed by specific feedback on how you came across. By the interview itself, the experience should feel familiar." },
+            ].map(a => (
+              <div className="approach-item-row" key={a.n}>
+                <div className="approach-num-badge" aria-hidden="true">{a.n}</div>
+                <div><h4>{a.title}</h4><p>{a.body}</p></div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {interviewReview && (
+        <section className="section section-sage">
+          <div style={{maxWidth:"760px",margin:"0 auto"}}>
+            <span className="section-label">From a Student</span>
+            <div className="divider"/>
+            <h2 className="section-title" style={{marginBottom:"1.8rem"}}>An Oxford Maths Offer</h2>
+            <ReviewCard r={interviewReview} />
+          </div>
+        </section>
+      )}
+      <PageFooter openContact={openContact} />
+    </div>
+  );
+}
+
+function LondonPage({ openContact }) {
+  const standardRate = price("standard");
+  const londonSchools = SCHOOLS.filter(s => s.region === "London");
+  return (
+    <div className="page">
+      <div className="page-hero">
+        <div className="page-hero-inner">
+          <span className="section-label" style={{color:"var(--gold2)"}}>London</span>
+          <h1>A London Maths Tutor<br/><em>Without the Commute</em></h1>
+          <p>Online one-to-one maths tuition for London families, from an Oxford Mathematics graduate who works with students at many of the city&rsquo;s most demanding schools.</p>
+        </div>
+      </div>
+
+      <section className="section">
+        <div className="approach-cols">
+          <div className="approach-intro">
+            <span className="section-label">Why Online, for London</span>
+            <div className="divider"/>
+            <p>Most of my students are in London. I teach all of them online, and I would not go back &mdash; not because it is easier for me, but because it is <strong>better for them</strong>.</p>
+            <p>A tutor crossing London charges you for the journey one way or another, and arrives with a fixed hour that cannot move. Online, a session can sit right after school, be rearranged when a match or a rehearsal appears, and never gets lost to a delayed District line.</p>
+            <p>Lessons use an iPad and an interactive whiteboard, so your child watches the working appear as I think through it, and keeps the notes afterwards. Past papers and mark schemes are on screen in seconds.</p>
+            <p>GCSE and A-Level sessions are <strong>{standardRate} per hour</strong>, and the first session is free.</p>
+            <LandingCta openContact={openContact} />
+          </div>
+          <div className="approach-items">
+            {[
+              { n:"1", title:"Built around a London school week", body:"Long days, late buses and heavy co-curriculars. Sessions are arranged around what the week actually looks like, and moved when it changes." },
+              { n:"2", title:"Familiar with the schools", body:"I work with students across London's selective and independent schools, so I know the pace they are taught at and the standard they are held to." },
+              { n:"3", title:"Parents kept in the loop", body:"You will always know what we have covered, where your child is finding things hard, and what we are working on next." },
+            ].map(a => (
+              <div className="approach-item-row" key={a.n}>
+                <div className="approach-num-badge" aria-hidden="true">{a.n}</div>
+                <div><h4>{a.title}</h4><p>{a.body}</p></div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="section section-alt">
+        <div style={{maxWidth:"1100px",margin:"0 auto"}}>
+          <span className="section-label">London Schools</span>
+          <div className="divider"/>
+          <h2 className="section-title">Where My London Students Study</h2>
+          <p className="section-lead">A selection of the London schools students have come from. I also work with students elsewhere in the UK and overseas.</p>
+          <div className="schools-grid">
+            {londonSchools.map(s => <SchoolCard key={s.name} school={s} />)}
+          </div>
+        </div>
+      </section>
+      <PageFooter openContact={openContact} />
+    </div>
+  );
+}
+
 // ─── Shared Footer ─────────────────────────────────────────────────────────
 const FOOTER_LABELS = {
   about: "About Me", services: "Services", approach: "My Approach",
   reviews: "Reviews", faq: "FAQ & Pricing", booking: "Book a Session",
+  tmua: "TMUA Preparation", interview: "Oxbridge Interviews", london: "London Maths Tuition",
 };
 
 function PageFooter({ openContact }) {
@@ -1476,6 +1716,9 @@ export default function App() {
     reviews:  <ReviewsPage {...pageProps} />,
     faq:      <FaqPage {...pageProps} />,
     booking:  <BookingPage {...pageProps} />,
+    tmua:      <TmuaPage {...pageProps} />,
+    interview: <InterviewPage {...pageProps} />,
+    london:    <LondonPage {...pageProps} />,
   };
 
   return (

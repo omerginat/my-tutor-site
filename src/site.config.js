@@ -116,7 +116,7 @@ export const ROUTES = [
     path: "/tmua-tutor",
     title: "TMUA Tutor | Oxford & Imperial Maths Admissions Prep",
     description:
-      "One-to-one TMUA preparation from an Oxford First Class Maths graduate. The TMUA replaced the MAT for Oxford Maths and Computer Science, and is required by Imperial.",
+      "One-to-one TMUA preparation from an Oxford First Class Maths graduate. Required for Oxford Maths and Computer Science, and for Imperial Maths and Computing.",
   },
   {
     id: "interview",

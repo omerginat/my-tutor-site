@@ -1368,8 +1368,8 @@ function TmuaPage({ openContact }) {
       <div className="page-hero">
         <div className="page-hero-inner">
           <span className="section-label" style={{color:"var(--gold2)"}}>TMUA Preparation</span>
-          <h1>The Test That<br/><em>Replaced the MAT</em></h1>
-          <p>One-to-one TMUA preparation from an Oxford Mathematics graduate. From 2026 entry, the TMUA is the admissions test for Oxford Maths and Computer Science, and is required by Imperial.</p>
+          <h1>One-to-One<br/><em>TMUA Preparation</em></h1>
+          <p>For applicants to Oxford, Imperial and the other universities that ask for the TMUA. Taught by an Oxford Mathematics graduate with a First Class degree, who has been through the process.</p>
         </div>
       </div>
 
@@ -1378,12 +1378,12 @@ function TmuaPage({ openContact }) {
           <span className="section-label">2027 Entry</span>
           <div className="divider"/>
           <h2 className="section-title">Key Dates</h2>
-          <p className="section-lead">Applicants to Oxford and Cambridge sit the October test. Booking does not stay open until the UCAS deadline &mdash; it closes at the end of September, and this catches people out every year.</p>
+          <p className="section-lead">If you are applying to Oxford or Cambridge, you will need the October sitting rather than January. Booking does not stay open until the UCAS deadline &mdash; it closes at the end of September, and this catches people out every year.</p>
         </div>
         <div className="services-grid">
           {[
             { icon:"🗓", title:"Booking closes", value:"28 September 2026", note:"6pm UK time. Booking is done through the UAT-UK site. Check whether your school is registering you or whether you need to do it yourself - do not assume." },
-            { icon:"✏️", title:"October test window", value:"12–16 October 2026", note:"The sitting Oxford and Cambridge applicants need. A second window runs 4–8 January 2027, used by some other universities." },
+            { icon:"✏️", title:"October test window", value:"12–16 October 2026", note:"The sitting required if Oxford or Cambridge is on your UCAS form. A second window runs 4–8 January 2027, accepted by some other universities." },
             { icon:"📩", title:"Results released", value:"16 November 2026", note:"Scores are sent to the universities you applied to and form part of your application." },
           ].map(d => (
             <div className="uni-card" key={d.title}>
@@ -1544,8 +1544,8 @@ function LondonPage({ openContact }) {
           <div className="approach-intro">
             <span className="section-label">Why Online, for London</span>
             <div className="divider"/>
-            <p>Most of my students are in London. I teach all of them online, and I would not go back &mdash; not because it is easier for me, but because it is <strong>better for them</strong>.</p>
-            <p>A tutor crossing London charges you for the journey one way or another, and arrives with a fixed hour that cannot move. Online, a session can sit right after school, be rearranged when a match or a rehearsal appears, and never gets lost to a delayed District line.</p>
+            <p>Most of my students are in London, and I teach all of them online. It suits me &mdash; and it turns out to suit families at least as much.</p>
+            <p>A tutor crossing London charges for that journey one way or another, and arrives with a fixed hour that cannot move. Online, a session can sit right after school, be rearranged when a match or a rehearsal appears, and never gets lost to a delayed District line.</p>
             <p>Lessons use an iPad and an interactive whiteboard, so your child watches the working appear as I think through it, and keeps the notes afterwards. Past papers and mark schemes are on screen in seconds.</p>
             <p>GCSE and A-Level sessions are <strong>{standardRate} per hour</strong>, and the first session is free.</p>
             <LandingCta openContact={openContact} />

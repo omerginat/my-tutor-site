@@ -126,6 +126,20 @@ export const ROUTES = [
       "Oxford and Cambridge maths interview coaching from a First Class Oxford Mathematics graduate. Real past interview questions and full mock interviews.",
   },
   {
+    id: "step",
+    path: "/step-tutor",
+    title: "STEP Tutor | Cambridge Maths Admissions Preparation",
+    description:
+      "One-to-one STEP preparation for STEP 2 and STEP 3, used in almost all Cambridge Maths offers. Taught by an Oxford First Class Mathematics graduate.",
+  },
+  {
+    id: "ukmt",
+    path: "/ukmt-olympiad-tutor",
+    title: "UKMT & Maths Olympiad Tutor | Challenge and BMO Prep",
+    description:
+      "One-to-one preparation for the UKMT Maths Challenges, Kangaroo and Olympiad rounds, and the Mathematical Olympiad for Girls, from an Oxford Maths graduate.",
+  },
+  {
     id: "london",
     path: "/london-maths-tutor",
     title: "London Maths Tutor | Online GCSE & A-Level Tuition",

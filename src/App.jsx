@@ -892,6 +892,10 @@ function ServicesPage({ setPage, openContact }) {
             </div>
           ))}
         </div>
+        <p style={{maxWidth:"1100px",margin:"1.6rem auto 0",fontSize:"0.95rem",color:"var(--muted)",lineHeight:1.8}}>
+          For students who want to go beyond the syllabus, I also prepare students for the{" "}
+          <Link to="ukmt" className="inline-link">UKMT Maths Challenges and Olympiad rounds</Link>, at the same hourly rate.
+        </p>
       </section>
       <section className="section section-oxbridge">
         <div style={{maxWidth:"1100px",margin:"0 auto"}}>
@@ -911,7 +915,7 @@ function ServicesPage({ setPage, openContact }) {
             <div className="uni-cards">
               {[
                 { icon:"📏", title:"TMUA", body:"Test of Mathematics for University Admission - now the required test for Oxford Maths and Computer Science, and for Imperial. Logic, reasoning, and mathematical argument at speed.", to:"tmua", more:"TMUA dates and preparation" },
-                { icon:"∑", title:"STEP", body:"Sixth Term Examination Paper - used in almost all Cambridge conditional offers for Maths and Maths with Physics. In-depth, open-ended problem solving that rewards deep understanding over memorisation." },
+                { icon:"∑", title:"STEP", body:"Sixth Term Examination Paper - used in almost all Cambridge conditional offers for Maths and Maths with Physics. In-depth, open-ended problem solving that rewards deep understanding over memorisation.", to:"step", more:"STEP papers and preparation" },
                 { icon:"🎙", title:"Oxbridge Interviews", body:"Coaching for the unique style of an Oxford or Cambridge Maths interview - thinking aloud, staying confident under questioning, and working through unseen problems calmly.", to:"interview", more:"How I prepare students for interview" },
                 { icon:"🔄", title:"Preparing for the MAT?", body:"Oxford ran the MAT from 2007 to 2025. From 2026 entry it no longer takes place - Oxford applicants sit the TMUA instead, as do Imperial's. If your school is still pointing you at MAT papers, I can explain what has changed and refocus preparation on the TMUA.", to:"tmua", more:"What the TMUA involves" },
               ].map(c => (
@@ -1229,7 +1233,7 @@ function BookingPage({ setPage, openContact }) {
         <div className="page-hero-inner">
           <span className="section-label" style={{color:"var(--gold2)"}}>Book a Session</span>
           <h1>Find a Time <em>That Works</em></h1>
-          {/* Original calendar intro — restore when the calendar comes back:
+          {/* Original calendar intro - restore when the calendar comes back:
           <p>Choose a date and time below. I'll confirm within a few hours. New students always start with a completely free first session.</p>
           */}
           <p>Get in touch and I'll find a time that works around your schedule. I usually reply within a few hours, and new students always start with a completely free first session.</p>
@@ -1255,7 +1259,7 @@ function BookingPage({ setPage, openContact }) {
             <div className="booking-free-note">🎁 <strong>First session is completely free.</strong> No payment, no obligation - just a chance to meet and make sure it's the right fit.</div>
           </div>
           <div className="booking-right">
-            {/* ==== CALENDAR TEMPORARILY DISABLED — KEPT FOR LATER ====================
+            {/* ==== CALENDAR TEMPORARILY DISABLED - KEPT FOR LATER ====================
                  The interactive calendar below is hidden for now because the
                  availability it showed wasn't linked to a real calendar yet.
                  TO RESTORE IT: delete this line (the opening comment marker) and
@@ -1290,12 +1294,12 @@ function BookingPage({ setPage, openContact }) {
 
             ==== END OF DISABLED CALENDAR ========================================= */}
 
-            {/* Temporary "request a time" panel — shown while the calendar is off.
+            {/* Temporary "request a time" panel - shown while the calendar is off.
                  Delete this whole block when you switch the calendar back on. */}
             <div className="book-request" style={{display:"flex",flexDirection:"column",justifyContent:"center",alignItems:"center",textAlign:"center",height:"100%",minHeight:"340px",gap:"1.1rem",padding:"1rem"}}>
               <div style={{fontSize:"2.4rem",lineHeight:1}}>📅</div>
               <h3 style={{fontSize:"1.3rem",color:"var(--navy)",margin:0,fontFamily:"'Playfair Display',serif"}}>Request a Time</h3>
-              <p style={{color:"var(--muted)",lineHeight:1.75,margin:0,maxWidth:"420px"}}>Sessions are arranged personally, around your schedule. Send me a quick message with the days and times that usually work for you, and I'll reply to confirm — normally within a few hours. Your first session is always free.</p>
+              <p style={{color:"var(--muted)",lineHeight:1.75,margin:0,maxWidth:"420px"}}>Sessions are arranged personally, around your schedule. Send me a quick message with the days and times that usually work for you, and I'll reply to confirm, normally within a few hours. Your first session is always free.</p>
               <a href={WHATSAPP} target="_blank" rel="noopener" className="btn-primary btn-nowrap">Message me on WhatsApp →</a>
               <div style={{fontSize:"0.85rem",color:"var(--muted)"}}>Prefer email? <a href={EMAIL} style={{color:"var(--gold)",fontWeight:600}}>{BUSINESS.email}</a></div>
             </div>
@@ -1378,12 +1382,12 @@ function TmuaPage({ openContact }) {
           <span className="section-label">2027 Entry</span>
           <div className="divider"/>
           <h2 className="section-title">Key Dates</h2>
-          <p className="section-lead">If you are applying to Oxford or Cambridge, you will need the October sitting rather than January. Booking does not stay open until the UCAS deadline &mdash; it closes at the end of September, and this catches people out every year.</p>
+          <p className="section-lead">If you are applying to Oxford or Cambridge, you will need the October sitting rather than January. Booking does not stay open until the UCAS deadline. It closes at the end of September, and this catches people out every year.</p>
         </div>
         <div className="services-grid">
           {[
             { icon:"🗓", title:"Booking closes", value:"28 September 2026", note:"6pm UK time. Booking is done through the UAT-UK site. Check whether your school is registering you or whether you need to do it yourself - do not assume." },
-            { icon:"✏️", title:"October test window", value:"12–16 October 2026", note:"The sitting required if Oxford or Cambridge is on your UCAS form. A second window runs 4–8 January 2027, accepted by some other universities." },
+            { icon:"✏️", title:"October test window", value:"12 to 16 October 2026", note:"The sitting required if Oxford or Cambridge is on your UCAS form. A second window runs 4 to 8 January 2027, accepted by some other universities." },
             { icon:"📩", title:"Results released", value:"16 November 2026", note:"Scores are sent to the universities you applied to and form part of your application." },
           ].map(d => (
             <div className="uni-card" key={d.title}>
@@ -1409,12 +1413,12 @@ function TmuaPage({ openContact }) {
           <div className="uni-cards" style={{marginTop:"2rem"}}>
             <div className="uni-card">
               <div className="uni-card-icon" aria-hidden="true">📄</div>
-              <h4>Paper 1 &mdash; Applications of Mathematical Knowledge</h4>
+              <h4>Paper 1: Applications of Mathematical Knowledge</h4>
               <p>75 minutes, 20 multiple-choice questions. Familiar A-level material used in unfamiliar ways. The maths itself is rarely the hard part; recognising which tool applies is.</p>
             </div>
             <div className="uni-card">
               <div className="uni-card-icon" aria-hidden="true">🧠</div>
-              <h4>Paper 2 &mdash; Mathematical Reasoning</h4>
+              <h4>Paper 2: Mathematical Reasoning</h4>
               <p>75 minutes, 20 multiple-choice questions. Logic, proof, and judging whether an argument actually holds. This is the paper most students have never been taught for.</p>
             </div>
           </div>
@@ -1422,7 +1426,7 @@ function TmuaPage({ openContact }) {
             <div className="rb-icon" aria-hidden="true">💡</div>
             <div className="rb-text">
               There is <strong>no negative marking</strong>, so never leave a question blank. Scores are
-              reported on a scale from <strong>1.0 to 9.0</strong> and there is no pass mark &mdash; universities
+              reported on a scale from <strong>1.0 to 9.0</strong> and there is no pass mark. Universities
               read your score alongside the rest of your application.
             </div>
           </div>
@@ -1436,7 +1440,7 @@ function TmuaPage({ openContact }) {
           <h2 className="section-title">Which Universities Ask for the TMUA</h2>
           <p className="section-lead">
             <strong>Oxford</strong> requires it for Mathematics and Computer Science, including joint
-            honours &mdash; it replaced the MAT from 2026 entry. <strong>Imperial</strong> requires it for
+            honours. It replaced the MAT from 2026 entry. <strong>Imperial</strong> requires it for
             Mathematics, Computing, and Economics, Finance and Data Science. A number of other
             universities use it too, so check the requirements for every course on your UCAS form.
           </p>
@@ -1472,6 +1476,154 @@ function TmuaPage({ openContact }) {
   );
 }
 
+function StepPage({ openContact }) {
+  const oxbridgeRate = price("oxbridge");
+  return (
+    <div className="page">
+      <div className="page-hero">
+        <div className="page-hero-inner">
+          <span className="section-label" style={{color:"var(--gold2)"}}>STEP Preparation</span>
+          <h1>One-to-One<br/><em>STEP Preparation</em></h1>
+          <p>STEP 2 and STEP 3 preparation for students holding a Cambridge Maths offer, and for anyone applying where STEP is asked for. Taught by an Oxford Mathematics graduate with a First Class degree.</p>
+        </div>
+      </div>
+
+      <section className="section">
+        <div style={{maxWidth:"1100px",margin:"0 auto"}}>
+          <span className="section-label">What It Is</span>
+          <div className="divider"/>
+          <h2 className="section-title">How STEP Works</h2>
+          <p className="section-lead">Two papers, three hours each, usually sat in mid to late June. Nothing like an A-level paper in either length or style.</p>
+          <div className="uni-cards" style={{marginTop:"2rem"}}>
+            <div className="uni-card">
+              <div className="uni-card-icon" aria-hidden="true">📄</div>
+              <h4>The papers</h4>
+              <p>STEP 2 is pitched at A-level Maths with AS Further Maths. STEP 3 assumes a full Further Maths syllabus. Each paper has 12 questions: 8 pure, 2 mechanics, 2 statistics and probability.</p>
+            </div>
+            <div className="uni-card">
+              <div className="uni-card-icon" aria-hidden="true">⏱</div>
+              <h4>Six questions, three hours</h4>
+              <p>You answer no more than six questions, and only your six best count. Each is marked out of 20. Choosing which six to commit to is a real part of the exam, and it is a skill worth practising.</p>
+            </div>
+            <div className="uni-card">
+              <div className="uni-card-icon" aria-hidden="true">🎯</div>
+              <h4>Grades</h4>
+              <p>Five grades: S, 1, 2, 3 and U. Cambridge conditional offers for Maths typically ask for a grade 1 in both STEP 2 and STEP 3, though you should always check the offer you actually receive.</p>
+            </div>
+            <div className="uni-card">
+              <div className="uni-card-icon" aria-hidden="true">🏛</div>
+              <h4>Who asks for it</h4>
+              <p>STEP is used in almost all Cambridge conditional offers for Mathematics and Mathematics with Physics. Some colleges ask for it on other courses needing strong mathematics, and Warwick has long used it too.</p>
+            </div>
+          </div>
+          <div className="result-banner" style={{maxWidth:"1100px",margin:"1.6rem auto 0"}}>
+            <div className="rb-icon" aria-hidden="true">💡</div>
+            <div className="rb-text">
+              Cambridge is explicit that <strong>STEP predicts success in the Mathematical Tripos better than A-levels do</strong>.
+              It is designed to separate genuine mathematical ability from having been taught well, which is
+              exactly why it cannot be crammed in the last fortnight.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="section section-alt">
+        <div className="approach-cols">
+          <div className="approach-intro">
+            <span className="section-label">How I Prepare Students</span>
+            <div className="divider"/>
+            <p>STEP questions are long. A single question can run for forty minutes and change direction twice on the way. Students who are used to being quick at maths often find this the hardest adjustment, because being stuck for ten minutes starts to feel like failure rather than like normal progress.</p>
+            <p>Most of the work is learning to stay with a problem: trying something, seeing where it breaks, and using that to choose the next move. That is a teachable habit, and it is the one that moves grades.</p>
+            <p>Sessions are <strong>{oxbridgeRate} per hour</strong>, one-to-one and online.</p>
+            <LandingCta openContact={openContact} />
+          </div>
+          <div className="approach-items">
+            {[
+              { n:"1", title:"Staying with a long problem", body:"We work through full STEP questions together, out loud, so you can see what a productive dead end looks like. The aim is that being stuck stops feeling like a signal to stop." },
+              { n:"2", title:"Choosing your six", body:"Marks are lost every year to good mathematicians starting the wrong questions. We practise reading a paper, judging quickly which questions suit you, and committing rather than hedging." },
+              { n:"3", title:"Writing it up for the marks", body:"STEP rewards complete, communicated arguments. We work on setting out reasoning so an examiner can follow it, and on finishing a question properly rather than leaving it almost done." },
+            ].map(a => (
+              <div className="approach-item-row" key={a.n}>
+                <div className="approach-num-badge" aria-hidden="true">{a.n}</div>
+                <div><h4>{a.title}</h4><p>{a.body}</p></div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+      <PageFooter openContact={openContact} />
+    </div>
+  );
+}
+
+function UkmtPage({ openContact }) {
+  const standardRate = price("standard");
+  return (
+    <div className="page">
+      <div className="page-hero">
+        <div className="page-hero-inner">
+          <span className="section-label" style={{color:"var(--gold2)"}}>UKMT &amp; Olympiad</span>
+          <h1>Maths Challenge and<br/><em>Olympiad Preparation</em></h1>
+          <p>Preparation for the UKMT Maths Challenges, the Kangaroo and Olympiad follow-on rounds, and the Mathematical Olympiad for Girls. For students who enjoy maths and want to push well past the syllabus.</p>
+        </div>
+      </div>
+
+      <section className="section">
+        <div style={{maxWidth:"1100px",margin:"0 auto"}}>
+          <span className="section-label">2026 / 27 Season</span>
+          <div className="divider"/>
+          <h2 className="section-title">Key Dates</h2>
+          <p className="section-lead">Most schools enter students themselves, so check with your maths department. The senior rounds come round early in the school year, which leaves less preparation time than people expect.</p>
+        </div>
+        <div className="services-grid">
+          {[
+            { icon:"👩‍🎓", title:"Olympiad for Girls", value:"22 September 2026", note:"MOG, alongside the Mathematical Competition for Girls. Five demanding problems requiring full written solutions." },
+            { icon:"🏅", title:"Senior Challenge", value:"7 October 2026", note:"90 minutes. The gateway to the Senior Kangaroo and to BMO Round 1, both on 18 November 2026." },
+            { icon:"📐", title:"Intermediate & Junior", value:"27 January and 5 May 2027", note:"IMC in January, JMC in May, with the Kangaroo and Olympiad follow-on rounds in March and June." },
+          ].map(d => (
+            <div className="uni-card" key={d.title}>
+              <div className="uni-card-icon" aria-hidden="true">{d.icon}</div>
+              <h4>{d.title}</h4>
+              <p style={{fontFamily:"'Playfair Display',serif",fontSize:"1.05rem",color:"var(--gold)",fontWeight:600,margin:"0.2rem 0 0.4rem"}}>{d.value}</p>
+              <p>{d.note}</p>
+            </div>
+          ))}
+        </div>
+        <p style={{maxWidth:"1100px",margin:"1.2rem auto 0",fontSize:"0.82rem",color:"var(--muted)"}}>
+          Dates are taken from the UKMT competition calendar for 2026/27. Confirm with your school before relying on them.
+        </p>
+      </section>
+
+      <section className="section section-alt">
+        <div className="approach-cols">
+          <div className="approach-intro">
+            <span className="section-label">How I Prepare Students</span>
+            <div className="divider"/>
+            <p>Challenge and Olympiad problems are not harder versions of school maths. They ask for something school rarely teaches: noticing structure, trying small cases, and building an argument that genuinely proves something rather than just arriving at an answer.</p>
+            <p>Students of mine regularly do well in these rounds. One recent example is a student who finished in the <strong>top 10% of the Mathematical Olympiad for Girls</strong>.</p>
+            <p>This is also some of the most enjoyable teaching I do. Students who find the syllabus straightforward often come alive here, and it tends to feed straight back into their confidence at GCSE and A-level.</p>
+            <p>Sessions are <strong>{standardRate} per hour</strong>, one-to-one and online.</p>
+            <LandingCta openContact={openContact} />
+          </div>
+          <div className="approach-items">
+            {[
+              { n:"1", title:"A toolkit, not a syllabus", body:"Pigeonhole, invariants, extremal arguments, clever counting. We build a repertoire of ideas that keep reappearing, so an unfamiliar problem has somewhere to start." },
+              { n:"2", title:"Writing real proofs", body:"Follow-on rounds want full written solutions, and marks go for the argument rather than the answer. We work on writing proofs that are complete and readable, which is a skill in itself." },
+              { n:"3", title:"Getting comfortable being stuck", body:"Olympiad problems are meant to resist you at first. We practise the productive part of being stuck: small cases, special cases, and asking what would make this easier." },
+            ].map(a => (
+              <div className="approach-item-row" key={a.n}>
+                <div className="approach-num-badge" aria-hidden="true">{a.n}</div>
+                <div><h4>{a.title}</h4><p>{a.body}</p></div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+      <PageFooter openContact={openContact} />
+    </div>
+  );
+}
+
 function InterviewPage({ openContact }) {
   const oxbridgeRate = price("oxbridge");
   const interviewReview = ALL_REVIEWS.find(r => /Oxford Admissions/i.test(r.author));
@@ -1490,7 +1642,7 @@ function InterviewPage({ openContact }) {
           <div className="approach-intro">
             <span className="section-label">What It Is Really Like</span>
             <div className="divider"/>
-            <p>An Oxbridge maths interview is not a test of what you have memorised. You will be given a problem you have not seen, and the interviewer wants to watch you think about it &mdash; including the false starts.</p>
+            <p>An Oxbridge maths interview is not a test of what you have memorised. You will be given a problem you have not seen, and the interviewer wants to watch you think about it, including the false starts.</p>
             <p>That is genuinely disorienting for strong students, because being stuck in front of an expert feels like failing. It is not. <strong>Being stuck and still making progress out loud is the thing being assessed.</strong></p>
             <p>I have a set of real questions that have been asked in Oxford and Cambridge maths interviews. We work through them together, then finish with full mock interviews so the real thing is not the first time you have done one.</p>
             <p>Sessions are <strong>{oxbridgeRate} per hour</strong>, one-to-one and online.</p>
@@ -1516,7 +1668,8 @@ function InterviewPage({ openContact }) {
           <div style={{maxWidth:"760px",margin:"0 auto"}}>
             <span className="section-label">From a Student</span>
             <div className="divider"/>
-            <h2 className="section-title" style={{marginBottom:"1.8rem"}}>An Oxford Maths Offer</h2>
+            <h2 className="section-title" style={{marginBottom:"0.8rem"}}>Students Who Have Gone On to Offers</h2>
+            <p className="section-lead" style={{marginBottom:"1.8rem"}}>Students I work with regularly go on to offers from Oxford and Cambridge. Here is one of them.</p>
             <ReviewCard r={interviewReview} />
           </div>
         </section>
@@ -1534,8 +1687,8 @@ function LondonPage({ openContact }) {
       <div className="page-hero">
         <div className="page-hero-inner">
           <span className="section-label" style={{color:"var(--gold2)"}}>London</span>
-          <h1>A London Maths Tutor<br/><em>Without the Commute</em></h1>
-          <p>Online one-to-one maths tuition for London families, from an Oxford Mathematics graduate who works with students at many of the city&rsquo;s most demanding schools.</p>
+          <h1>Online Maths Tuition for<br/><em>London Students</em></h1>
+          <p>One-to-one tuition from an Oxford Mathematics graduate who has spent ten years working with students at many of London's most demanding schools.</p>
         </div>
       </div>
 
@@ -1544,16 +1697,16 @@ function LondonPage({ openContact }) {
           <div className="approach-intro">
             <span className="section-label">Why Online, for London</span>
             <div className="divider"/>
-            <p>Most of my students are in London, and I teach all of them online. It suits me &mdash; and it turns out to suit families at least as much.</p>
-            <p>A tutor crossing London charges for that journey one way or another, and arrives with a fixed hour that cannot move. Online, a session can sit right after school, be rearranged when a match or a rehearsal appears, and never gets lost to a delayed District line.</p>
-            <p>Lessons use an iPad and an interactive whiteboard, so your child watches the working appear as I think through it, and keeps the notes afterwards. Past papers and mark schemes are on screen in seconds.</p>
+            <p>Most of my students are London based. Over ten years I have taught students at many of the city's most demanding schools, including <strong>St Paul's, Westminster, City of London, Highgate, UCS, Latymer Upper, North London Collegiate and King's College School</strong>.</p>
+            <p>That matters more than it might sound. These schools move quickly, set their own internal standards, and often teach well beyond the specification. Knowing the pace a student is being held to makes it far easier to work out what is actually going wrong when they start to struggle.</p>
+            <p>All my teaching is online. Lessons use an iPad and an interactive whiteboard, so your child watches the working appear as I think through it, and keeps the notes afterwards. Past papers and mark schemes come up on screen in seconds, and sessions fit easily around a long school day.</p>
             <p>GCSE and A-Level sessions are <strong>{standardRate} per hour</strong>, and the first session is free.</p>
             <LandingCta openContact={openContact} />
           </div>
           <div className="approach-items">
             {[
-              { n:"1", title:"Built around a London school week", body:"Long days, late buses and heavy co-curriculars. Sessions are arranged around what the week actually looks like, and moved when it changes." },
-              { n:"2", title:"Familiar with the schools", body:"I work with students across London's selective and independent schools, so I know the pace they are taught at and the standard they are held to." },
+              { n:"1", title:"Familiar with the schools", body:"I work with students across London's selective and independent schools, so I know the pace they are taught at, the standard they are held to, and where these syllabuses tend to lose people." },
+              { n:"2", title:"Built around a London school week", body:"Long days, late buses and heavy co-curriculars. Sessions are arranged around what the week actually looks like, and moved when it changes." },
               { n:"3", title:"Parents kept in the loop", body:"You will always know what we have covered, where your child is finding things hard, and what we are working on next." },
             ].map(a => (
               <div className="approach-item-row" key={a.n}>
@@ -1585,7 +1738,8 @@ function LondonPage({ openContact }) {
 const FOOTER_LABELS = {
   about: "About Me", services: "Services", approach: "My Approach",
   reviews: "Reviews", faq: "FAQ & Pricing", booking: "Book a Session",
-  tmua: "TMUA Preparation", interview: "Oxbridge Interviews", london: "London Maths Tuition",
+  tmua: "TMUA Preparation", step: "STEP Preparation", interview: "Oxbridge Interviews",
+  ukmt: "UKMT & Olympiad", london: "London Maths Tuition",
 };
 
 function PageFooter({ openContact }) {
@@ -1650,7 +1804,7 @@ function ContactModal({ onClose }) {
       <div className="modal" ref={modalRef}>
         <button className="modal-close" onClick={onClose} aria-label="Close">×</button>
         <h3>Get in Touch</h3>
-        <p className="modal-sub">I'll reply promptly — usually within a few hours.</p>
+        <p className="modal-sub">I'll reply promptly, usually within a few hours.</p>
         {done
           ? <div className="success-msg">✓ Message sent - I'll be in touch very soon!</div>
           : <>
@@ -1718,6 +1872,8 @@ export default function App() {
     booking:  <BookingPage {...pageProps} />,
     tmua:      <TmuaPage {...pageProps} />,
     interview: <InterviewPage {...pageProps} />,
+    step:      <StepPage {...pageProps} />,
+    ukmt:      <UkmtPage {...pageProps} />,
     london:    <LondonPage {...pageProps} />,
   };
 

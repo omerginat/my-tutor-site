@@ -211,7 +211,6 @@ const CSS = `
   .hero-stat+.hero-stat{border-left:1px solid rgba(255,255,255,0.12);}
   .hero-stat-num{font-family:'Playfair Display',serif;font-size:2.6rem;font-weight:700;color:var(--gold2);display:block;line-height:1;}
   .hero-stat-label{font-size:0.78rem;color:rgba(255,255,255,0.5);letter-spacing:0.06em;text-transform:uppercase;margin-top:0.4rem;}
-  @media(max-width:600px){.hero-stats{padding:1.2rem 1rem;gap:0;}.hero-stat{padding:0 1.2rem;}.hero-stat-num{font-size:2rem;}}
 
   /* HOME TEASERS */
   .home-teasers{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;}
@@ -228,7 +227,10 @@ const CSS = `
   /* ABOUT */
   .about-grid{max-width:1100px;margin:0 auto;display:flow-root;}
   .about-photo-wrap{float:left;width:38%;margin-right:5rem;margin-bottom:5rem;position:relative;}
-  .about-photo{width:100%;aspect-ratio:3/4;object-fit:cover;object-position:center top;border-radius:20px;display:block;}
+  /* height:auto is required because the <img> carries width/height attributes
+     (they reserve space and stop layout shift); without it the attribute
+     height wins and the picture renders at its full natural size. */
+  .about-photo{width:100%;height:auto;aspect-ratio:3/4;object-fit:cover;object-position:center top;border-radius:20px;display:block;}
   .about-photo-placeholder{width:100%;aspect-ratio:3/4;background:linear-gradient(150deg,var(--navy2) 0%,#2a4a6b 50%,var(--sage) 100%);border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:6rem;}
   .about-bullet-card{position:absolute;bottom:-4rem;right:-1.5rem;background:var(--white);border-radius:14px;padding:1.1rem 1.4rem;box-shadow:var(--shadow-lg);border:1px solid rgba(23,32,56,0.08);display:flex;flex-direction:column;gap:0.65rem;}
   .about-bullet-item{display:flex;align-items:center;gap:0.65rem;font-size:0.85rem;font-weight:500;color:var(--navy);white-space:nowrap;}
@@ -247,18 +249,18 @@ const CSS = `
   .rb-text{font-size:0.92rem;color:rgba(255,255,255,0.85);line-height:1.65;}
   .rb-text strong{color:var(--gold2);}
   @media(max-width:900px){
-    .about-photo-wrap{float:none;width:100%;margin-right:0;margin-bottom:2rem;}
+    .about-photo-wrap{float:none;width:100%;max-width:270px;margin:0 auto 3.5rem;}
     .about-photo-wrap .about-bullet-card{bottom:-2rem;right:0;}
     .about-body{margin-top:2rem;}
   }
   @media(max-width:700px){
     .services-grid{grid-template-columns:1fr;}
     .home-teasers{grid-template-columns:1fr;}
-    .hero-stats{gap:2rem;}
     .trust-bar{gap:1.2rem;}
     .btn-row{flex-direction:column;}
     .btn-row > *{min-width:unset;width:100%;}
-    .schools-grid{grid-template-columns:repeat(2,1fr);}
+    /* The schools grid is narrowed for phones further down the stylesheet -
+       it has to come after the 5-column rule below to actually take effect. */
   }
 
   /* SCHOOLS */
@@ -479,6 +481,11 @@ const CSS = `
 
   /* ── MOBILE REFINEMENTS ── */
   @media(max-width:700px){
+    /* Two per row on a phone. Five columns squeezes the logos into slivers;
+       one column stretches each school into a full-width bar. */
+    .schools-grid{grid-template-columns:repeat(2,1fr);gap:0.7rem;margin-top:1.4rem;}
+    .school-card{padding:1rem 0.6rem;gap:0.5rem;}
+    .school-name{font-size:0.74rem;}
     .section{padding:52px 5vw;}
     .page-hero{padding:52px 5vw 46px;}
     .hero-full{padding:56px 5vw 48px;}
@@ -506,12 +513,26 @@ const CSS = `
   /* Grid children default to min-width:auto, which stops them shrinking below
      their widest child and pushes the booking panel off-screen on phones. */
   .booking-left,.booking-right,.booking-shell{min-width:0;}
+  /* ── HERO STATS ON PHONES ──
+     As a wrapping flexbox these three stats broke onto separate rows, each
+     centred differently, and the divider between them showed up as a stray
+     vertical line to the left of a row. A fixed 3-column grid cannot wrap, so
+     the dividers always sit between columns and the box stays compact. */
+  @media(max-width:900px){
+    .hero-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:0;width:100%;max-width:520px;margin-top:2.2rem;padding:1.2rem 0.7rem;border-radius:14px;}
+    .hero-stat{padding:0 0.6rem;}
+    .hero-stat+.hero-stat{border-left:1px solid rgba(255,255,255,0.14);border-top:none;}
+    .hero-stat-num{font-size:2rem;}
+    .hero-stat-label{font-size:0.68rem;letter-spacing:0.04em;margin-top:0.35rem;line-height:1.4;}
+  }
+  @media(max-width:640px){
+    .hero-stats{max-width:380px;margin-top:2rem;padding:0.95rem 0.3rem;}
+    .hero-stat{padding:0 0.3rem;}
+    .hero-stat-num{font-size:1.6rem;}
+    .hero-stat-label{font-size:0.58rem;letter-spacing:0.03em;margin-top:0.3rem;line-height:1.35;}
+  }
   @media(max-width:420px){
-    /* Three stats side by side overflow the narrowest phones. */
-    .hero-stats{display:grid;grid-template-columns:1fr;gap:0;width:100%;padding:0.5rem 1rem;}
-    .hero-stat{padding:0.9rem 0;width:100%;}
-    .hero-stat+.hero-stat{border-left:none;border-top:1px solid rgba(255,255,255,0.12);}
-    .schools-grid{grid-template-columns:1fr;}
+    .hero-stat-num{font-size:1.4rem;}
     .mobile-quick-links-grid{grid-template-columns:1fr;}
   }
   /* Tap targets: fingers need ~44px, so pad out the small controls without

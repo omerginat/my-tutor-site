@@ -25,10 +25,22 @@ export const CURRENCIES = {
 
 export const DEFAULT_CURRENCY = "GBP";
 
-// Visitors whose device timezone starts with one of these sees prices in SGD.
-// "Asia/" covers Singapore, Hong Kong, Tokyo, Kuala Lumpur, Shanghai, Dubai, etc.
-// To show SGD to Singapore only, change this to ["Asia/Singapore"].
-export const SGD_TIMEZONE_PREFIXES = ["Asia/"];
+// Visitors whose device timezone is in this list see prices in SGD.
+// South East Asia only - everywhere else in the world sees GBP.
+// To stop showing SGD in a country, delete its timezone(s) from this list.
+export const SGD_TIMEZONES = new Set([
+  "Asia/Singapore",                                              // Singapore
+  "Asia/Kuala_Lumpur", "Asia/Kuching",                           // Malaysia
+  "Asia/Bangkok",                                                // Thailand
+  "Asia/Jakarta", "Asia/Pontianak", "Asia/Makassar", "Asia/Jayapura", // Indonesia
+  "Asia/Manila",                                                 // Philippines
+  "Asia/Ho_Chi_Minh", "Asia/Saigon",                             // Vietnam
+  "Asia/Phnom_Penh",                                             // Cambodia
+  "Asia/Vientiane",                                              // Laos
+  "Asia/Yangon", "Asia/Rangoon",                                 // Myanmar
+  "Asia/Brunei",                                                 // Brunei
+  "Asia/Dili",                                                   // Timor-Leste
+]);
 
 export const formatPrice = (currency, tier) => {
   const c = CURRENCIES[currency] || CURRENCIES[DEFAULT_CURRENCY];

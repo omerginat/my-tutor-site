@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useContext, createContext, useCallback } from "react";
 import { SCHOOLS, ALL_REVIEWS, FAQS } from "./content.js";
 import {
-  BUSINESS, CURRENCIES, DEFAULT_CURRENCY, SGD_TIMEZONE_PREFIXES,
+  BUSINESS, DEFAULT_CURRENCY, SGD_TIMEZONES,
   formatPrice, fillRates, ROUTES, ROUTE_BY_PATH, ROUTE_BY_ID, HOME_ROUTE,
 } from "./site.config.js";
 
@@ -57,45 +57,19 @@ function SendError({ message, dark }) {
 }
 
 // ─── Currency ─────────────────────────────────────────────────────────────
-// Visitors in Asia are shown SGD; everyone else GBP. A manual switch in the
-// nav overrides the guess and is remembered in the browser.
-const CURRENCY_KEY = "omermaths.currency";
-const CurrencyContext = createContext({ currency: DEFAULT_CURRENCY, setCurrency: () => {} });
-const useCurrency = () => useContext(CurrencyContext);
-const usePrice = (tier) => formatPrice(useCurrency().currency, tier);
-
+// Visitors in South East Asia see SGD, everyone else sees GBP. This is worked
+// out once from the device's timezone and never changes while the page is
+// open - there is deliberately no switch for the visitor to change it.
 function detectCurrency() {
   try {
-    const saved = window.localStorage.getItem(CURRENCY_KEY);
-    if (saved && CURRENCIES[saved]) return saved;
-  } catch { /* localStorage blocked - fall through to timezone */ }
-  try {
     const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || "";
-    if (SGD_TIMEZONE_PREFIXES.some(p => tz.startsWith(p))) return "SGD";
-  } catch { /* no Intl support - fall through to default */ }
+    if (SGD_TIMEZONES.has(tz)) return "SGD";
+  } catch { /* no Intl support - fall back to the default */ }
   return DEFAULT_CURRENCY;
 }
 
-function CurrencySwitch({ className = "" }) {
-  const { currency, setCurrency } = useCurrency();
-  return (
-    <div className={`currency-switch ${className}`} role="group" aria-label="Choose currency">
-      {Object.values(CURRENCIES).map(c => (
-        <button
-          key={c.code}
-          type="button"
-          className={`currency-opt${currency === c.code ? " active" : ""}`}
-          aria-pressed={currency === c.code}
-          aria-label={`Show prices in ${c.code}`}
-          onClick={() => setCurrency(c.code)}
-        >
-          <span className="cur-sym">{c.symbol}</span>
-          <span className="cur-code">{c.code}</span>
-        </button>
-      ))}
-    </div>
-  );
-}
+const CURRENCY = detectCurrency();
+const price = (tier) => formatPrice(CURRENCY, tier);
 // ─── Routing ──────────────────────────────────────────────────────────────
 // Every page has a real URL (/about, /reviews, ...) so it can be shared,
 // bookmarked, and indexed by Google. Navigation stays instant - we just swap
@@ -159,9 +133,7 @@ const CSS = `
   .mobile-menu ul{list-style:none;display:flex;flex-direction:column;gap:0.25rem;}
   .mobile-menu .nav-btn{font-size:1rem;padding:0.75rem 1rem;width:100%;text-align:left;border-radius:8px;}
   .mobile-cta{margin-top:0.75rem;width:100%;display:block;text-align:center;background:var(--gold);color:white;border:none;padding:0.85rem;border-radius:8px;font-size:1rem;font-weight:600;cursor:pointer;}
-  /* Switch to the hamburger at 1000px: below that the links, currency switch
-     and CTA no longer fit beside the logo without colliding. */
-  @media(max-width:1040px){.nav-links{display:none;}.hamburger{display:flex;}.nav-cta{display:none;}}
+  @media(max-width:900px){.nav-links{display:none;}.hamburger{display:flex;}.nav-cta{display:none;}}
 
   /* MOBILE QUICK LINKS */
   .mobile-quick-links{display:none;padding:2.5rem 5vw;background:var(--cream2);text-align:center;}
@@ -172,7 +144,7 @@ const CSS = `
   .mobile-quick-link:hover{border-color:var(--gold);color:var(--gold);}
   .mobile-quick-link.mql-cta{grid-column:1/-1;background:var(--gold);color:var(--white);border-color:var(--gold);font-weight:600;}
   .mobile-quick-link.mql-cta:hover{background:var(--gold2);color:var(--navy);}
-  @media(max-width:1040px){.mobile-quick-links{display:block;}}
+  @media(max-width:900px){.mobile-quick-links{display:block;}}
 
   /* PAGE WRAPPER */
   .page{padding-top:68px;min-height:100vh;}
@@ -493,17 +465,6 @@ const CSS = `
   a.mobile-quick-link.mql-cta{color:var(--white);}
   a.mobile-quick-link.mql-cta:hover{color:var(--navy);}
 
-  /* ── CURRENCY SWITCH ── */
-  .currency-switch{display:inline-flex;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.18);border-radius:100px;padding:2px;margin:0 0.4rem;}
-  .currency-opt{background:none;border:none;color:rgba(255,255,255,0.62);font-family:'DM Sans',sans-serif;font-size:0.74rem;font-weight:500;padding:0.3rem 0.62rem;border-radius:100px;cursor:pointer;white-space:nowrap;transition:background 0.2s,color 0.2s;}
-  .currency-opt.active{background:var(--gold);color:var(--white);}
-  .currency-opt:hover:not(.active){color:var(--gold2);}
-  .cur-code{margin-left:0.3rem;}
-  /* The top nav is tight on laptops, so show just the symbol there. */
-  .nav-links .cur-code{display:none;}
-  .currency-switch-mobile{display:flex;justify-content:center;width:100%;margin:1rem 0 0;}
-  .currency-switch-mobile .currency-opt{font-size:0.85rem;padding:0.55rem 1.1rem;}
-
   /* ── FORM SEND ERROR ── */
   .send-error{display:flex;flex-direction:column;gap:0.3rem;background:rgba(201,85,58,0.08);border:1px solid rgba(201,85,58,0.35);border-radius:8px;padding:0.85rem 1rem;margin:0.4rem 0 0.2rem;font-size:0.85rem;line-height:1.6;color:#8f3a25;}
   .send-error strong{font-weight:600;}
@@ -556,11 +517,15 @@ const CSS = `
   /* Tap targets: fingers need ~44px, so pad out the small controls without
      changing how any of them look. */
   .hamburger{min-width:44px;min-height:44px;align-items:center;justify-content:center;margin-right:-0.5rem;}
-  .see-more-btn{padding:0.5rem 0.75rem 0.5rem 0;min-height:38px;}
   .footer-nav a{display:inline-block;padding:0.4rem 0;}
   .footer-brand-links{gap:0.6rem 1.5rem;}
   .footer-brand-links a,.footer-brand-links button{padding:0.35rem 0;}
-  .scroll-arrow{min-width:44px;min-height:44px;}
+  /* "Read more" keeps its compact height so it stays on the card's bottom row;
+     the tappable area is widened invisibly instead of by adding padding. */
+  .see-more-btn{position:relative;}
+  .see-more-btn::after{content:'';position:absolute;left:0;right:0;top:-9px;bottom:-9px;}
+  /* Touch devices only - leaves the desktop arrows at their original size. */
+  @media(pointer:coarse){.scroll-arrow{min-width:44px;min-height:44px;}}
 
   /* Nothing on the page should ever scroll sideways on a phone. */
   html,body{max-width:100%;overflow-x:hidden;}
@@ -658,7 +623,6 @@ function Nav({ page }) {
             </Link>
           </li>
         ))}
-        <li><CurrencySwitch /></li>
         <li><Link to="booking" className="nav-cta">Book a Session</Link></li>
       </ul>
       <button className="hamburger" onClick={() => setMenuOpen(o => !o)}
@@ -678,7 +642,6 @@ function Nav({ page }) {
         ))}
       </ul>
       <Link to="booking" className="mobile-cta" onClick={close}>Book a Session</Link>
-      <CurrencySwitch className="currency-switch-mobile" />
     </div>
     </>
   );
@@ -870,8 +833,8 @@ function AboutPage({ setPage, openContact }) {
 
 // ─── Services ─────────────────────────────────────────────────────────────
 function ServicesPage({ setPage, openContact }) {
-  const standardRate = usePrice("standard");
-  const oxbridgeRate = usePrice("oxbridge");
+  const standardRate = price("standard");
+  const oxbridgeRate = price("oxbridge");
   return (
     <div className="page">
       <div className="page-hero">
@@ -1159,7 +1122,6 @@ function ReviewsPage({ setPage, openContact }) {
 // ─── FAQ ──────────────────────────────────────────────────────────────────
 function FaqPage({ setPage, openContact }) {
   const [openFaq, setOpenFaq] = useState(null);
-  const { currency } = useCurrency();
   return (
     <div className="page">
       <div className="page-hero">
@@ -1178,7 +1140,7 @@ function FaqPage({ setPage, openContact }) {
                       aria-expanded={openFaq === i} aria-controls={`faq-a-${i}`} id={`faq-q-${i}`}>
                 {f.q}<span className="faq-chevron" aria-hidden="true">{openFaq === i ? "−" : "+"}</span>
               </button>
-              {openFaq === i && <div className="faq-a" id={`faq-a-${i}`} role="region" aria-labelledby={`faq-q-${i}`}>{fillRates(f.a, currency)}</div>}
+              {openFaq === i && <div className="faq-a" id={`faq-a-${i}`} role="region" aria-labelledby={`faq-q-${i}`}>{fillRates(f.a, CURRENCY)}</div>}
             </div>
           ))}
         </div>
@@ -1197,7 +1159,7 @@ function FaqPage({ setPage, openContact }) {
 
 // ─── Booking ──────────────────────────────────────────────────────────────
 function BookingPage({ setPage, openContact }) {
-  const standardRate = usePrice("standard");
+  const standardRate = price("standard");
   const today = new Date();
   const [calY, setCalY] = useState(today.getFullYear());
   const [calM, setCalM] = useState(today.getMonth());
@@ -1465,12 +1427,6 @@ export default function App() {
     typeof window === "undefined" ? "home" : routeFromPath(window.location.pathname).id
   );
   const [showContact, setShowContact] = useState(false);
-  // Worked out once on first render, so prices never flash from £ to S$.
-  const [currency, setCurrencyState] = useState(detectCurrency);
-  const setCurrency = useCallback((code) => {
-    setCurrencyState(code);
-    try { window.localStorage.setItem(CURRENCY_KEY, code); } catch { /* private mode */ }
-  }, []);
 
   const navigate = useCallback((id) => {
     const path = hrefFor(id);
@@ -1503,13 +1459,11 @@ export default function App() {
 
   return (
     <RouterContext.Provider value={{ page, navigate }}>
-      <CurrencyContext.Provider value={{ currency, setCurrency }}>
-        <style>{CSS}</style>
-        <a className="skip-link" href="#main">Skip to main content</a>
-        <Nav page={page} setPage={navigate} />
-        <main id="main">{pages[page] || pages.home}</main>
-        {showContact && <ContactModal onClose={() => setShowContact(false)} />}
-      </CurrencyContext.Provider>
+      <style>{CSS}</style>
+      <a className="skip-link" href="#main">Skip to main content</a>
+      <Nav page={page} />
+      <main id="main">{pages[page] || pages.home}</main>
+      {showContact && <ContactModal onClose={() => setShowContact(false)} />}
     </RouterContext.Provider>
   );
 }

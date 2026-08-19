@@ -17,7 +17,7 @@ export const BUSINESS = {
 
 // ─── RATES ───────────────────────────────────────────────────────────────
 // "standard" = Key Stage 3, GCSE and A-Level.
-// "oxbridge" = MAT / TMUA / STEP / Oxbridge interview preparation.
+// "oxbridge" = TMUA / STEP / Oxbridge interview preparation.
 export const CURRENCIES = {
   GBP: { code: "GBP", symbol: "£",  standard: 90,  oxbridge: 150 },
   SGD: { code: "SGD", symbol: "S$", standard: 180, oxbridge: 260 },
@@ -76,7 +76,7 @@ export const ROUTES = [
     path: "/services",
     title: "GCSE, A-Level & Oxbridge Maths Tuition | Rates",
     description:
-      "Online maths tuition for Key Stage 3, GCSE and A-Level, plus MAT, TMUA, STEP and Oxbridge interview preparation. All major exam boards. First session free.",
+      "Online maths tuition for Key Stage 3, GCSE and A-Level, plus TMUA, STEP and Oxbridge interview preparation. All major exam boards. First session free.",
   },
   {
     id: "approach",

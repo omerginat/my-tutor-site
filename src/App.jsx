@@ -745,7 +745,7 @@ function HomePage({ setPage, openContact }) {
         <div className="home-teasers">
           {[
             { icon:"📊", title:"GCSE & A-Level Maths", body:"Targeted, exam-specific tuition that builds genuine understanding and the confidence to perform at your best.", page:"services" },
-            { icon:"🎓", title:"University Admissions", body:"Specialist MAT, TMUA, STEP and Oxbridge interview preparation - from someone who has been through it.", page:"services" },
+            { icon:"🎓", title:"University Admissions", body:"Specialist TMUA, STEP and Oxbridge interview preparation - from someone who has been through it.", page:"services" },
             { icon:"💬", title:"My Approach", body:"I don't just teach methods. I build the understanding and confidence that holds up when it counts most.", page:"approach" },
           ].map(t => (
             <Link to={t.page} className="teaser-card" key={t.title}>
@@ -825,7 +825,7 @@ function AboutPage({ setPage, openContact }) {
             <p>I graduated from <strong>Oxford University with a First Class degree in Mathematics</strong>, having achieved 3 A*s at A-Level and 11 A*s at GCSE - including 100% in most of my Maths and Further Maths papers. Over the past ten years, I've had the privilege of working with students from some of the most demanding schools in London and beyond.</p>
             <p>I am genuinely passionate about Mathematics, and I always aim to share that enthusiasm with my students. Lessons are calm, patient and judgement-free - somewhere it's safe to be stuck, and where we actively work towards genuine understanding and building confidence.</p>
             <p>As a result, my students consistently achieve strong results, with <strong>8/9s at GCSE and A/A*s at A-Level</strong>. I have a <strong>100% success rate</strong> in my students achieving their target grades.</p>
-            <p>I also support students preparing for <strong>university admissions</strong> - including MAT, TMUA and STEP, and Oxbridge interview preparation. Having been through the Oxford admissions process myself, I know exactly what these assessments demand and how to prepare for them.</p>
+            <p>I also support students preparing for <strong>university admissions</strong> - including the TMUA and STEP, and Oxbridge interview preparation. Having been through the Oxford admissions process myself, I know exactly what these assessments demand and how to prepare for them.</p>
             <p>Every new student starts with a <strong>completely free first session</strong>. The way I like to run it: you pick a topic your child has been finding difficult, and we work through it together properly in the lesson. By the end, they should feel noticeably more comfortable with it - so you get a real sense of how I work, with no pressure or obligation.</p>
             <div className="btn-row" style={{marginTop:"1.3rem"}}>
               <a href={WHATSAPP} target="_blank" rel="noopener" className="btn-primary btn-wa"><WAIcon /> Message me on WhatsApp</a>
@@ -906,10 +906,10 @@ function ServicesPage({ setPage, openContact }) {
             </div>
             <div className="uni-cards">
               {[
-                { icon:"📐", title:"MAT", body:"Mathematics Admissions Test for Oxford and Imperial. Problem-solving focus, long-answer technique, and building comfort with proof-based questions." },
-                { icon:"📏", title:"TMUA", body:"Test of Mathematics for University Admission - used by Cambridge and others. Logic, reasoning, and mathematical argument at speed." },
-                { icon:"∑", title:"STEP", body:"Sixth Term Examination Paper - required by Cambridge Maths. In-depth, open-ended problem solving that rewards deep understanding over memorisation." },
+                { icon:"📏", title:"TMUA", body:"Test of Mathematics for University Admission - now the required test for Oxford Maths and Computer Science, and for Imperial. Logic, reasoning, and mathematical argument at speed." },
+                { icon:"∑", title:"STEP", body:"Sixth Term Examination Paper - used in almost all Cambridge conditional offers for Maths and Maths with Physics. In-depth, open-ended problem solving that rewards deep understanding over memorisation." },
                 { icon:"🎙", title:"Oxbridge Interviews", body:"Coaching for the unique style of an Oxford or Cambridge Maths interview - thinking aloud, staying confident under questioning, and working through unseen problems calmly." },
+                { icon:"🔄", title:"Preparing for the MAT?", body:"Oxford ran the MAT from 2007 to 2025. From 2026 entry it no longer takes place - Oxford applicants sit the TMUA instead, as do Imperial's. If your school is still pointing you at MAT papers, I can explain what has changed and refocus preparation on the TMUA." },
               ].map(c => (
                 <div className="uni-card" key={c.title}>
                   <div className="uni-card-icon">{c.icon}</div>
@@ -922,7 +922,7 @@ function ServicesPage({ setPage, openContact }) {
           <div className="oxbridge-banner">
             <div className="oxbridge-banner-body">
               <h4>Oxford-Educated. First Class.</h4>
-              <p>I achieved a First Class Mathematics degree from Oxford University and know the admissions process inside out. Whether your child is preparing for MAT, STEP, TMUA, or an Oxbridge interview, I'll give them the best possible preparation.</p>
+              <p>I achieved a First Class Mathematics degree from Oxford University and know the admissions process inside out. Whether your child is preparing for the TMUA, STEP, or an Oxbridge interview, I'll give them the best possible preparation.</p>
               <div style={{display:"flex",alignItems:"center",gap:"1rem",flexWrap:"wrap"}}>
                 <a href={WHATSAPP} target="_blank" rel="noopener" className="btn-primary btn-nowrap">Get in Touch →</a>
                 <span className="oxbridge-price-note">{oxbridgeRate} / hour</span>
@@ -1276,7 +1276,7 @@ function BookingPage({ setPage, openContact }) {
                 <input className="bk-input" placeholder="Email address" type="email" value={bkForm.email} onChange={e=>setBkForm(f=>({...f,email:e.target.value}))} />
                 <select className="bk-input" value={bkForm.level} onChange={e=>setBkForm(f=>({...f,level:e.target.value}))}>
                   <option value="">Level of support needed</option>
-                  <option>GCSE Foundation</option><option>GCSE Higher</option><option>A-Level</option><option>MAT / TMUA / STEP</option><option>Oxbridge Interview Prep</option>
+                  <option>GCSE Foundation</option><option>GCSE Higher</option><option>A-Level</option><option>TMUA / STEP</option><option>Oxbridge Interview Prep</option>
                 </select>
                 <button className="submit-btn" onClick={() => { if(bkForm.name&&bkForm.email) setBkDone(true); }}>Request This Session</button>
               </div>

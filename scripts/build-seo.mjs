@@ -37,7 +37,7 @@ const personSchema = {
   telephone: BUSINESS.phone,
   url: SITE_URL,
   alumniOf: { "@type": "CollegeOrUniversity", name: "University of Oxford" },
-  knowsAbout: ["GCSE Mathematics", "A-Level Mathematics", "MAT", "TMUA", "STEP", "Oxbridge admissions"],
+  knowsAbout: ["GCSE Mathematics", "A-Level Mathematics", "TMUA", "STEP", "Oxbridge admissions"],
 };
 
 const businessSchema = {
@@ -67,7 +67,7 @@ const businessSchema = {
     name: "Maths tuition",
     itemListElement: [
       ["GCSE & A-Level Maths Tuition", gbp.standard],
-      ["University Admissions Maths Preparation (MAT, TMUA, STEP, Oxbridge interviews)", gbp.oxbridge],
+      ["University Admissions Maths Preparation (TMUA, STEP, Oxbridge interviews)", gbp.oxbridge],
     ].map(([name, price]) => ({
       "@type": "Offer",
       itemOffered: { "@type": "Service", name, serviceType: "Online maths tuition" },

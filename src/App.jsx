@@ -296,6 +296,9 @@ const CSS = `
   .uni-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:0.9rem;}
   .uni-card{background:white;border:1px solid rgba(23,32,56,0.08);border-radius:12px;padding:1rem 1.1rem;transition:background 0.2s,transform 0.2s;box-shadow:0 1px 4px rgba(23,32,56,0.06);}
   .uni-card:hover{background:var(--sage2);transform:translateY(-2px);}
+  /* With an odd number of cards, let the last one span the row rather than
+     leaving a gap beside it. */
+  .uni-cards > .uni-card:last-child:nth-child(odd){grid-column:1/-1;}
   .uni-card-icon{font-size:1.4rem;margin-bottom:0.3rem;}
   .uni-card h4{font-size:0.95rem;color:var(--navy);margin-bottom:0.3rem;font-weight:600;}
   .uni-card p{font-size:0.82rem;color:var(--muted);line-height:1.65;margin:0;}
@@ -917,6 +920,7 @@ function ServicesPage({ setPage, openContact }) {
                 { icon:"📏", title:"TMUA", body:"Test of Mathematics for University Admission - now the required test for Oxford Maths and Computer Science, and for Imperial. Logic, reasoning, and mathematical argument at speed.", to:"tmua", more:"TMUA dates and preparation" },
                 { icon:"∑", title:"STEP", body:"Sixth Term Examination Paper - used in almost all Cambridge conditional offers for Maths and Maths with Physics. In-depth, open-ended problem solving that rewards deep understanding over memorisation.", to:"step", more:"STEP papers and preparation" },
                 { icon:"🎙", title:"Oxbridge Interviews", body:"Coaching for the unique style of an Oxford or Cambridge Maths interview - thinking aloud, staying confident under questioning, and working through unseen problems calmly.", to:"interview", more:"How I prepare students for interview" },
+                { icon:"🇺🇸", title:"SAT & ACT Maths", body:"For students applying to universities in the United States. The maths sections reward speed, accuracy and familiarity with US phrasing more than they reward deep problem solving.", to:"satact", more:"SAT and ACT maths preparation" },
                 { icon:"🔄", title:"Preparing for the MAT?", body:"Oxford ran the MAT from 2007 to 2025. From 2026 entry it no longer takes place - Oxford applicants sit the TMUA instead, as do Imperial's. If your school is still pointing you at MAT papers, I can explain what has changed and refocus preparation on the TMUA.", to:"tmua", more:"What the TMUA involves" },
               ].map(c => (
                 <div className="uni-card" key={c.title}>
@@ -1556,6 +1560,89 @@ function StepPage({ openContact }) {
   );
 }
 
+function SatActPage({ openContact }) {
+  const oxbridgeRate = price("oxbridge");
+  return (
+    <div className="page">
+      <div className="page-hero">
+        <div className="page-hero-inner">
+          <span className="section-label" style={{color:"var(--gold2)"}}>SAT &amp; ACT</span>
+          <h1>Maths Preparation for<br/><em>US Applications</em></h1>
+          <p>One-to-one work on the maths sections of the SAT and the ACT, for students applying to universities in the United States. Taught by an Oxford Mathematics graduate with a First Class degree.</p>
+        </div>
+      </div>
+
+      <section className="section">
+        <div style={{maxWidth:"1100px",margin:"0 auto"}}>
+          <span className="section-label">What They Ask For</span>
+          <div className="divider"/>
+          <h2 className="section-title">SAT and ACT Maths, Side by Side</h2>
+          <p className="section-lead">Both tests cover material a UK student has largely met by the end of GCSE and early A-level. What makes them hard is the pace, the format, and how heavily they punish small slips.</p>
+          <div className="uni-cards" style={{marginTop:"2rem"}}>
+            <div className="uni-card">
+              <div className="uni-card-icon" aria-hidden="true">🖥</div>
+              <h4>SAT Maths</h4>
+              <p>44 questions in 70 minutes, split into two 35 minute modules. The test is adaptive: how you do on the first module decides whether the second is harder or easier, which makes a steady start matter more than most students realise. Mostly multiple choice, with some answers typed in.</p>
+            </div>
+            <div className="uni-card">
+              <div className="uni-card-icon" aria-hidden="true">⏱</div>
+              <h4>ACT Maths</h4>
+              <p>45 questions in 50 minutes under the enhanced format, with four answer choices rather than five, and questions running roughly from easier to harder. Around 67 seconds a question, so it rewards speed and accuracy over deep problem solving.</p>
+            </div>
+            <div className="uni-card">
+              <div className="uni-card-icon" aria-hidden="true">📊</div>
+              <h4>Content covered</h4>
+              <p>Algebra, advanced algebra, problem solving and data analysis, geometry and trigonometry. For a student who has done GCSE Higher and some A-level, very little of this is new material.</p>
+            </div>
+            <div className="uni-card">
+              <div className="uni-card-icon" aria-hidden="true">🎯</div>
+              <h4>Which to sit</h4>
+              <p>US universities accept either, and neither is regarded as easier. The ACT suits students who are quick and accurate; the SAT suits those who prefer more time to think. If you are undecided, a timed section of each usually settles it quickly.</p>
+            </div>
+          </div>
+          <div className="result-banner" style={{maxWidth:"1100px",margin:"1.6rem auto 0"}}>
+            <div className="rb-icon" aria-hidden="true">💡</div>
+            <div className="rb-text">
+              For UK students the maths itself is rarely the obstacle. Marks go on <strong>unfamiliar phrasing,
+              answering under time pressure, and questions designed around common slips</strong>. That is very
+              trainable, which is why scores tend to move quickly with focused practice.
+            </div>
+          </div>
+          <p style={{maxWidth:"1100px",margin:"1.2rem auto 0",fontSize:"0.82rem",color:"var(--muted)"}}>
+            Formats change. Confirm current details on the College Board and ACT websites before you book a sitting.
+          </p>
+        </div>
+      </section>
+
+      <section className="section section-alt">
+        <div className="approach-cols">
+          <div className="approach-intro">
+            <span className="section-label">How I Prepare Students</span>
+            <div className="divider"/>
+            <p>Most UK students I work with are applying to US universities alongside their UK choices, and are fitting this around A-levels. The aim is to get the maths section to a score they are happy with efficiently, without it eating the time their A-levels need.</p>
+            <p>We start by finding where marks are actually going. It is usually not the mathematics. It is running short of time, or a handful of question types that keep catching the same student out.</p>
+            <p>Sessions are <strong>{oxbridgeRate} per hour</strong>, one-to-one and online.</p>
+            <LandingCta openContact={openContact} />
+          </div>
+          <div className="approach-items">
+            {[
+              { n:"1", title:"Find the pattern in the errors", body:"A timed section first, then we look at what went wrong. Almost always the lost marks cluster into two or three recurring causes, and fixing those is far faster than working through everything." },
+              { n:"2", title:"Work at test pace", body:"Both tests give you around a minute a question. We practise recognising a question type immediately, and knowing when to move on rather than sink three minutes into one mark." },
+              { n:"3", title:"Translate the phrasing", body:"US wording and notation differ from what UK students are used to. Once that stops causing hesitation, a lot of apparent difficulty simply disappears." },
+            ].map(a => (
+              <div className="approach-item-row" key={a.n}>
+                <div className="approach-num-badge" aria-hidden="true">{a.n}</div>
+                <div><h4>{a.title}</h4><p>{a.body}</p></div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+      <PageFooter openContact={openContact} />
+    </div>
+  );
+}
+
 function UkmtPage({ openContact }) {
   const standardRate = price("standard");
   return (
@@ -1600,7 +1687,7 @@ function UkmtPage({ openContact }) {
             <span className="section-label">How I Prepare Students</span>
             <div className="divider"/>
             <p>Challenge and Olympiad problems are not harder versions of school maths. They ask for something school rarely teaches: noticing structure, trying small cases, and building an argument that genuinely proves something rather than just arriving at an answer.</p>
-            <p>Students of mine regularly do well in these rounds. One recent example is a student who finished in the <strong>top 10% of the Mathematical Olympiad for Girls</strong>.</p>
+            <p>Students of mine regularly do well in these rounds. One recent example is a student who finished in the <strong>top 5% of the Mathematical Olympiad for Girls</strong>.</p>
             <p>This is also some of the most enjoyable teaching I do. Students who find the syllabus straightforward often come alive here, and it tends to feed straight back into their confidence at GCSE and A-level.</p>
             <p>Sessions are <strong>{standardRate} per hour</strong>, one-to-one and online.</p>
             <LandingCta openContact={openContact} />
@@ -1739,7 +1826,7 @@ const FOOTER_LABELS = {
   about: "About Me", services: "Services", approach: "My Approach",
   reviews: "Reviews", faq: "FAQ & Pricing", booking: "Book a Session",
   tmua: "TMUA Preparation", step: "STEP Preparation", interview: "Oxbridge Interviews",
-  ukmt: "UKMT & Olympiad", london: "London Maths Tuition",
+  ukmt: "UKMT & Olympiad", satact: "SAT & ACT Maths", london: "London Maths Tuition",
 };
 
 function PageFooter({ openContact }) {
@@ -1874,6 +1961,7 @@ export default function App() {
     interview: <InterviewPage {...pageProps} />,
     step:      <StepPage {...pageProps} />,
     ukmt:      <UkmtPage {...pageProps} />,
+    satact:    <SatActPage {...pageProps} />,
     london:    <LondonPage {...pageProps} />,
   };
 

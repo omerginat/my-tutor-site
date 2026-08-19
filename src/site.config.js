@@ -17,9 +17,10 @@ export const BUSINESS = {
 
 // ─── RATES ───────────────────────────────────────────────────────────────
 // "standard" = Key Stage 3, GCSE and A-Level.
-// "oxbridge" = TMUA / STEP / Oxbridge interview preparation.
+// "oxbridge" = university admissions work: TMUA, STEP, Oxbridge interviews,
+//              and SAT / ACT maths for US applications.
 export const CURRENCIES = {
-  GBP: { code: "GBP", symbol: "£",  standard: 90,  oxbridge: 150 },
+  GBP: { code: "GBP", symbol: "£",  standard: 90,  oxbridge: 140 },
   SGD: { code: "SGD", symbol: "S$", standard: 180, oxbridge: 260 },
 };
 
@@ -138,6 +139,13 @@ export const ROUTES = [
     title: "UKMT & Maths Olympiad Tutor | Challenge and BMO Prep",
     description:
       "One-to-one preparation for the UKMT Maths Challenges, Kangaroo and Olympiad rounds, and the Mathematical Olympiad for Girls, from an Oxford Maths graduate.",
+  },
+  {
+    id: "satact",
+    path: "/sat-act-maths-tutor",
+    title: "SAT & ACT Maths Tutor | US University Admissions",
+    description:
+      "One-to-one preparation for the SAT and ACT maths sections, for students applying to US universities. Taught by an Oxford First Class Mathematics graduate.",
   },
   {
     id: "london",

@@ -1,6 +1,11 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext, createContext, useCallback } from "react";
+import { SCHOOLS, ALL_REVIEWS, FAQS } from "./content.js";
+import {
+  BUSINESS, CURRENCIES, DEFAULT_CURRENCY, SGD_TIMEZONE_PREFIXES,
+  formatPrice, fillRates, ROUTES, ROUTE_BY_PATH, ROUTE_BY_ID, HOME_ROUTE,
+} from "./site.config.js";
 
-const PHOTO_SRC = "/images/image_01.jpg";
+const PHOTO_SRC = BUSINESS.photo;
 const WAIcon = () => (
   <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style={{flexShrink:0}}>
     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
@@ -12,60 +17,113 @@ const EmailIcon = () => (
     <path d="M2 7l10 7 10-7"/>
   </svg>
 );
-const WHATSAPP = "https://wa.me/447932365990?text=Hi%20Omer%2C%20I%27m%20interested%20in%20maths%20tuition";
-const EMAIL = "mailto:hello@omermaths.com";
+const WHATSAPP = BUSINESS.whatsapp;
+const EMAIL = `mailto:${BUSINESS.email}`;
 const FORMSPREE_URL = "https://formspree.io/f/mnjrrqba";
 const isValidEmail = (e) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
+
+/** Sends a form to Formspree and throws if it did not actually go through.
+ *  Formspree answers with a 4xx (not a network error) when a submission is
+ *  rejected, so the response status has to be checked explicitly - otherwise
+ *  a visitor sees "message sent" for a message that was silently dropped. */
+async function postToFormspree(payload) {
+  const res = await fetch(FORMSPREE_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "Accept": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  if (!res.ok) {
+    let detail = "";
+    try {
+      const body = await res.json();
+      detail = (body.errors || []).map(e => e.message).filter(Boolean).join(", ");
+    } catch { /* response wasn't JSON */ }
+    throw new Error(detail || `Sorry - that didn't send (error ${res.status}).`);
+  }
+  return res;
+}
+
+/** Shown when a form fails, so an enquiry is never lost in silence. */
+function SendError({ message, dark }) {
+  return (
+    <div className={`send-error${dark ? " send-error-dark" : ""}`} role="alert">
+      <strong>{message}</strong>
+      <span>
+        Please message me on <a href={WHATSAPP} target="_blank" rel="noopener">WhatsApp</a>{" "}
+        or email <a href={EMAIL}>{BUSINESS.email}</a> instead - I&apos;ll always reply.
+      </span>
+    </div>
+  );
+}
+
+// ─── Currency ─────────────────────────────────────────────────────────────
+// Visitors in Asia are shown SGD; everyone else GBP. A manual switch in the
+// nav overrides the guess and is remembered in the browser.
+const CURRENCY_KEY = "omermaths.currency";
+const CurrencyContext = createContext({ currency: DEFAULT_CURRENCY, setCurrency: () => {} });
+const useCurrency = () => useContext(CurrencyContext);
+const usePrice = (tier) => formatPrice(useCurrency().currency, tier);
+
+function detectCurrency() {
+  try {
+    const saved = window.localStorage.getItem(CURRENCY_KEY);
+    if (saved && CURRENCIES[saved]) return saved;
+  } catch { /* localStorage blocked - fall through to timezone */ }
+  try {
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || "";
+    if (SGD_TIMEZONE_PREFIXES.some(p => tz.startsWith(p))) return "SGD";
+  } catch { /* no Intl support - fall through to default */ }
+  return DEFAULT_CURRENCY;
+}
+
+function CurrencySwitch({ className = "" }) {
+  const { currency, setCurrency } = useCurrency();
+  return (
+    <div className={`currency-switch ${className}`} role="group" aria-label="Choose currency">
+      {Object.values(CURRENCIES).map(c => (
+        <button
+          key={c.code}
+          type="button"
+          className={`currency-opt${currency === c.code ? " active" : ""}`}
+          aria-pressed={currency === c.code}
+          aria-label={`Show prices in ${c.code}`}
+          onClick={() => setCurrency(c.code)}
+        >
+          <span className="cur-sym">{c.symbol}</span>
+          <span className="cur-code">{c.code}</span>
+        </button>
+      ))}
+    </div>
+  );
+}
+// ─── Routing ──────────────────────────────────────────────────────────────
+// Every page has a real URL (/about, /reviews, ...) so it can be shared,
+// bookmarked, and indexed by Google. Navigation stays instant - we just swap
+// the rendered page and update the address bar, with no full page reload.
+const RouterContext = createContext({ page: "home", navigate: () => {} });
+const useRouter = () => useContext(RouterContext);
+
+const hrefFor = (id) => (ROUTE_BY_ID[id] || HOME_ROUTE).path;
+const routeFromPath = (pathname) => {
+  const clean = pathname.replace(/\/+$/, "") || "/";
+  return ROUTE_BY_PATH[clean] || HOME_ROUTE;
+};
+
+/** An internal link. Renders a real <a href> so crawlers and
+ *  "open in new tab" both work, but navigates without a page reload. */
+function Link({ to, children, ...rest }) {
+  const { navigate } = useRouter();
+  const onClick = (e) => {
+    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    e.preventDefault();
+    navigate(to);
+  };
+  return <a href={hrefFor(to)} onClick={onClick} {...rest}>{children}</a>;
+}
+
 const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 const DAYS_SHORT = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
 const TIMES = ["9:00 AM","10:00 AM","11:00 AM","2:00 PM","3:00 PM","4:00 PM","5:00 PM","6:00 PM"];
-
-const SCHOOLS = [
-  { name:"St Paul's School",            domain:"stpaulsschool.org.uk",    logoUrl:"/images/image_02.png" },
-  { name:"Westminster School",          domain:"westminster.org.uk",       logoUrl:"/images/image_03.png" },
-  { name:"King's College School", domain:"kcs.org.uk", logoUrl:"/images/image_04.png" },
-  { name:"City of London School",       domain:"cityoflondonschool.org.uk",    logoUrl:"/images/image_05.png" },
-  { name:"Highgate School", domain:"highgateschool.org.uk", logoUrl:"/images/image_06.png" },
-  { name:"University College School", domain:"ucs.org.uk", logoUrl:"/images/image_07.png" },
-  { name:"North London Collegiate",     domain:"nlcs.org.uk",                  logoUrl:"/images/image_08.png" },
-  { name:"Henrietta Barnett School", domain:"hbs.barnet.sch.uk", logoUrl:"/images/image_09.png" },
-  { name:"Latymer Upper School",        domain:"latymer-upper.org",            logoUrl:"/images/image_10.png" },
-  { name:"Dulwich College",             domain:"dulwich.org.uk",               logoUrl:"/images/image_11.png" },
-  { name:"Emanuel School",              domain:"emanuel.org.uk",               logoUrl:"/images/image_12.png" },
-  { name:"Wimbledon High School",       domain:"wimbledonhigh.gdst.net",       logoUrl:"/images/image_13.png" },
-  { name:"Hampton School",              domain:"hamptonschool.org.uk",         logoUrl:"/images/image_14.png" },
-  { name:"Tanglin Trust School", domain:"tts.edu.sg", logoUrl:"/images/image_15.png" },
-  { name:"Overseas Family School",      domain:"ofs.edu.sg",                   logoUrl:"/images/image_16.png" },
-  { name:"Harrow School",               domain:"harrowschool.org.uk",          logoUrl:"/images/image_17.png" },
-  { name:"Eton College",                domain:"etoncollege.com",              logoUrl:"/images/image_18.png" },
-  { name:"Channing School",             domain:"channing.co.uk",               logoUrl:"/images/image_19.png" },
-  { name:"Aldenham School",              domain:"aldenham.com",                logoUrl:"/images/image_20.png" },
-  { name:"Haberdashers School",          domain:"habsboys.org.uk",              logoUrl:"/images/image_21.png" },
-];
-
-const ALL_REVIEWS = [
-  { id:4,  stars:5, text:"Omer completely changed the way I felt about A-Level Maths. Before starting tuition, I was struggling badly with confidence and found certain topics overwhelming. Thanks to Omer's patient teaching style and clear explanations, everything gradually started to make sense. I ended up improving far beyond my predicted grade and achieved an A in the end. What really stood out was how supportive and encouraging he was throughout the whole process, especially during exam season. I always felt comfortable asking questions and never felt judged for getting things wrong. I would highly recommend Omer to anyone looking for a knowledgeable and approachable tutor.", author:"Tom, A-Level student", date:"Apr 2026" },
-  { id:1,  stars:5, text:"Omer has been an outstanding GCSE Maths tutor for our son. He combines real mastery of the subject with exceptional patience and clarity, and he is equally strong at teaching exam technique - identifying where marks are lost and showing precisely how to secure them. Under his guidance, our son's confidence and performance have grown significantly, and he now approaches even difficult topics with real assurance. Omer is reliable, supportive, and highly effective. I recommend him without hesitation.", author:"Peter, Parent of GCSE student", date:"Feb 2026" },
-  { id:3,  stars:5, text:"Omer has been an excellent tutor from the very beginning. Within just a few months we could already see a huge improvement in both grades and confidence. He explains things clearly, is always friendly and approachable, and really knows how to make difficult topics easier to understand. Maths has become much more enjoyable thanks to his support. I never thought I would ever say this, but I've now decided to take it for A-Level!", author:"Oli, GCSE student", date:"Nov 2025" },
-  { id:2,  stars:5, text:"Thanks so much for the Oxford Interview Prep sessions. Delighted to have been accepted to study Maths, and genuinely don't think I would have gotten my offer without your support.\n\nMy confidence has hugely increased throughout our sessions, and being able to learn through our mock interviews meant that I was so much sharper for the real thing.\n\nI actually ended up being given a similar question to one of those we did together, which of course helped too!\n\nThanks for everything Omer - really appreciate your guidance and advice. I'm lucky to have found you as a tutor.", author:"Matt, Oxford Admissions", date:"Jan 2025" },
-  { id:6,  stars:5, text:"We are absolutely delighted to have found Omer. He has been a fantastic tutor for our daughter and has completely transformed her attitude towards Maths. His calm, patient approach and ability to tailor lessons to her individual needs have made a huge difference to both her confidence and grades. Omer is reliable, professional, and genuinely invested in helping his students succeed. We would highly recommend him.", author:"Sarah, Parent of A-Level student", date:"Jun 2024" },
-  { id:5,  stars:5, text:"I can't recommend Omer highly enough. My son was really struggling with GCSE Maths and had lost confidence in his own ability. After only a short time working with Omer, his grades started improving and, more importantly, his attitude towards maths became much more positive. Omer has a real talent for identifying where students are struggling and adapting his teaching style to suit them individually. He's an excellent tutor and someone young people feel comfortable working with.", author:"Grace, Parent of GCSE student", date:"Mar 2024" },
-  { id:7,  stars:5, text:"I highly recommend Omer. He has been tutoring my son for over a year and, along with his confidence, has improved his grades considerably. My son never complains about doing his sessions with Omer and likes him very much. Omer is reliable and flexible when asked. It's always a pleasure to interact with Omer.", author:"Anna, Parent of GCSE student", date:"Sep 2023" },
-  { id:8,  stars:5, text:"Omer is a first class tutor with a calm, thoughtful and structured approach to the work he does with his students. Our daughter really benefited from his tuition which greatly assisted her in achieving her place at university to read Maths. In addition, he made lessons fun and inspiring and developed a great rapport with her during their time working together. In short, we couldn't recommend him highly enough!", author:"Estelle, Parent of A-Level student", date:"Sep 2023" },
-  { id:9,  stars:5, text:"Omer has been helping me prepare for a professional exam as an adult learner, and I've found him to be patient, organised, and extremely knowledgeable. He took the time to understand the exam requirements before our first lesson and worked with me to create a clear study plan. He's also been very accommodating around my work schedule, which I really appreciate.", author:"Nancy, Adult Learner", date:"Aug 2022" },
-  { id:10, stars:5, text:"He explains things well and clearly, and is very adaptable in his teaching. Exactly the kind of tutor you hope to find.", author:"Aasiya, A-Level student", date:"Apr 2022" },
-  { id:11, stars:5, text:"Omer was a huge support in the lead up to my A-Level Maths exams. He helped me realise I understood far more than I thought and gave me the confidence to stay calm under pressure. His explanations were always clear and he never rushed through anything until I fully understood it. Thanks to his help, I achieved the grades I needed for university. I've already recommended him to several friends.", author:"Olivia, A-Level student", date:"Oct 2021" },
-];
-
-const FAQS = [
-  { q:"Is the first lesson really free?", a:"Yes, completely. I suggest your child picks a topic they've been struggling with, and we work through it properly together - so you can see exactly how I teach, and your child gets something useful out of it regardless. If it's working well, we can talk about going forward. There's no pressure either way." },
-  { q:"What results have your students achieved?", a:"My students consistently achieve grade 8 or 9 at GCSE, and A or A* at A-level. I'm proud of that record - though it also reflects the students themselves, who consistently put in the work between sessions." },
-  { q:"Do you help with university admissions?", a:"Yes - this is something I'm particularly well-placed to support, having been through the Oxford admissions process myself. I offer targeted preparation for MAT, TMUA, and STEP, as well as Oxbridge interview coaching. These sessions focus on the kind of mathematical thinking and problem-solving these processes test, which goes well beyond the standard A-level curriculum." },
-  { q:"What do sessions look like?", a:"For the trial lesson, I suggest your child picks a topic they've been finding difficult - we focus on that together, and they should feel noticeably more confident with it by the end. For regular sessions, we typically start with a check-in on what's been covered at school and where things feel shaky, then work through it together. I use an iPad to write notes that we can both see in real time. I also set a small amount of follow-up work to consolidate things between sessions." },
-  { q:"Which exam boards do you cover?", a:"I cover all major UK exam boards - AQA, Edexcel, OCR, and WJEC - at both GCSE and A-level. Teaching is always aligned specifically to the mark scheme and syllabus your child is working to." },
-  { q:"What are your rates?", a:"GCSE and A-Level sessions are £100 per hour. University admissions sessions (MAT, TMUA, STEP, Oxbridge interviews) are £150 per hour. For GCSE and A-Level, the first session is always free. I invoice monthly, and payment is by bank transfer. I ask for 24 hours' notice if you need to cancel or rearrange." },
-  { q:"Are you DBS checked?", a:"Yes, I hold an Enhanced DBS Certificate, and am happy to share it on request." },
-];
 
 // ─── Shared CSS ────────────────────────────────────────────────────────────
 const CSS = `
@@ -101,7 +159,9 @@ const CSS = `
   .mobile-menu ul{list-style:none;display:flex;flex-direction:column;gap:0.25rem;}
   .mobile-menu .nav-btn{font-size:1rem;padding:0.75rem 1rem;width:100%;text-align:left;border-radius:8px;}
   .mobile-cta{margin-top:0.75rem;width:100%;display:block;text-align:center;background:var(--gold);color:white;border:none;padding:0.85rem;border-radius:8px;font-size:1rem;font-weight:600;cursor:pointer;}
-  @media(max-width:900px){.nav-links{display:none;}.hamburger{display:flex;}.nav-cta{display:none;}}
+  /* Switch to the hamburger at 1000px: below that the links, currency switch
+     and CTA no longer fit beside the logo without colliding. */
+  @media(max-width:1040px){.nav-links{display:none;}.hamburger{display:flex;}.nav-cta{display:none;}}
 
   /* MOBILE QUICK LINKS */
   .mobile-quick-links{display:none;padding:2.5rem 5vw;background:var(--cream2);text-align:center;}
@@ -112,7 +172,7 @@ const CSS = `
   .mobile-quick-link:hover{border-color:var(--gold);color:var(--gold);}
   .mobile-quick-link.mql-cta{grid-column:1/-1;background:var(--gold);color:var(--white);border-color:var(--gold);font-weight:600;}
   .mobile-quick-link.mql-cta:hover{background:var(--gold2);color:var(--navy);}
-  @media(max-width:900px){.mobile-quick-links{display:block;}}
+  @media(max-width:1040px){.mobile-quick-links{display:block;}}
 
   /* PAGE WRAPPER */
   .page{padding-top:68px;min-height:100vh;}
@@ -412,6 +472,98 @@ const CSS = `
   .footer-bottom{max-width:1100px;margin:0 auto;padding-top:1.2rem;border-top:1px solid rgba(255,255,255,0.06);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.5rem;}
   .footer-bottom p{font-size:0.78rem;color:rgba(255,255,255,0.22);}
   @media(max-width:800px){.contact-grid{grid-template-columns:1fr;gap:2.5rem;}}
+
+  /* ── ACCESSIBILITY ── */
+  .skip-link{position:absolute;left:-9999px;top:0;z-index:300;background:var(--gold);color:var(--white);padding:0.8rem 1.3rem;border-radius:0 0 8px 0;font-size:0.9rem;font-weight:600;text-decoration:none;}
+  .skip-link:focus{left:0;}
+  :focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
+  .nav :focus-visible,.mobile-menu :focus-visible,.section-dark :focus-visible,.hero-full :focus-visible,.page-hero :focus-visible{outline-color:var(--gold2);}
+  @media(prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation-duration:0.01ms!important;transition-duration:0.01ms!important;scroll-behavior:auto!important;}
+    .teaser-card:hover,.service-card:hover,.school-card:hover,.uni-card:hover,.btn-primary:hover{transform:none;}
+  }
+
+  /* Links that carry button/card styling need their anchor defaults reset. */
+  .nav-logo,a.nav-btn,a.nav-cta,a.mobile-cta,a.teaser-card,a.mobile-quick-link,.footer-nav a{text-decoration:none;}
+  a.nav-btn{display:inline-block;}
+  a.nav-cta{display:inline-block;line-height:1.4;}
+  a.mobile-cta{display:block;}
+  a.teaser-card{display:flex;flex-direction:column;color:inherit;}
+  a.mobile-quick-link{color:var(--navy);}
+  a.mobile-quick-link.mql-cta{color:var(--white);}
+  a.mobile-quick-link.mql-cta:hover{color:var(--navy);}
+
+  /* ── CURRENCY SWITCH ── */
+  .currency-switch{display:inline-flex;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.18);border-radius:100px;padding:2px;margin:0 0.4rem;}
+  .currency-opt{background:none;border:none;color:rgba(255,255,255,0.62);font-family:'DM Sans',sans-serif;font-size:0.74rem;font-weight:500;padding:0.3rem 0.62rem;border-radius:100px;cursor:pointer;white-space:nowrap;transition:background 0.2s,color 0.2s;}
+  .currency-opt.active{background:var(--gold);color:var(--white);}
+  .currency-opt:hover:not(.active){color:var(--gold2);}
+  .cur-code{margin-left:0.3rem;}
+  /* The top nav is tight on laptops, so show just the symbol there. */
+  .nav-links .cur-code{display:none;}
+  .currency-switch-mobile{display:flex;justify-content:center;width:100%;margin:1rem 0 0;}
+  .currency-switch-mobile .currency-opt{font-size:0.85rem;padding:0.55rem 1.1rem;}
+
+  /* ── FORM SEND ERROR ── */
+  .send-error{display:flex;flex-direction:column;gap:0.3rem;background:rgba(201,85,58,0.08);border:1px solid rgba(201,85,58,0.35);border-radius:8px;padding:0.85rem 1rem;margin:0.4rem 0 0.2rem;font-size:0.85rem;line-height:1.6;color:#8f3a25;}
+  .send-error strong{font-weight:600;}
+  .send-error a{color:#8f3a25;font-weight:600;}
+  .send-error-dark{background:rgba(255,140,110,0.12);border-color:rgba(255,140,110,0.4);color:#ffb9a3;}
+  .send-error-dark a{color:var(--gold2);}
+
+  /* ── FOOTER NAV (internal links on every page) ── */
+  .footer-nav{display:flex;flex-wrap:wrap;gap:0.4rem 1.4rem;margin-top:1.4rem;padding-top:1.2rem;border-top:1px solid rgba(255,255,255,0.06);list-style:none;}
+  .footer-nav a{color:rgba(255,255,255,0.55);font-family:'DM Sans',sans-serif;font-size:0.82rem;transition:color 0.2s;}
+  .footer-nav a:hover{color:var(--gold2);}
+
+  /* ── MOBILE REFINEMENTS ── */
+  @media(max-width:700px){
+    .section{padding:52px 5vw;}
+    .page-hero{padding:52px 5vw 46px;}
+    .hero-full{padding:56px 5vw 48px;}
+    /* "Builds Confidence" is nowrap on desktop for the line break; on a phone
+       that forces a horizontal scrollbar, so let it wrap. */
+    .hero-full h1 em{white-space:normal;}
+    .hero-sub{margin-bottom:1.8rem;}
+    .trust-bar{gap:0.85rem 1.4rem;padding:1.1rem 5vw;}
+    .trust-item{white-space:normal;font-size:0.85rem;text-align:left;}
+    .reviews-header{align-items:flex-start;}
+    .oxbridge-banner{padding:1.5rem 1.25rem;}
+    .online-callout{padding:1.75rem 1.4rem;}
+    .approach-item-row{padding:1.35rem;gap:1rem;}
+    .modal{padding:1.75rem 1.35rem;border-radius:14px;}
+    .booking-right{padding:1.5rem 1.25rem;}
+    .booking-left{padding:1.85rem 1.4rem;}
+    /* Buttons carry a min-width for balance on desktop; on a phone that
+       pushes them past the screen edge, so let the container decide. */
+    .btn-primary,.btn-ghost,.btn-email,.btn-email-dark,.btn-outline-gold{min-width:0;max-width:100%;}
+    .btn-primary.btn-sm{padding:0.6rem 1rem;}
+    .btn-nowrap{white-space:normal;}
+  }
+  /* Keep these buttons on one line on wider screens only. */
+  .btn-nowrap{white-space:nowrap;}
+  /* Grid children default to min-width:auto, which stops them shrinking below
+     their widest child and pushes the booking panel off-screen on phones. */
+  .booking-left,.booking-right,.booking-shell{min-width:0;}
+  @media(max-width:420px){
+    /* Three stats side by side overflow the narrowest phones. */
+    .hero-stats{display:grid;grid-template-columns:1fr;gap:0;width:100%;padding:0.5rem 1rem;}
+    .hero-stat{padding:0.9rem 0;width:100%;}
+    .hero-stat+.hero-stat{border-left:none;border-top:1px solid rgba(255,255,255,0.12);}
+    .schools-grid{grid-template-columns:1fr;}
+    .mobile-quick-links-grid{grid-template-columns:1fr;}
+  }
+  /* Tap targets: fingers need ~44px, so pad out the small controls without
+     changing how any of them look. */
+  .hamburger{min-width:44px;min-height:44px;align-items:center;justify-content:center;margin-right:-0.5rem;}
+  .see-more-btn{padding:0.5rem 0.75rem 0.5rem 0;min-height:38px;}
+  .footer-nav a{display:inline-block;padding:0.4rem 0;}
+  .footer-brand-links{gap:0.6rem 1.5rem;}
+  .footer-brand-links a,.footer-brand-links button{padding:0.35rem 0;}
+  .scroll-arrow{min-width:44px;min-height:44px;}
+
+  /* Nothing on the page should ever scroll sideways on a phone. */
+  html,body{max-width:100%;overflow-x:hidden;}
 `;
 
 // ─── Focus Trap Hook ─────────────────────────────────────────────────────
@@ -451,8 +603,12 @@ function SchoolCard({ school }) {
       {!failed ? (
         <img
           src={school.logoUrl}
-          alt={school.name}
+          alt={`${school.name} logo`}
           className="school-logo-lg"
+          width="48"
+          height="48"
+          loading="lazy"
+          decoding="async"
           onError={() => setFailed(true)}
         />
       ) : (
@@ -464,7 +620,7 @@ function SchoolCard({ school }) {
 }
 
 // ─── Nav ──────────────────────────────────────────────────────────────────
-function Nav({ page, setPage }) {
+function Nav({ page }) {
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
@@ -479,37 +635,50 @@ function Nav({ page, setPage }) {
     ["reviews","Reviews"],
     ["faq","FAQ"],
   ];
-  const navigate = (id) => { setPage(id); setMenuOpen(false); };
+  const close = () => setMenuOpen(false);
+  // Close the mobile menu on Escape, and stop the page behind it scrolling.
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onKey = (e) => { if (e.key === "Escape") setMenuOpen(false); };
+    window.addEventListener("keydown", onKey);
+    document.body.style.overflow = "hidden";
+    return () => { window.removeEventListener("keydown", onKey); document.body.style.overflow = ""; };
+  }, [menuOpen]);
+
   return (
     <>
-    <nav className={`nav${scrolled ? " scrolled" : ""}`}>
-      <div className="nav-logo" onClick={() => navigate("home")}>Omer <span>Maths Tuition</span></div>
+    <nav className={`nav${scrolled ? " scrolled" : ""}`} aria-label="Main">
+      <Link to="home" className="nav-logo" onClick={close}>Omer <span>Maths Tuition</span></Link>
       <ul className="nav-links">
         {links.map(([id, label]) => (
           <li key={id}>
-            <button className={`nav-btn${page === id ? " active" : ""}`} onClick={() => navigate(id)}>
+            <Link to={id} className={`nav-btn${page === id ? " active" : ""}`}
+                  aria-current={page === id ? "page" : undefined}>
               {label}
-            </button>
+            </Link>
           </li>
         ))}
-        <li>
-          <button className="nav-cta" onClick={() => navigate("booking")}>Book a Session</button>
-        </li>
+        <li><CurrencySwitch /></li>
+        <li><Link to="booking" className="nav-cta">Book a Session</Link></li>
       </ul>
-      <button className="hamburger" onClick={() => setMenuOpen(o => !o)} aria-label="Menu">
+      <button className="hamburger" onClick={() => setMenuOpen(o => !o)}
+              aria-label={menuOpen ? "Close menu" : "Open menu"}
+              aria-expanded={menuOpen} aria-controls="mobile-menu">
         <span/><span/><span/>
       </button>
     </nav>
-    <div className={`mobile-menu-overlay${menuOpen ? " open" : ""}`} onClick={() => setMenuOpen(false)} />
-    <div className={`mobile-menu${menuOpen ? " open" : ""}`}>
+    <div className={`mobile-menu-overlay${menuOpen ? " open" : ""}`} onClick={close} />
+    <div className={`mobile-menu${menuOpen ? " open" : ""}`} id="mobile-menu" hidden={!menuOpen}>
       <ul>
         {links.map(([id, label]) => (
           <li key={id}>
-            <button className={`nav-btn${page === id ? " active" : ""}`} onClick={() => navigate(id)}>{label}</button>
+            <Link to={id} className={`nav-btn${page === id ? " active" : ""}`}
+                  aria-current={page === id ? "page" : undefined} onClick={close}>{label}</Link>
           </li>
         ))}
       </ul>
-      <button className="mobile-cta" onClick={() => navigate("booking")}>Book a Session</button>
+      <Link to="booking" className="mobile-cta" onClick={close}>Book a Session</Link>
+      <CurrencySwitch className="currency-switch-mobile" />
     </div>
     </>
   );
@@ -595,12 +764,12 @@ function HomePage({ setPage, openContact }) {
             { icon:"🎓", title:"University Admissions", body:"Specialist MAT, TMUA, STEP and Oxbridge interview preparation - from someone who has been through it.", page:"services" },
             { icon:"💬", title:"My Approach", body:"I don't just teach methods. I build the understanding and confidence that holds up when it counts most.", page:"approach" },
           ].map(t => (
-            <div className="teaser-card" key={t.title} onClick={() => setPage(t.page)}>
-              <div className="teaser-icon">{t.icon}</div>
+            <Link to={t.page} className="teaser-card" key={t.title}>
+              <div className="teaser-icon" aria-hidden="true">{t.icon}</div>
               <h3>{t.title}</h3>
               <p>{t.body}</p>
               <span className="teaser-link">Find out more →</span>
-            </div>
+            </Link>
           ))}
         </div>
       </section>
@@ -629,11 +798,11 @@ function HomePage({ setPage, openContact }) {
         <h3>Find Out More</h3>
         <p>Learn about how I work and what families say</p>
         <div className="mobile-quick-links-grid">
-          <div className="mobile-quick-link" onClick={() => setPage("about")}>👤 About Me</div>
-          <div className="mobile-quick-link" onClick={() => setPage("services")}>📊 Services</div>
-          <div className="mobile-quick-link" onClick={() => setPage("approach")}>💬 My Approach</div>
-          <div className="mobile-quick-link" onClick={() => setPage("faq")}>❓ FAQ & Pricing</div>
-          <div className="mobile-quick-link mql-cta" onClick={() => setPage("booking")}>📅 Book a Free Session</div>
+          <Link to="about" className="mobile-quick-link">👤 About Me</Link>
+          <Link to="services" className="mobile-quick-link">📊 Services</Link>
+          <Link to="approach" className="mobile-quick-link">💬 My Approach</Link>
+          <Link to="faq" className="mobile-quick-link">❓ FAQ &amp; Pricing</Link>
+          <Link to="booking" className="mobile-quick-link mql-cta">📅 Book a Free Session</Link>
         </div>
       </div>
       <PageFooter setPage={setPage} openContact={openContact} />
@@ -656,7 +825,7 @@ function AboutPage({ setPage, openContact }) {
       <section className="section">
         <div className="about-grid">
           <div className="about-photo-wrap">
-            <img src={PHOTO_SRC} alt="Omer" className="about-photo" />
+            <img src={PHOTO_SRC} alt="Omer, Oxford maths graduate and online maths tutor" className="about-photo" width="600" height="800" fetchPriority="high" decoding="async" />
             <div className="about-bullet-card">
               <div className="about-bullet-item"><span>⏱</span><span>5,000+ hours of lessons</span></div>
               <div className="about-bullet-item"><span>📅</span><span>10+ years tutoring</span></div>
@@ -701,6 +870,8 @@ function AboutPage({ setPage, openContact }) {
 
 // ─── Services ─────────────────────────────────────────────────────────────
 function ServicesPage({ setPage, openContact }) {
+  const standardRate = usePrice("standard");
+  const oxbridgeRate = usePrice("oxbridge");
   return (
     <div className="page">
       <div className="page-hero">
@@ -728,7 +899,7 @@ function ServicesPage({ setPage, openContact }) {
               <span className="service-tag">{s.tag}</span>
               <h3 style={{marginTop:"0.75rem"}}>{s.title}</h3>
               <p>{s.desc}</p>
-              <div className="service-price"><span className="rate">£100</span><span className="per">/ hour</span></div>
+              <div className="service-price"><span className="rate">{standardRate}</span><span className="per">/ hour</span></div>
               <div className="free-lesson-note">✓ First session always free</div>
             </div>
           ))}
@@ -747,7 +918,7 @@ function ServicesPage({ setPage, openContact }) {
                 <a href={WHATSAPP} target="_blank" rel="noopener" className="btn-primary btn-wa"><WAIcon /> Message me on WhatsApp</a>
                 <button className="btn-email-dark" onClick={() => openContact()}><EmailIcon/> Email Me</button>
               </div>
-              <p style={{marginTop:"0.9rem",fontSize:"0.88rem",color:"var(--muted)"}}>University admissions sessions: <strong>£150/hour</strong></p>
+              <p style={{marginTop:"0.9rem",fontSize:"0.88rem",color:"var(--muted)"}}>University admissions sessions: <strong>{oxbridgeRate}/hour</strong></p>
             </div>
             <div className="uni-cards">
               {[
@@ -769,11 +940,11 @@ function ServicesPage({ setPage, openContact }) {
               <h4>Oxford-Educated. First Class.</h4>
               <p>I achieved a First Class Mathematics degree from Oxford University and know the admissions process inside out. Whether your child is preparing for MAT, STEP, TMUA, or an Oxbridge interview, I'll give them the best possible preparation.</p>
               <div style={{display:"flex",alignItems:"center",gap:"1rem",flexWrap:"wrap"}}>
-                <a href={WHATSAPP} target="_blank" rel="noopener" className="btn-primary" style={{whiteSpace:"nowrap"}}>Get in Touch →</a>
-                <span className="oxbridge-price-note">£150 / hour</span>
+                <a href={WHATSAPP} target="_blank" rel="noopener" className="btn-primary btn-nowrap">Get in Touch →</a>
+                <span className="oxbridge-price-note">{oxbridgeRate} / hour</span>
               </div>
             </div>
-            <img src={PHOTO_SRC} alt="Omer" className="oxbridge-banner-photo" />
+            <img src={PHOTO_SRC} alt="" aria-hidden="true" className="oxbridge-banner-photo" width="130" height="130" loading="lazy" decoding="async" />
           </div>
         </div>
       </section>
@@ -831,7 +1002,7 @@ function ApproachPage({ setPage, openContact }) {
               <div className="online-feature">No travel - fits naturally around school and family life</div>
             </div>
           </div>
-          <a href={WHATSAPP} target="_blank" rel="noopener" className="btn-primary" style={{whiteSpace:"nowrap"}}>Book a Free Session →</a>
+          <a href={WHATSAPP} target="_blank" rel="noopener" className="btn-primary btn-nowrap">Book a Free Session →</a>
         </div>
       </section>
       <PageFooter setPage={setPage} openContact={openContact} />
@@ -872,6 +1043,7 @@ function ReviewsPage({ setPage, openContact }) {
   const [rDone, setRDone] = useState(false);
   const [rSending, setRSending] = useState(false);
   const [rTried, setRTried] = useState(false);
+  const [rError, setRError] = useState("");
   const scrollRef = useRef(null);
   const reviewModalRef = useRef(null);
   const [activeDot, setActiveDot] = useState(0);
@@ -917,21 +1089,21 @@ function ReviewsPage({ setPage, openContact }) {
     setRTried(true);
     if (!rForm.text || !rForm.name) return;
     setRSending(true);
+    setRError("");
     try {
-      await fetch(FORMSPREE_URL, {
-        method:"POST",
-        headers:{"Content-Type":"application/json","Accept":"application/json"},
-        body: JSON.stringify({
-          _subject: "New Review Submission - Omer Maths Tuition",
-          name: rForm.name,
-          level: rForm.level,
-          stars: "★".repeat(rForm.stars),
-          review: rForm.text
-        })
+      await postToFormspree({
+        _subject: "New Review Submission - Omer Maths Tuition",
+        name: rForm.name,
+        level: rForm.level,
+        stars: "★".repeat(rForm.stars),
+        review: rForm.text
       });
       setRDone(true);
       setTimeout(() => { setShowModal(false); setRForm({stars:5,text:"",name:"",level:"GCSE"}); setRDone(false); setRSending(false); setRTried(false); }, 2500);
-    } catch(e) { setRSending(false); }
+    } catch (e) {
+      setRError(e.message || "Sorry - that didn't send.");
+      setRSending(false);
+    }
   };
 
   return (
@@ -974,6 +1146,7 @@ function ReviewsPage({ setPage, openContact }) {
             <div className="form-row"><label>Your Name *</label><input className={rTried && !rForm.name ? "field-error" : ""} placeholder="e.g. Sarah" value={rForm.name} onChange={e => setRForm(f => ({...f, name:e.target.value}))} />{rTried && !rForm.name && <div className="field-error-msg">Please enter your name</div>}</div>
             <div className="form-row"><label>Level</label><select value={rForm.level} onChange={e => setRForm(f => ({...f, level:e.target.value}))}><option>GCSE</option><option>A-Level</option><option>University Admissions</option><option>Adult Learner</option></select></div>
             <div className="form-row"><label>Your Review *</label><textarea className={rTried && !rForm.text ? "field-error" : ""} placeholder="Tell other parents about your experience..." value={rForm.text} onChange={e => setRForm(f => ({...f, text:e.target.value}))} />{rTried && !rForm.text && <div className="field-error-msg">Please enter your review</div>}</div>
+            {rError && <SendError message={rError} />}
             {rDone ? <div className="success-msg">✓ Thank you - your review will appear on the website shortly!</div> : <button className="submit-btn" onClick={submitReview} disabled={rSending}>{rSending ? "Sending..." : "Submit Review"}</button>}
           </div>
         </div>
@@ -986,6 +1159,7 @@ function ReviewsPage({ setPage, openContact }) {
 // ─── FAQ ──────────────────────────────────────────────────────────────────
 function FaqPage({ setPage, openContact }) {
   const [openFaq, setOpenFaq] = useState(null);
+  const { currency } = useCurrency();
   return (
     <div className="page">
       <div className="page-hero">
@@ -1000,10 +1174,11 @@ function FaqPage({ setPage, openContact }) {
         <div className="faq-list">
           {FAQS.map((f,i) => (
             <div className="faq-item" key={i}>
-              <button className="faq-q" onClick={() => setOpenFaq(openFaq === i ? null : i)} aria-expanded={openFaq === i}>
-                {f.q}<span className="faq-chevron">{openFaq === i ? "−" : "+"}</span>
+              <button className="faq-q" onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                      aria-expanded={openFaq === i} aria-controls={`faq-a-${i}`} id={`faq-q-${i}`}>
+                {f.q}<span className="faq-chevron" aria-hidden="true">{openFaq === i ? "−" : "+"}</span>
               </button>
-              {openFaq === i && <div className="faq-a">{f.a}</div>}
+              {openFaq === i && <div className="faq-a" id={`faq-a-${i}`} role="region" aria-labelledby={`faq-q-${i}`}>{fillRates(f.a, currency)}</div>}
             </div>
           ))}
         </div>
@@ -1022,6 +1197,7 @@ function FaqPage({ setPage, openContact }) {
 
 // ─── Booking ──────────────────────────────────────────────────────────────
 function BookingPage({ setPage, openContact }) {
+  const standardRate = usePrice("standard");
   const today = new Date();
   const [calY, setCalY] = useState(today.getFullYear());
   const [calM, setCalM] = useState(today.getMonth());
@@ -1033,19 +1209,20 @@ function BookingPage({ setPage, openContact }) {
   const [ctForm, setCtForm] = useState({ name:"", email:"", phone:"", message:"" });
   const [ctSending, setCtSending] = useState(false);
   const [ctTried, setCtTried] = useState(false);
+  const [ctError, setCtError] = useState("");
 
   const submitContact = async () => {
     setCtTried(true);
     if (!ctForm.name || !ctForm.email || !isValidEmail(ctForm.email) || !ctForm.message) return;
     setCtSending(true);
+    setCtError("");
     try {
-      await fetch(FORMSPREE_URL, {
-        method:"POST",
-        headers:{"Content-Type":"application/json","Accept":"application/json"},
-        body: JSON.stringify({ name:ctForm.name, email:ctForm.email, phone:ctForm.phone, message:ctForm.message })
-      });
+      await postToFormspree({ name:ctForm.name, email:ctForm.email, phone:ctForm.phone, message:ctForm.message });
       setCtDone(true);
-    } catch(e) { setCtSending(false); }
+    } catch (e) {
+      setCtError(e.message || "Sorry - that didn't send.");
+      setCtSending(false);
+    }
   };
 
   const daysIn = (y,m) => new Date(y,m+1,0).getDate();
@@ -1076,11 +1253,11 @@ function BookingPage({ setPage, openContact }) {
             <h3>Session Details</h3>
             {[
               ["⏱","Duration","60 minutes"],
-              ["💷","Rate","£100 / hour"],
+              ["💷","Rate",`${standardRate} / hour`],
               ["🌐","Format","Online (interactive whiteboard)"],
               ["👤","Sessions","1-to-1 only"],
               ["💬","WhatsApp", <a href={WHATSAPP} target="_blank" rel="noopener">Message Omer directly</a>],
-              ["📧","Email","hello@omermaths.com"],
+              ["📧","Email",<a href={EMAIL}>{BUSINESS.email}</a>],
             ].map(([icon,label,val]) => (
               <div className="bl-item" key={label}>
                 <div className="bl-icon">{icon}</div>
@@ -1131,8 +1308,8 @@ function BookingPage({ setPage, openContact }) {
               <div style={{fontSize:"2.4rem",lineHeight:1}}>📅</div>
               <h3 style={{fontSize:"1.3rem",color:"var(--navy)",margin:0,fontFamily:"'Playfair Display',serif"}}>Request a Time</h3>
               <p style={{color:"var(--muted)",lineHeight:1.75,margin:0,maxWidth:"420px"}}>Sessions are arranged personally, around your schedule. Send me a quick message with the days and times that usually work for you, and I'll reply to confirm — normally within a few hours. Your first session is always free.</p>
-              <a href={WHATSAPP} target="_blank" rel="noopener" className="btn-primary" style={{whiteSpace:"nowrap"}}>Message me on WhatsApp →</a>
-              <div style={{fontSize:"0.85rem",color:"var(--muted)"}}>Prefer email? <a href="mailto:hello@omermaths.com" style={{color:"var(--gold)",fontWeight:600}}>hello@omermaths.com</a></div>
+              <a href={WHATSAPP} target="_blank" rel="noopener" className="btn-primary btn-nowrap">Message me on WhatsApp →</a>
+              <div style={{fontSize:"0.85rem",color:"var(--muted)"}}>Prefer email? <a href={EMAIL} style={{color:"var(--gold)",fontWeight:600}}>{BUSINESS.email}</a></div>
             </div>
           </div>
         </div>
@@ -1148,7 +1325,7 @@ function BookingPage({ setPage, openContact }) {
             <p>Choosing a tutor is an important decision. If you'd like to talk through your child's situation before booking - what year they're in, what they're struggling with, what you're hoping to achieve - please do get in touch. WhatsApp is the easiest way to reach me.</p>
             {[
               ["💬","WhatsApp (preferred)", <a href={WHATSAPP} target="_blank" rel="noopener">Message me on WhatsApp</a>],
-              ["📧","Email","hello@omermaths.com"],
+              ["📧","Email",<a href={EMAIL}>{BUSINESS.email}</a>],
               ["🌐","Sessions","Online · Available Worldwide"],
               ["🎁","First lesson","Always free - no obligation"],
             ].map(([icon,label,val]) => (
@@ -1170,6 +1347,7 @@ function BookingPage({ setPage, openContact }) {
                   <input className="cf-input" placeholder="Phone number (optional)" type="tel" value={ctForm.phone} onChange={e=>setCtForm(f=>({...f,phone:e.target.value}))} />
                   <textarea className={`cf-input${ctTried && !ctForm.message ? " field-error" : ""}`} placeholder="Tell me a little about what you're looking for... *" value={ctForm.message} onChange={e=>setCtForm(f=>({...f,message:e.target.value}))} style={{minHeight:"110px",resize:"vertical"}} />
                   {ctTried && !ctForm.message && <div className="field-error-msg" style={{marginTop:"-0.5rem",marginBottom:"0.75rem"}}>Please enter a message</div>}
+                  {ctError && <SendError message={ctError} dark />}
                   <button className="submit-btn" onClick={submitContact} disabled={ctSending}>{ctSending ? "Sending..." : "Send Message"}</button>
                 </>
             }
@@ -1182,19 +1360,31 @@ function BookingPage({ setPage, openContact }) {
 }
 
 // ─── Shared Footer ─────────────────────────────────────────────────────────
-function PageFooter({ dark, setPage, openContact }) {
+const FOOTER_LABELS = {
+  about: "About Me", services: "Services", approach: "My Approach",
+  reviews: "Reviews", faq: "FAQ & Pricing", booking: "Book a Session",
+};
+
+function PageFooter({ openContact }) {
   return (
     <div className="footer-strip" style={{background:"var(--navy)",marginTop:0}}>
       <div style={{maxWidth:"1100px",margin:"0 auto"}}>
-        <div className="nav-logo" style={{marginBottom:"0.5rem"}}>Omer <span>Maths Tuition</span></div>
+        <Link to="home" className="nav-logo" style={{marginBottom:"0.5rem",display:"inline-block"}}>Omer <span>Maths Tuition</span></Link>
         <div className="footer-brand-links">
           <a href={WHATSAPP} target="_blank" rel="noopener">💬 Message on WhatsApp →</a>
           <button onClick={() => openContact && openContact()}><EmailIcon/> Email Me →</button>
           <span className="footer-free">🎁 First lesson always free</span>
         </div>
+        <nav aria-label="Footer">
+          <ul className="footer-nav">
+            {ROUTES.filter(r => r.id !== "home").map(r => (
+              <li key={r.id}><Link to={r.id}>{FOOTER_LABELS[r.id]}</Link></li>
+            ))}
+          </ul>
+        </nav>
         <div style={{marginTop:"1.5rem",paddingTop:"1.2rem",borderTop:"1px solid rgba(255,255,255,0.06)",display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:"0.5rem"}}>
           <p style={{fontSize:"0.78rem",color:"rgba(255,255,255,0.22)"}}>© {new Date().getFullYear()} Omer Maths Tuition · Online · Worldwide</p>
-          <p style={{fontSize:"0.78rem",color:"rgba(255,255,255,0.22)"}}>hello@omermaths.com</p>
+          <a href={EMAIL} style={{fontSize:"0.78rem",color:"rgba(255,255,255,0.35)"}}>{BUSINESS.email}</a>
         </div>
       </div>
     </div>
@@ -1207,6 +1397,7 @@ function ContactModal({ onClose }) {
   const [done, setDone] = useState(false);
   const [sending, setSending] = useState(false);
   const [tried, setTried] = useState(false);
+  const [error, setError] = useState("");
   const modalRef = useRef(null);
 
   useEffect(() => {
@@ -1220,15 +1411,15 @@ function ContactModal({ onClose }) {
     setTried(true);
     if (!form.name || !form.email || !isValidEmail(form.email) || !form.message) return;
     setSending(true);
+    setError("");
     try {
-      await fetch(FORMSPREE_URL, {
-        method:"POST",
-        headers:{"Content-Type":"application/json","Accept":"application/json"},
-        body: JSON.stringify(form)
-      });
+      await postToFormspree(form);
       setDone(true);
       setTimeout(onClose, 2500);
-    } catch(e) { setSending(false); }
+    } catch (e) {
+      setError(e.message || "Sorry - that didn't send.");
+      setSending(false);
+    }
   };
 
   return (
@@ -1244,6 +1435,7 @@ function ContactModal({ onClose }) {
               <div className="form-row"><label>Email Address *</label><input className={tried && (!form.email || !isValidEmail(form.email)) ? "field-error" : ""} type="email" placeholder="your@email.com" value={form.email} onChange={e=>setForm(f=>({...f,email:e.target.value}))} />{tried && !form.email && <div className="field-error-msg">Please enter your email address</div>}{tried && form.email && !isValidEmail(form.email) && <div className="field-error-msg">Please enter a valid email address</div>}</div>
               <div className="form-row"><label>Phone Number (optional)</label><input type="tel" placeholder="+44..." value={form.phone} onChange={e=>setForm(f=>({...f,phone:e.target.value}))} /></div>
               <div className="form-row"><label>Message *</label><textarea className={tried && !form.message ? "field-error" : ""} placeholder="Tell me a little about what you're looking for..." value={form.message} onChange={e=>setForm(f=>({...f,message:e.target.value}))} />{tried && !form.message && <div className="field-error-msg">Please enter a message</div>}</div>
+              {error && <SendError message={error} />}
               <button className="submit-btn" onClick={submit} disabled={sending}>{sending ? "Sending..." : "Send Message"}</button>
             </>
         }
@@ -1253,49 +1445,71 @@ function ContactModal({ onClose }) {
 }
 
 // ─── App Root ──────────────────────────────────────────────────────────────
-const FONT_URL = "https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Lora:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap";
+/** Keeps the browser tab title and the description Google reads in sync with
+ *  whichever page is showing. */
+function applyRouteMeta(route) {
+  document.title = route.title;
+  let tag = document.querySelector('meta[name="description"]');
+  if (!tag) {
+    tag = document.createElement("meta");
+    tag.setAttribute("name", "description");
+    document.head.appendChild(tag);
+  }
+  tag.setAttribute("content", route.description);
+  let canonical = document.querySelector('link[rel="canonical"]');
+  if (canonical) canonical.setAttribute("href", `https://www.omermaths.com${route.path}`);
+}
 
 export default function App() {
-  const [page, setPage] = useState("home");
+  const [page, setPage] = useState(() =>
+    typeof window === "undefined" ? "home" : routeFromPath(window.location.pathname).id
+  );
   const [showContact, setShowContact] = useState(false);
-
-  useEffect(() => {
-    const link = document.createElement("link");
-    link.rel = "preload";
-    link.as = "style";
-    link.href = FONT_URL;
-    document.head.appendChild(link);
-    const stylesheet = document.createElement("link");
-    stylesheet.rel = "stylesheet";
-    stylesheet.href = FONT_URL;
-    document.head.appendChild(stylesheet);
+  // Worked out once on first render, so prices never flash from £ to S$.
+  const [currency, setCurrencyState] = useState(detectCurrency);
+  const setCurrency = useCallback((code) => {
+    setCurrencyState(code);
+    try { window.localStorage.setItem(CURRENCY_KEY, code); } catch { /* private mode */ }
   }, []);
 
-  const navigate = (p) => {
-    setPage(p);
+  const navigate = useCallback((id) => {
+    const path = hrefFor(id);
+    if (window.location.pathname !== path) window.history.pushState({}, "", path);
+    setPage(id);
+    setShowContact(false);
     window.scrollTo({ top: 0, behavior: "instant" });
-  };
+  }, []);
 
+  // Browser back/forward buttons.
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "instant" });
-  }, [page]);
+    const onPop = () => setPage(routeFromPath(window.location.pathname).id);
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, []);
 
+  useEffect(() => { applyRouteMeta(ROUTE_BY_ID[page] || HOME_ROUTE); }, [page]);
+
+  const openContact = useCallback(() => setShowContact(true), []);
+  const pageProps = { setPage: navigate, openContact };
   const pages = {
-    home:     <HomePage setPage={navigate} openContact={() => setShowContact(true)} />,
-    about:    <AboutPage setPage={navigate} openContact={() => setShowContact(true)} />,
-    services: <ServicesPage setPage={navigate} openContact={() => setShowContact(true)} />,
-    approach: <ApproachPage setPage={navigate} openContact={() => setShowContact(true)} />,
-    reviews:  <ReviewsPage setPage={navigate} openContact={() => setShowContact(true)} />,
-    faq:      <FaqPage setPage={navigate} openContact={() => setShowContact(true)} />,
-    booking:  <BookingPage setPage={navigate} openContact={() => setShowContact(true)} />,
+    home:     <HomePage {...pageProps} />,
+    about:    <AboutPage {...pageProps} />,
+    services: <ServicesPage {...pageProps} />,
+    approach: <ApproachPage {...pageProps} />,
+    reviews:  <ReviewsPage {...pageProps} />,
+    faq:      <FaqPage {...pageProps} />,
+    booking:  <BookingPage {...pageProps} />,
   };
 
   return (
-    <>
-      <style>{CSS}</style>
-      <Nav page={page} setPage={navigate} />
-      {pages[page] || pages.home}
-      {showContact && <ContactModal onClose={() => setShowContact(false)} />}
-    </>
+    <RouterContext.Provider value={{ page, navigate }}>
+      <CurrencyContext.Provider value={{ currency, setCurrency }}>
+        <style>{CSS}</style>
+        <a className="skip-link" href="#main">Skip to main content</a>
+        <Nav page={page} setPage={navigate} />
+        <main id="main">{pages[page] || pages.home}</main>
+        {showContact && <ContactModal onClose={() => setShowContact(false)} />}
+      </CurrencyContext.Provider>
+    </RouterContext.Provider>
   );
 }

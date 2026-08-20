@@ -757,7 +757,7 @@ function HomePage({ setPage, openContact }) {
         <div className="hero-stats">
           <div className="hero-stat"><span className="hero-stat-num">5,000+</span><span className="hero-stat-label">Hours of Lessons</span></div>
           <div className="hero-stat"><span className="hero-stat-num">10+</span><span className="hero-stat-label">Years Tutoring</span></div>
-          <div className="hero-stat"><span className="hero-stat-num">100%</span><span className="hero-stat-label">Target Grades Achieved</span></div>
+          <div className="hero-stat"><span className="hero-stat-num">{SCHOOLS.length}+</span><span className="hero-stat-label">Schools Represented</span></div>
         </div>
       </div>
       <div className="trust-bar">
@@ -842,7 +842,7 @@ function AboutPage({ setPage, openContact }) {
             <div className="about-bullet-card">
               <div className="about-bullet-item"><span>⏱</span><span>5,000+ hours of lessons</span></div>
               <div className="about-bullet-item"><span>📅</span><span>10+ years tutoring</span></div>
-              <div className="about-bullet-item"><span>🎯</span><span>100% target grades achieved</span></div>
+              <div className="about-bullet-item"><span>🏫</span><span>{SCHOOLS.length}+ schools represented</span></div>
             </div>
           </div>
           <div className="about-body">
@@ -853,7 +853,7 @@ function AboutPage({ setPage, openContact }) {
             </div>
             <p>I graduated from <strong>Oxford University with a First Class degree in Mathematics</strong>, having achieved 3 A*s at A-Level and 11 A*s at GCSE - including 100% in most of my Maths and Further Maths papers. Over the past ten years, I've had the privilege of working with students from some of the most demanding schools in London and beyond.</p>
             <p>I am genuinely passionate about Mathematics, and I always aim to share that enthusiasm with my students. Lessons are calm, patient and judgement-free - somewhere it's safe to be stuck, and where we actively work towards genuine understanding and building confidence.</p>
-            <p>As a result, my students consistently achieve strong results, with <strong>8/9s at GCSE and A/A*s at A-Level</strong>. I have a <strong>100% success rate</strong> in my students achieving their target grades.</p>
+            <p>As a result, my students consistently achieve strong results, with <strong>8/9s at GCSE and A/A*s at A-Level</strong>. I am proud of that record, though it reflects the students as much as me - they are the ones putting in the work between sessions.</p>
             <p>I also support students preparing for <strong>university admissions</strong> - including the TMUA and STEP, and Oxbridge interview preparation. Having been through the Oxford admissions process myself, I know exactly what these assessments demand and how to prepare for them.</p>
             <p>Every new student starts with a <strong>completely free first session</strong>. The way I like to run it: you pick a topic your child has been finding difficult, and we work through it together properly in the lesson. By the end, they should feel noticeably more comfortable with it - so you get a real sense of how I work, with no pressure or obligation.</p>
             <div className="btn-row" style={{marginTop:"1.3rem"}}>

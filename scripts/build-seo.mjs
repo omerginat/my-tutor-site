@@ -11,7 +11,7 @@
 // ─────────────────────────────────────────────────────────────────────────
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from "node:fs";
 import { join, dirname } from "node:path";
-import { SITE_URL, BUSINESS, ROUTES, CURRENCIES, DEFAULT_CURRENCY, fillRates } from "../src/site.config.js";
+import { SITE_URL, BUSINESS, ROUTES, CURRENCIES, DEFAULT_CURRENCY, fillRates, NOT_FOUND_ROUTE } from "../src/site.config.js";
 import { FAQS, ALL_REVIEWS, POSTS } from "../src/content.js";
 
 const DIST = "dist";
@@ -173,6 +173,22 @@ for (const route of ROUTES) {
   if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
   writeFileSync(join(DIST, file), html);
   written++;
+}
+
+// ─── 404.html ────────────────────────────────────────────────────────────
+// Vercel serves this automatically, with a 404 status, for any URL that does
+// not match a real page. Marked noindex so the error page never gets indexed.
+{
+  let html = template;
+  html = html.replace(/<title>[\s\S]*?<\/title>/i, `<title>${esc(NOT_FOUND_ROUTE.title)}</title>`);
+  html = setTag(html, 'name="description"', "content", NOT_FOUND_ROUTE.description);
+  html = setTag(html, 'property="og:title"', "content", NOT_FOUND_ROUTE.title);
+  html = setTag(html, 'property="og:description"', "content", NOT_FOUND_ROUTE.description);
+  html = setTag(html, 'name="robots"', "content", "noindex, follow");
+  // An error page must not claim to be the canonical version of anything.
+  html = html.replace(/\s*<link rel="canonical"[^>]*>/i, "");
+  writeFileSync(join(DIST, "404.html"), html);
+  console.log("[build-seo] wrote 404.html");
 }
 
 // ─── sitemap.xml ─────────────────────────────────────────────────────────

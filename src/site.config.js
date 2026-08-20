@@ -173,6 +173,16 @@ export const ROUTES = [
   },
 ];
 
+// Shown for any URL that does not match a real page. Deliberately kept out of
+// ROUTES so it never appears in the sitemap and is never linked to.
+export const NOT_FOUND_ROUTE = {
+  id: "notfound",
+  path: null,
+  title: "Page Not Found | Omer Maths Tuition",
+  description:
+    "That page does not exist. Find online maths tuition for GCSE, A-Level, and university admissions preparation.",
+};
+
 export const ROUTE_BY_PATH = Object.fromEntries(ROUTES.map((r) => [r.path, r]));
 export const ROUTE_BY_ID = Object.fromEntries(ROUTES.map((r) => [r.id, r]));
 export const HOME_ROUTE = ROUTE_BY_ID.home;

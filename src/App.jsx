@@ -3,7 +3,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { SCHOOLS, ALL_REVIEWS, FAQS, POSTS } from "./content.js";
 import {
   BUSINESS, DEFAULT_CURRENCY, SGD_TIMEZONES,
-  formatPrice, fillRates, ROUTE_BY_PATH, ROUTE_BY_ID, HOME_ROUTE,
+  formatPrice, fillRates, ROUTE_BY_PATH, ROUTE_BY_ID, HOME_ROUTE, NOT_FOUND_ROUTE,
 } from "./site.config.js";
 
 const PHOTO_SRC = BUSINESS.photo;
@@ -79,10 +79,14 @@ const RouterContext = createContext({ page: "home", navigate: () => {} });
 const useRouter = () => useContext(RouterContext);
 
 const hrefFor = (id) => (ROUTE_BY_ID[id] || HOME_ROUTE).path;
+/** An unrecognised URL resolves to the not-found page rather than silently
+ *  showing the home page, which would be a confusing "soft 404". */
 const routeFromPath = (pathname) => {
   const clean = pathname.replace(/\/+$/, "") || "/";
-  return ROUTE_BY_PATH[clean] || HOME_ROUTE;
+  return ROUTE_BY_PATH[clean] || NOT_FOUND_ROUTE;
 };
+const routeForPage = (id) =>
+  id === NOT_FOUND_ROUTE.id ? NOT_FOUND_ROUTE : (ROUTE_BY_ID[id] || HOME_ROUTE);
 
 /** An internal link. Renders a real <a href> so crawlers and
  *  "open in new tab" both work, but navigates without a page reload. */
@@ -481,6 +485,14 @@ const CSS = `
   .send-error a{color:#8f3a25;font-weight:600;}
   .send-error-dark{background:rgba(255,140,110,0.12);border-color:rgba(255,140,110,0.4);color:#ffb9a3;}
   .send-error-dark a{color:var(--gold2);}
+
+  /* ── NOT FOUND ── */
+  .notfound-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+  a.notfound-card{display:block;background:var(--white);border:1px solid rgba(23,32,56,0.08);border-left:4px solid var(--gold);border-radius:var(--radius);padding:1.3rem 1.4rem;text-decoration:none;box-shadow:0 1px 4px rgba(23,32,56,0.06);transition:transform 0.2s,box-shadow 0.2s;}
+  a.notfound-card:hover{transform:translateY(-2px);box-shadow:var(--shadow);}
+  .notfound-card h3{font-size:1.05rem;color:var(--navy);margin-bottom:0.25rem;}
+  .notfound-card p{font-size:0.86rem;color:var(--muted);line-height:1.6;margin:0;}
+  @media(max-width:600px){.notfound-grid{grid-template-columns:1fr;}}
 
   /* ── ARTICLES ── */
   .article-body{max-width:720px;margin:0 auto;}
@@ -1925,6 +1937,50 @@ function BlogPostPage({ openContact, post }) {
   );
 }
 
+// ─── Not Found ─────────────────────────────────────────────────────────────
+// Reached when a URL does not match a page: a mistyped address, an old link,
+// or a guess. The job is to get the visitor somewhere useful rather than
+// leaving them at a dead end.
+function NotFoundPage({ openContact }) {
+  const suggestions = [
+    ["about", "About Me", "Who I am and how I teach"],
+    ["services", "Services & Rates", "GCSE, A-Level and admissions preparation"],
+    ["reviews", "Reviews", "What parents and students say"],
+    ["booking", "Book a Session", "First lesson is free"],
+  ];
+  return (
+    <div className="page">
+      <div className="page-hero">
+        <div className="page-hero-inner">
+          <span className="section-label" style={{color:"var(--gold2)"}}>404</span>
+          <h1>That Page Has<br/><em>Gone Missing</em></h1>
+          <p>The link may be out of date, or the address slightly off. Everything below is where most people are heading.</p>
+        </div>
+      </div>
+      <section className="section">
+        <div style={{maxWidth:"760px",margin:"0 auto"}}>
+          <div className="notfound-grid">
+            {suggestions.map(([id, title, blurb]) => (
+              <Link to={id} className="notfound-card" key={id}>
+                <h3>{title}</h3>
+                <p>{blurb}</p>
+              </Link>
+            ))}
+          </div>
+          <div style={{textAlign:"center",marginTop:"2.5rem"}}>
+            <p style={{color:"var(--muted)",marginBottom:"1.2rem"}}>Looking for something in particular? Just ask.</p>
+            <div className="btn-row" style={{justifyContent:"center"}}>
+              <a href={WHATSAPP} target="_blank" rel="noopener" className="btn-primary btn-wa"><WAIcon /> Message me on WhatsApp</a>
+              <button className="btn-email-dark" onClick={() => openContact()}><EmailIcon/> Email Me</button>
+            </div>
+          </div>
+        </div>
+      </section>
+      <PageFooter openContact={openContact} />
+    </div>
+  );
+}
+
 // ─── Shared Footer ─────────────────────────────────────────────────────────
 const FOOTER_LABELS = {
   about: "About Me", services: "Services", approach: "My Approach",
@@ -2030,8 +2086,12 @@ function applyRouteMeta(route) {
     document.head.appendChild(tag);
   }
   tag.setAttribute("content", route.description);
-  let canonical = document.querySelector('link[rel="canonical"]');
-  if (canonical) canonical.setAttribute("href", `https://www.omermaths.com${route.path}`);
+  const canonical = document.querySelector('link[rel="canonical"]');
+  // The not-found page has no real URL, so it gets no canonical.
+  if (canonical) {
+    if (route.path) canonical.setAttribute("href", `https://www.omermaths.com${route.path}`);
+    else canonical.remove();
+  }
 }
 
 export default function App() {
@@ -2055,7 +2115,7 @@ export default function App() {
     return () => window.removeEventListener("popstate", onPop);
   }, []);
 
-  useEffect(() => { applyRouteMeta(ROUTE_BY_ID[page] || HOME_ROUTE); }, [page]);
+  useEffect(() => { applyRouteMeta(routeForPage(page)); }, [page]);
 
   const openContact = useCallback(() => setShowContact(true), []);
   const pageProps = { setPage: navigate, openContact };
@@ -2074,6 +2134,7 @@ export default function App() {
     satact:    <SatActPage {...pageProps} />,
     blog:      <BlogIndexPage {...pageProps} />,
     "post-mat-tmua": <BlogPostPage {...pageProps} post={POSTS.find(p => p.id === "mat-tmua")} />,
+    notfound:  <NotFoundPage {...pageProps} />,
     london:    <LondonPage {...pageProps} />,
   };
 

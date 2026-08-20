@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useContext, createContext, useCallback } from "react";
+import { Analytics } from "@vercel/analytics/react";
 import { SCHOOLS, ALL_REVIEWS, FAQS, POSTS } from "./content.js";
 import {
   BUSINESS, DEFAULT_CURRENCY, SGD_TIMEZONES,
@@ -2083,6 +2084,12 @@ export default function App() {
       <Nav page={page} />
       <main id="main">{pages[page] || pages.home}</main>
       {showContact && <ContactModal onClose={() => setShowContact(false)} />}
+      {/* Vercel Web Analytics. Cookieless, so no consent banner is needed.
+          The injected script tracks page views from pushState events, which
+          is how this site's router navigates, so each page is recorded
+          separately without any extra wiring. Records nothing until Web
+          Analytics is switched on for the project in the Vercel dashboard. */}
+      <Analytics />
     </RouterContext.Provider>
   );
 }

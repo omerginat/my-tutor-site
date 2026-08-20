@@ -904,7 +904,7 @@ function ServicesPage({ setPage, openContact }) {
         <div className="services-grid">
           {[
             { icon:"📐", title:"Key Stage 3", tag:"Years 7–8", desc:"Building strong foundations before GCSE. Filling gaps early, developing genuine number sense, and making sure maths feels manageable - not daunting - before the pressure of Year 9 begins.", cls:"" },
-            { icon:"📊", title:"GCSE Maths", tag:"Years 9–11", desc:"Targeted, exam-board-specific support for Foundation and Higher tier. Closing gaps, mastering exam technique, and consistently boosting students' grades to 8 or 9.", cls:"" },
+            { icon:"📊", title:"GCSE Maths", tag:"Years 9–11", desc:"Targeted, exam-board-specific support for Higher tier. Closing gaps, mastering exam technique, and consistently boosting students' grades to 8 or 9.", cls:"" },
             { icon:"∫", title:"A-Level Maths", tag:"Years 12–13", desc:"Deep, conceptual teaching across Pure, Statistics and Mechanics. For students who want to truly understand maths - and to carry that confidence into university. All major exam boards covered.", cls:"" },
           ].map(s => (
             <div className={`service-card ${s.cls}`} key={s.title}>
@@ -1311,7 +1311,7 @@ function BookingPage({ setPage, openContact }) {
                 <input className="bk-input" placeholder="Email address" type="email" value={bkForm.email} onChange={e=>setBkForm(f=>({...f,email:e.target.value}))} />
                 <select className="bk-input" value={bkForm.level} onChange={e=>setBkForm(f=>({...f,level:e.target.value}))}>
                   <option value="">Level of support needed</option>
-                  <option>GCSE Foundation</option><option>GCSE Higher</option><option>A-Level</option><option>TMUA / STEP</option><option>Oxbridge Interview Prep</option>
+                  <option>GCSE</option><option>A-Level</option><option>TMUA / STEP</option><option>Oxbridge Interview Prep</option>
                 </select>
                 <button className="submit-btn" onClick={() => { if(bkForm.name&&bkForm.email) setBkDone(true); }}>Request This Session</button>
               </div>

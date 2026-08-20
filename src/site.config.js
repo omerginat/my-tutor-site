@@ -147,6 +147,23 @@ export const ROUTES = [
     description:
       "One-to-one preparation for the SAT and ACT maths sections, for students applying to US universities. Taught by an Oxford First Class Mathematics graduate.",
   },
+  // ─── Articles ──────────────────────────────────────────────────────────
+  // Reachable from the footer only. These exist to be found from search and
+  // to be worth linking to, not to give visitors somewhere else to wander.
+  {
+    id: "blog",
+    path: "/articles",
+    title: "Articles | Omer Maths Tuition",
+    description:
+      "Occasional writing on maths admissions tests and exam preparation, from an Oxford First Class Mathematics graduate and full-time tutor.",
+  },
+  {
+    id: "post-mat-tmua",
+    path: "/articles/mat-replaced-by-tmua",
+    title: "Oxford Has Replaced the MAT With the TMUA | What to Know",
+    description:
+      "The MAT ran from 2007 to 2025 and no longer takes place. Oxford and Imperial applicants now sit the TMUA. What changed, what the test asks for, and the 2027 dates.",
+  },
   {
     id: "london",
     path: "/london-maths-tutor",

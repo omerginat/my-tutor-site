@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef, useContext, createContext, useCallback } from "react";
-import { SCHOOLS, ALL_REVIEWS, FAQS } from "./content.js";
+import { SCHOOLS, ALL_REVIEWS, FAQS, POSTS } from "./content.js";
 import {
   BUSINESS, DEFAULT_CURRENCY, SGD_TIMEZONES,
-  formatPrice, fillRates, ROUTES, ROUTE_BY_PATH, ROUTE_BY_ID, HOME_ROUTE,
+  formatPrice, fillRates, ROUTE_BY_PATH, ROUTE_BY_ID, HOME_ROUTE,
 } from "./site.config.js";
 
 const PHOTO_SRC = BUSINESS.photo;
@@ -481,10 +481,32 @@ const CSS = `
   .send-error-dark{background:rgba(255,140,110,0.12);border-color:rgba(255,140,110,0.4);color:#ffb9a3;}
   .send-error-dark a{color:var(--gold2);}
 
+  /* ── ARTICLES ── */
+  .article-body{max-width:720px;margin:0 auto;}
+  .article-body p{font-size:1.02rem;color:var(--muted);line-height:1.9;margin-bottom:1.1rem;}
+  .article-h2{font-size:clamp(1.25rem,2.4vw,1.6rem);color:var(--navy);margin:2.4rem 0 0.9rem;}
+  .article-h2:first-child{margin-top:0;}
+  .article-list{margin:0 0 1.3rem 1.1rem;padding:0;}
+  .article-list li{font-size:1.02rem;color:var(--muted);line-height:1.85;margin-bottom:0.5rem;padding-left:0.3rem;}
+  .article-list li::marker{color:var(--gold);}
+  .article-cta{margin-top:3rem;padding:2rem;background:var(--cream2);border-radius:var(--radius);border:1px solid rgba(23,32,56,0.08);border-left:4px solid var(--gold);}
+  .article-cta h3{font-size:1.25rem;color:var(--navy);margin-bottom:0.5rem;}
+  .article-cta p{margin-bottom:0;}
+  .article-teaser{padding-bottom:2rem;margin-bottom:2rem;border-bottom:1px solid rgba(23,32,56,0.09);}
+  .article-teaser:last-child{border-bottom:none;}
+  .article-teaser h2{font-size:1.35rem;margin:0.4rem 0 0.6rem;}
+  .article-teaser h2 a{color:var(--navy);text-decoration:none;}
+  .article-teaser h2 a:hover{color:var(--gold);}
+  .article-teaser p{font-size:0.97rem;color:var(--muted);line-height:1.8;margin-bottom:0.8rem;}
+  .article-date{font-size:0.78rem;letter-spacing:0.06em;text-transform:uppercase;color:var(--gold);font-family:'DM Sans',sans-serif;}
+  @media(max-width:700px){.article-cta{padding:1.4rem;}}
+
   /* ── FOOTER NAV (internal links on every page) ── */
   .footer-nav{display:flex;flex-wrap:wrap;gap:0.4rem 1.4rem;margin-top:1.4rem;padding-top:1.2rem;border-top:1px solid rgba(255,255,255,0.06);list-style:none;}
   .footer-nav a{color:rgba(255,255,255,0.55);font-family:'DM Sans',sans-serif;font-size:0.82rem;transition:color 0.2s;}
   .footer-nav a:hover{color:var(--gold2);}
+  .footer-nav-more{border-top:none;padding-top:0;margin-top:0.1rem;gap:0.3rem 1.2rem;}
+  .footer-nav-more a{font-size:0.76rem;color:rgba(255,255,255,0.34);}
 
   /* ── MOBILE REFINEMENTS ── */
   @media(max-width:700px){
@@ -1821,13 +1843,99 @@ function LondonPage({ openContact }) {
   );
 }
 
+// ─── Articles ──────────────────────────────────────────────────────────────
+// Linked from the footer only. Someone arriving from a search engine should
+// find this useful and then have an obvious route to getting in touch; someone
+// already browsing the site should not be pulled sideways into reading.
+function ArticleBody({ body }) {
+  return (
+    <>
+      {body.map((block, i) => {
+        if (block.h) return <h2 className="article-h2" key={i}>{block.h}</h2>;
+        if (block.list) return (
+          <ul className="article-list" key={i}>
+            {block.list.map((li, j) => <li key={j}>{li}</li>)}
+          </ul>
+        );
+        return <p key={i}>{block.p}</p>;
+      })}
+    </>
+  );
+}
+
+function BlogIndexPage({ openContact }) {
+  return (
+    <div className="page">
+      <div className="page-hero">
+        <div className="page-hero-inner">
+          <span className="section-label" style={{color:"var(--gold2)"}}>Articles</span>
+          <h1>Notes on <em>Admissions Tests</em></h1>
+          <p>Occasional writing about the tests, mostly prompted by parents asking me the same question twice in a week.</p>
+        </div>
+      </div>
+      <section className="section">
+        <div style={{maxWidth:"760px",margin:"0 auto"}}>
+          {POSTS.map(post => (
+            <article className="article-teaser" key={post.id}>
+              <time className="article-date" dateTime={post.date}>{post.dateLabel}</time>
+              <h2><Link to={`post-${post.id}`}>{post.title}</Link></h2>
+              <p>{post.summary}</p>
+              <Link to={`post-${post.id}`} className="teaser-link">Read the article →</Link>
+            </article>
+          ))}
+        </div>
+      </section>
+      <PageFooter openContact={openContact} />
+    </div>
+  );
+}
+
+function BlogPostPage({ openContact, post }) {
+  if (!post) return <BlogIndexPage openContact={openContact} />;
+  return (
+    <div className="page">
+      <div className="page-hero">
+        <div className="page-hero-inner">
+          <span className="section-label" style={{color:"var(--gold2)"}}>Article</span>
+          <h1 style={{fontSize:"clamp(1.7rem,3.4vw,2.5rem)"}}>{post.title}</h1>
+          <p style={{fontSize:"0.9rem"}}>
+            <time dateTime={post.date}>{post.dateLabel}</time> · Omer, Oxford Mathematics graduate
+          </p>
+        </div>
+      </div>
+      <section className="section">
+        <article className="article-body">
+          <ArticleBody body={post.body} />
+          <div className="article-cta">
+            <h3>Preparing for the TMUA?</h3>
+            <p>I offer one-to-one TMUA preparation, and I sat the Oxford admissions process myself. If the October sitting is on the horizon, it is worth starting sooner than feels necessary.</p>
+            <div className="btn-row" style={{marginTop:"1.2rem"}}>
+              <a href={WHATSAPP} target="_blank" rel="noopener" className="btn-primary btn-wa"><WAIcon /> Message me on WhatsApp</a>
+              <button className="btn-email-dark" onClick={() => openContact()}><EmailIcon/> Email Me</button>
+            </div>
+            <p style={{marginTop:"1rem",fontSize:"0.88rem"}}>
+              Or read more about <Link to="tmua" className="inline-link">how I prepare students for the TMUA</Link>.
+            </p>
+          </div>
+        </article>
+      </section>
+      <PageFooter openContact={openContact} />
+    </div>
+  );
+}
+
 // ─── Shared Footer ─────────────────────────────────────────────────────────
 const FOOTER_LABELS = {
   about: "About Me", services: "Services", approach: "My Approach",
   reviews: "Reviews", faq: "FAQ & Pricing", booking: "Book a Session",
   tmua: "TMUA Preparation", step: "STEP Preparation", interview: "Oxbridge Interviews",
   ukmt: "UKMT & Olympiad", satact: "SAT & ACT Maths", london: "London Maths Tuition",
+  blog: "Articles",
 };
+// The main pages sit on the first footer row; specialist pages and articles
+// go on a quieter second row so the footer does not become a wall of links.
+const FOOTER_MAIN = ["about", "services", "approach", "reviews", "faq", "booking"];
+const FOOTER_MORE = ["tmua", "step", "interview", "satact", "ukmt", "london", "blog"];
 
 function PageFooter({ openContact }) {
   return (
@@ -1841,9 +1949,10 @@ function PageFooter({ openContact }) {
         </div>
         <nav aria-label="Footer">
           <ul className="footer-nav">
-            {ROUTES.filter(r => r.id !== "home").map(r => (
-              <li key={r.id}><Link to={r.id}>{FOOTER_LABELS[r.id]}</Link></li>
-            ))}
+            {FOOTER_MAIN.map(id => <li key={id}><Link to={id}>{FOOTER_LABELS[id]}</Link></li>)}
+          </ul>
+          <ul className="footer-nav footer-nav-more">
+            {FOOTER_MORE.map(id => <li key={id}><Link to={id}>{FOOTER_LABELS[id]}</Link></li>)}
           </ul>
         </nav>
         <div style={{marginTop:"1.5rem",paddingTop:"1.2rem",borderTop:"1px solid rgba(255,255,255,0.06)",display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:"0.5rem"}}>
@@ -1962,6 +2071,8 @@ export default function App() {
     step:      <StepPage {...pageProps} />,
     ukmt:      <UkmtPage {...pageProps} />,
     satact:    <SatActPage {...pageProps} />,
+    blog:      <BlogIndexPage {...pageProps} />,
+    "post-mat-tmua": <BlogPostPage {...pageProps} post={POSTS.find(p => p.id === "mat-tmua")} />,
     london:    <LondonPage {...pageProps} />,
   };
 

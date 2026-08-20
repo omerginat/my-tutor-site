@@ -9,10 +9,10 @@
 //
 // Nothing here needs editing day to day - change wording in src/site.config.js.
 // ─────────────────────────────────────────────────────────────────────────
-import { readFileSync, writeFileSync, existsSync } from "node:fs";
-import { join } from "node:path";
+import { readFileSync, writeFileSync, existsSync, mkdirSync } from "node:fs";
+import { join, dirname } from "node:path";
 import { SITE_URL, BUSINESS, ROUTES, CURRENCIES, DEFAULT_CURRENCY, fillRates } from "../src/site.config.js";
-import { FAQS, ALL_REVIEWS } from "../src/content.js";
+import { FAQS, ALL_REVIEWS, POSTS } from "../src/content.js";
 
 const DIST = "dist";
 const abs = (path) => `${SITE_URL}${path === "/" ? "/" : path}`;
@@ -20,7 +20,7 @@ const OG_IMAGE = `${SITE_URL}${BUSINESS.photo}`;
 
 // Escaping "<" stops any stray markup in the content from closing the script tag.
 const jsonLd = (obj) =>
-  `<script type="application/ld+json">${JSON.stringify(obj).replace(/</g, "\u003c")}</script>`;
+  `<script type="application/ld+json">${JSON.stringify(obj).split("<").join("\\u003c")}</script>`;
 
 const gbp = CURRENCIES[DEFAULT_CURRENCY];
 
@@ -104,10 +104,29 @@ const reviewSchema = {
   })),
 };
 
+/** Marks an article up as a dated, authored piece rather than a generic page. */
+const articleSchema = (post, path) => ({
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: post.title,
+  description: post.summary,
+  datePublished: post.date,
+  dateModified: post.date,
+  author: { "@id": `${SITE_URL}/#omer` },
+  publisher: { "@id": `${SITE_URL}/#business` },
+  mainEntityOfPage: { "@type": "WebPage", "@id": abs(path) },
+  image: OG_IMAGE,
+});
+
 const schemasFor = (id) => {
   const base = [personSchema, businessSchema];
   if (id === "faq") return [...base, faqSchema];
   if (id === "reviews") return [...base, reviewSchema];
+  if (id.startsWith("post-")) {
+    const post = POSTS.find(p => `post-${p.id}` === id);
+    const route = ROUTES.find(r => r.id === id);
+    if (post && route) return [...base, articleSchema(post, route.path)];
+  }
   return base;
 };
 
@@ -146,7 +165,12 @@ for (const route of ROUTES) {
   const ld = schemasFor(route.id).map(jsonLd).join("\n    ");
   html = html.replace("</head>", `  ${ld}\n  </head>`);
 
-  const file = route.id === "home" ? "index.html" : `${route.id}.html`;
+  // The filename has to come from the URL, not the route id. Vercel serves
+  // "/tmua-tutor" from "tmua-tutor.html"; naming the file after the id would
+  // publish it at "/tmua" instead and the real URL would 404.
+  const file = route.path === "/" ? "index.html" : `${route.path.replace(/^\//, "")}.html`;
+  const dir = dirname(join(DIST, file));
+  if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
   writeFileSync(join(DIST, file), html);
   written++;
 }

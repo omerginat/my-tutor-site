@@ -17,10 +17,11 @@ export const BUSINESS = {
 
 // ─── RATES ───────────────────────────────────────────────────────────────
 // "standard" = Key Stage 3, GCSE and A-Level.
-// "oxbridge" = TMUA / STEP / Oxbridge interview preparation.
+// "oxbridge" = university admissions work: TMUA, STEP, Oxbridge interviews,
+//              and SAT / ACT maths for US applications.
 export const CURRENCIES = {
-  GBP: { code: "GBP", symbol: "£",  standard: 90,  oxbridge: 150 },
-  SGD: { code: "SGD", symbol: "S$", standard: 180, oxbridge: 260 },
+  GBP: { code: "GBP", symbol: "£",  standard: 90,  oxbridge: 140 },
+  SGD: { code: "SGD", symbol: "S$", standard: 180, oxbridge: 240 },
 };
 
 export const DEFAULT_CURRENCY = "GBP";
@@ -105,6 +106,70 @@ export const ROUTES = [
     title: "Book a Free First Maths Lesson | Omer Maths Tuition",
     description:
       "Book your free first online maths lesson. Message on WhatsApp or email and I will find a time that works around your schedule, usually replying within hours.",
+  },
+
+  // ─── Specialist landing pages ──────────────────────────────────────────
+  // These are deliberately kept out of the top navigation. They exist so that
+  // someone searching for one specific thing lands on a page about exactly
+  // that, rather than on a general services page.
+  {
+    id: "tmua",
+    path: "/tmua-tutor",
+    title: "TMUA Tutor | Oxford & Imperial Maths Admissions Prep",
+    description:
+      "One-to-one TMUA preparation from an Oxford First Class Maths graduate. Required for Oxford Maths and Computer Science, and for Imperial Maths and Computing.",
+  },
+  {
+    id: "interview",
+    path: "/oxbridge-maths-interview",
+    title: "Oxbridge Maths Interview Preparation | Oxford Graduate",
+    description:
+      "Oxford and Cambridge maths interview coaching from a First Class Oxford Mathematics graduate. Real past interview questions and full mock interviews.",
+  },
+  {
+    id: "step",
+    path: "/step-tutor",
+    title: "STEP Tutor | Cambridge Maths Admissions Preparation",
+    description:
+      "One-to-one STEP preparation for STEP 2 and STEP 3, used in almost all Cambridge Maths offers. Taught by an Oxford First Class Mathematics graduate.",
+  },
+  {
+    id: "ukmt",
+    path: "/ukmt-olympiad-tutor",
+    title: "UKMT & Maths Olympiad Tutor | Challenge and BMO Prep",
+    description:
+      "One-to-one preparation for the UKMT Maths Challenges, Kangaroo and Olympiad rounds, and the Mathematical Olympiad for Girls, from an Oxford Maths graduate.",
+  },
+  {
+    id: "satact",
+    path: "/sat-act-maths-tutor",
+    title: "SAT & ACT Maths Tutor | US University Admissions",
+    description:
+      "One-to-one preparation for the SAT and ACT maths sections, for students applying to US universities. Taught by an Oxford First Class Mathematics graduate.",
+  },
+  // ─── Articles ──────────────────────────────────────────────────────────
+  // Reachable from the footer only. These exist to be found from search and
+  // to be worth linking to, not to give visitors somewhere else to wander.
+  {
+    id: "blog",
+    path: "/articles",
+    title: "Articles | Omer Maths Tuition",
+    description:
+      "Occasional writing on maths admissions tests and exam preparation, from an Oxford First Class Mathematics graduate and full-time tutor.",
+  },
+  {
+    id: "post-mat-tmua",
+    path: "/articles/mat-replaced-by-tmua",
+    title: "Oxford Has Replaced the MAT With the TMUA | What to Know",
+    description:
+      "The MAT ran from 2007 to 2025 and no longer takes place. Oxford and Imperial applicants now sit the TMUA. What changed, what the test asks for, and the 2027 dates.",
+  },
+  {
+    id: "london",
+    path: "/london-maths-tutor",
+    title: "London Maths Tutor | Online GCSE & A-Level Tuition",
+    description:
+      "Online maths tuition for London families. Oxford First Class Maths graduate tutoring students at St Paul's, Westminster, Highgate, UCS, Latymer and more.",
   },
 ];
 

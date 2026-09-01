@@ -21,7 +21,7 @@ export const BUSINESS = {
 //              and SAT / ACT maths for US applications.
 export const CURRENCIES = {
   GBP: { code: "GBP", symbol: "£",  standard: 90,  oxbridge: 140 },
-  SGD: { code: "SGD", symbol: "S$", standard: 180, oxbridge: 240 },
+  SGD: { code: "SGD", symbol: "S$", standard: 160, oxbridge: 240 },
 };
 
 export const DEFAULT_CURRENCY = "GBP";

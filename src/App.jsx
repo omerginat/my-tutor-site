@@ -494,6 +494,14 @@ const CSS = `
   .notfound-card p{font-size:0.86rem;color:var(--muted);line-height:1.6;margin:0;}
   @media(max-width:600px){.notfound-grid{grid-template-columns:1fr;}}
 
+  /* ── OFFICIAL RESOURCE LINKS ── */
+  .resource-cards{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1.8rem;}
+  a.resource-card{display:block;background:var(--white);border:1px solid rgba(23,32,56,0.08);border-left:4px solid var(--gold);border-radius:var(--radius);padding:1.3rem 1.4rem;text-decoration:none;box-shadow:0 1px 4px rgba(23,32,56,0.06);transition:transform 0.2s,box-shadow 0.2s;}
+  a.resource-card:hover{transform:translateY(-2px);box-shadow:var(--shadow);}
+  .resource-card h4{font-size:1rem;color:var(--navy);margin-bottom:0.3rem;}
+  .resource-card p{font-size:0.86rem;color:var(--muted);line-height:1.6;margin:0;}
+  @media(max-width:600px){.resource-cards{grid-template-columns:1fr;}}
+
   /* ── ARTICLES ── */
   .article-body{max-width:720px;margin:0 auto;}
   .article-body p{font-size:1.02rem;color:var(--muted);line-height:1.9;margin-bottom:1.1rem;}
@@ -1421,13 +1429,13 @@ function TmuaPage({ openContact }) {
           <span className="section-label">2027 Entry</span>
           <div className="divider"/>
           <h2 className="section-title">Key Dates</h2>
-          <p className="section-lead">If you are applying to Oxford or Cambridge, you will need the October sitting rather than January. Booking does not stay open until the UCAS deadline. It closes at the end of September, and this catches people out every year.</p>
+          <p className="section-lead">The TMUA runs in two sittings each admissions cycle. Oxford and Cambridge applicants sit in October, which has now closed for 2027 entry. The January sitting below is the remaining option for 2027, open to Imperial applicants and others at universities that use the TMUA. Booking does not stay open until the UCAS deadline, so it is worth sorting early.</p>
         </div>
         <div className="services-grid">
           {[
-            { icon:"🗓", title:"Booking closes", value:"28 September 2026", note:"6pm UK time. Booking is done through the UAT-UK site. Check whether your school is registering you or whether you need to do it yourself - do not assume." },
-            { icon:"✏️", title:"October test window", value:"12 to 16 October 2026", note:"The sitting required if Oxford or Cambridge is on your UCAS form. A second window runs 4 to 8 January 2027, accepted by some other universities." },
-            { icon:"📩", title:"Results released", value:"16 November 2026", note:"Scores are sent to the universities you applied to and form part of your application." },
+            { icon:"🗓", title:"Booking closes", value:"21 December 2026", note:"6pm UK time, for the January sitting. Booking opens on 26 October 2026 through the UAT-UK site. Check whether your school is registering you or whether you need to do it yourself - do not assume." },
+            { icon:"✏️", title:"January test window", value:"4 to 8 January 2027", note:"Open to Imperial applicants and others at universities that use the TMUA. Oxford and Cambridge applicants had to sit in October, which has now closed for 2027 entry." },
+            { icon:"📩", title:"Results released", value:"8 February 2027", note:"Scores are sent to the universities you applied to and form part of your application." },
           ].map(d => (
             <div className="uni-card" key={d.title}>
               <div className="uni-card-icon" aria-hidden="true">{d.icon}</div>
@@ -1483,6 +1491,26 @@ function TmuaPage({ openContact }) {
             Mathematics, Computing, and Economics, Finance and Data Science. A number of other
             universities use it too, so check the requirements for every course on your UCAS form.
           </p>
+        </div>
+      </section>
+
+      <section className="section section-sage">
+        <div style={{maxWidth:"1100px",margin:"0 auto"}}>
+          <span className="section-label">Official Resources</span>
+          <div className="divider"/>
+          <h2 className="section-title">Practise With the Real Papers</h2>
+          <p className="section-lead">The best preparation is the official material, straight from the exam setters at UAT-UK. It is all free, and it is what I work through with students in sessions.</p>
+          <div className="resource-cards">
+            <a className="resource-card" href="https://esat-tmua.ac.uk/tmua-preparation-materials/" target="_blank" rel="noopener">
+              <h4>Past papers &amp; worked answers →</h4>
+              <p>The full archive of past TMUA papers, each with full worked solutions and answer keys. The best way to get used to the style and the pace.</p>
+            </a>
+            <a className="resource-card" href="https://esat-tmua.ac.uk/prepare/" target="_blank" rel="noopener">
+              <h4>Specification, specimen tests &amp; notes →</h4>
+              <p>The syllabus, timed specimen tests, and UAT-UK&rsquo;s own study notes, including a dedicated guide to the logic and proof that Paper 2 tests.</p>
+            </a>
+          </div>
+          <p style={{maxWidth:"1100px",margin:"1.4rem auto 0",fontSize:"0.82rem",color:"var(--muted)"}}>Links open the official UAT-UK site in a new tab.</p>
         </div>
       </section>
 

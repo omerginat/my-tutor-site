@@ -1849,7 +1849,7 @@ function ALevelMathsPage({ openContact }) {
             <div className="divider"/>
             <p>A-Level Maths is where a lot of strong GCSE students suddenly struggle. The jump is real: the pace is faster, the questions are less routine, and marks increasingly go to reasoning rather than to following a method.</p>
             <p>I teach across <strong>Pure, Mechanics and Statistics</strong>, and all the major boards, so lessons map exactly onto what a student is sitting: <strong>AQA, Edexcel and OCR (including MEI)</strong>. Teaching is always tied to the specification and the mark scheme your child is actually working to.</p>
-            <p>I also teach <strong>Further Maths</strong>, which suits the strongest students and the ones heading for maths-heavy degrees. It is a smaller, deeper subject, and it is where my own background is most useful.</p>
+            <p>I also teach <strong>Further Maths</strong>, the fourth A-Level taken by the strongest mathematicians and often expected for maths-heavy degrees. There is more on the <Link to="furthermaths" className="inline-link">dedicated Further Maths page</Link>.</p>
             <p>Sessions are <strong>{standardRate} per hour</strong>, one to one and online, and the first lesson is free.</p>
             <LandingCta openContact={openContact} />
           </div>
@@ -1882,7 +1882,8 @@ function ALevelMathsPage({ openContact }) {
             <div className="uni-card">
               <div className="uni-card-icon" aria-hidden="true">∑</div>
               <h4>Further Maths</h4>
-              <p>For students taking the fourth A-Level or heading to a maths-heavy degree. Complex numbers, matrices, differential equations and more, taught by someone who went on to study it at Oxford.</p>
+              <p>For students taking the fourth A-Level or heading to a maths-heavy degree. Complex numbers, matrices, differential equations and more.</p>
+              <Link to="furthermaths" className="uni-card-link">More on Further Maths tuition →</Link>
             </div>
             <div className="uni-card">
               <div className="uni-card-icon" aria-hidden="true">🔁</div>
@@ -1921,15 +1922,15 @@ function GcseMathsPage({ openContact }) {
             <div className="divider"/>
             <p>Most tutoring is pitched at getting a student to a pass. My students are usually aiming higher than that, for the <strong>grade 8 or 9</strong> that top sixth forms and competitive A-Level choices increasingly expect.</p>
             <p>I teach <strong>Higher tier</strong> across all the major boards, <strong>AQA, Edexcel and OCR</strong>, always tied to the specification and mark scheme your child is sitting. For the strongest students I also cover <strong>Level 2 Further Maths</strong>, which bridges neatly into A-Level.</p>
-            <p>Reaching a 9 is less about doing more maths and more about fluency and precision: being quick and accurate with the foundations, and not dropping marks to avoidable slips. That is exactly what we work on.</p>
+            <p>Reaching a 9 takes two things. The first is <strong>fluency and precision</strong>: being quick and accurate with the foundations, so marks are not lost to avoidable slips. The second is being able to handle the <strong>hardest questions in the paper</strong>, the ones written specifically to separate grade 9 students from grade 8. Over the years I have built a large bank of these, including questions I have written myself, and I use them to coach students through exactly that gap.</p>
             <p>Sessions are <strong>{standardRate} per hour</strong>, one to one and online, and the first lesson is free.</p>
             <LandingCta openContact={openContact} />
           </div>
           <div className="approach-items">
             {[
               { n:"1", title:"Closing the gaps", body:"Top grades rest on solid foundations. We find the specific gaps that are quietly costing marks and close them, so the harder material has something to stand on." },
-              { n:"2", title:"Fluency and accuracy", body:"The difference between a 7 and a 9 is often speed and precision rather than new content. We practise until the core skills are automatic and the silly mistakes stop." },
-              { n:"3", title:"Exam technique", body:"Reading questions carefully, showing working that earns method marks, and managing time in the paper. Small changes in technique move grades at the top end." },
+              { n:"2", title:"Fluency and precision", body:"We practise until the core skills are automatic, the working is clean enough to earn every method mark, and the avoidable slips stop. This is one half of the jump to a 9." },
+              { n:"3", title:"The grade 9 questions", body:"The other half is the hardest questions, the ones designed to stretch the very top. I coach students through them using a large bank of tough problems I have collected and written myself, so the differentiator questions stop being a surprise." },
             ].map(a => (
               <div className="approach-item-row" key={a.n}>
                 <div className="approach-num-badge" aria-hidden="true">{a.n}</div>
@@ -1946,6 +1947,57 @@ function GcseMathsPage({ openContact }) {
           <div className="divider"/>
           <h2 className="section-title">A Strong GCSE Sets Up A-Level</h2>
           <p className="section-lead">A confident grade 8 or 9 is the best possible preparation for A-Level Maths, and it keeps the door open to Further Maths and maths-heavy degrees later. Many of my GCSE students carry on with me through sixth form. If your child is already thinking that far ahead, the <Link to="alevelmaths" className="inline-link">A-Level Maths page</Link> covers what comes next.</p>
+        </div>
+      </section>
+      <PageFooter openContact={openContact} />
+    </div>
+  );
+}
+
+function FurtherMathsPage({ openContact }) {
+  const standardRate = price("standard");
+  return (
+    <div className="page">
+      <div className="page-hero">
+        <div className="page-hero-inner">
+          <span className="section-label" style={{color:"var(--gold2)"}}>Further Maths</span>
+          <h1>A-Level Further Maths<br/><em>Taught by a Specialist</em></h1>
+          <p>Online one-to-one Further Maths tuition from an Oxford Mathematics graduate who studied the subject to degree level. For the students taking the fourth A-Level, and the ones aiming at maths-heavy courses.</p>
+        </div>
+      </div>
+
+      <section className="section">
+        <div className="approach-cols">
+          <div className="approach-intro">
+            <span className="section-label">How I Teach Further Maths</span>
+            <div className="divider"/>
+            <p>Further Maths is a smaller, deeper subject than A-Level Maths, and it moves fast. The compulsory <strong>Core Pure</strong> content, complex numbers, matrices, further calculus, differential equations, polar coordinates and more, is genuinely harder than anything in the main A-Level, and schools often race through it.</p>
+            <p>I studied mathematics to degree level at Oxford, so this material is second nature. That matters for Further Maths in particular, because the questions reward a confident, flexible grasp of ideas rather than a memorised recipe, and that is easiest to teach when you have used them well beyond A-Level.</p>
+            <p>I teach the applied options too, <strong>Further Mechanics, Further Statistics and Decision</strong>, depending on the combination your school has chosen, and across <strong>AQA, Edexcel and OCR (including MEI)</strong>. Everything is tied to the specification your child is sitting.</p>
+            <p>Sessions are <strong>{standardRate} per hour</strong>, one to one and online, and the first lesson is free.</p>
+            <LandingCta openContact={openContact} />
+          </div>
+          <div className="approach-items">
+            {[
+              { n:"1", title:"Core Pure, properly understood", body:"Complex numbers, matrices, differential equations and the rest are where Further Maths students most often come unstuck. We build genuine understanding, not just a method to copy, so the harder questions become approachable." },
+              { n:"2", title:"The applied options", body:"Further Mechanics, Further Statistics or Decision, whichever your school teaches. I cover all three, so lessons fit your exact combination rather than a generic syllabus." },
+              { n:"3", title:"A bridge to university", body:"Further Maths is the natural run-up to a maths, physics, engineering or economics degree. I teach it in a way that builds the fluency those courses assume, and it pairs naturally with admissions-test preparation." },
+            ].map(a => (
+              <div className="approach-item-row" key={a.n}>
+                <div className="approach-num-badge" aria-hidden="true">{a.n}</div>
+                <div><h4>{a.title}</h4><p>{a.body}</p></div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="section section-alt">
+        <div style={{maxWidth:"1100px",margin:"0 auto"}}>
+          <span className="section-label">Going Further</span>
+          <div className="divider"/>
+          <h2 className="section-title">Further Maths and University Admissions</h2>
+          <p className="section-lead">Students taking Further Maths are often the same ones applying for competitive maths and science courses, where an admissions test is part of the process. The thinking Further Maths builds is exactly what those tests reward. If that is on the horizon, the <Link to="tmua" className="inline-link">TMUA</Link>, <Link to="step" className="inline-link">STEP</Link> and <Link to="interview" className="inline-link">Oxbridge interview</Link> pages cover how I prepare students for each.</p>
         </div>
       </section>
       <PageFooter openContact={openContact} />
@@ -2138,14 +2190,14 @@ const FOOTER_LABELS = {
   about: "About Me", services: "Services", approach: "My Approach",
   reviews: "Reviews", faq: "FAQ & Pricing", booking: "Book a Session",
   tmua: "TMUA Preparation", step: "STEP Preparation", interview: "Oxbridge Interviews",
-  alevelmaths: "A-Level Maths", gcsemaths: "GCSE Maths",
+  alevelmaths: "A-Level Maths", gcsemaths: "GCSE Maths", furthermaths: "Further Maths",
   ukmt: "UKMT & Olympiad", satact: "SAT & ACT Maths", london: "London Maths Tuition",
   blog: "Articles",
 };
 // The main pages sit on the first footer row; specialist pages and articles
 // go on a quieter second row so the footer does not become a wall of links.
 const FOOTER_MAIN = ["about", "services", "approach", "reviews", "faq", "booking"];
-const FOOTER_MORE = ["gcsemaths", "alevelmaths", "tmua", "step", "interview", "satact", "ukmt", "london", "blog"];
+const FOOTER_MORE = ["gcsemaths", "alevelmaths", "furthermaths", "tmua", "step", "interview", "satact", "ukmt", "london", "blog"];
 
 function PageFooter({ openContact }) {
   return (
@@ -2286,6 +2338,7 @@ export default function App() {
     ukmt:      <UkmtPage {...pageProps} />,
     alevelmaths: <ALevelMathsPage {...pageProps} />,
     gcsemaths: <GcseMathsPage {...pageProps} />,
+    furthermaths: <FurtherMathsPage {...pageProps} />,
     satact:    <SatActPage {...pageProps} />,
     blog:      <BlogIndexPage {...pageProps} />,
     "post-mat-tmua": <BlogPostPage {...pageProps} post={POSTS.find(p => p.id === "mat-tmua")} />,

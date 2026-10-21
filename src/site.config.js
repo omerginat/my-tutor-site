@@ -127,6 +127,13 @@ export const ROUTES = [
       "Online GCSE higher maths tuition from an Oxford First Class Maths graduate, focused on grades 8 and 9. All major exam boards. First lesson free.",
   },
   {
+    id: "furthermaths",
+    path: "/further-maths-tutor",
+    title: "Further Maths Tutor | Online, Oxford Graduate",
+    description:
+      "Online A-Level Further Maths tuition from an Oxford First Class Maths graduate who studied the subject to degree level. Core Pure plus mechanics, statistics and decision options.",
+  },
+  {
     id: "tmua",
     path: "/tmua-tutor",
     title: "TMUA Tutor | Oxford & Imperial Maths Admissions Prep",

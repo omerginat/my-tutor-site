@@ -113,6 +113,20 @@ export const ROUTES = [
   // someone searching for one specific thing lands on a page about exactly
   // that, rather than on a general services page.
   {
+    id: "alevelmaths",
+    path: "/a-level-maths-tutor",
+    title: "A-Level Maths Tutor | Online, Oxford Graduate",
+    description:
+      "Online A-Level maths and further maths tuition from an Oxford First Class Maths graduate. Pure, mechanics and statistics across AQA, Edexcel and OCR. Aiming for A and A*.",
+  },
+  {
+    id: "gcsemaths",
+    path: "/gcse-maths-tutor",
+    title: "GCSE Maths Tutor | Online, Grade 8-9 Focus",
+    description:
+      "Online GCSE higher maths tuition from an Oxford First Class Maths graduate, focused on grades 8 and 9. All major exam boards. First lesson free.",
+  },
+  {
     id: "tmua",
     path: "/tmua-tutor",
     title: "TMUA Tutor | Oxford & Imperial Maths Admissions Prep",

@@ -925,8 +925,8 @@ function ServicesPage({ setPage, openContact }) {
         <div className="services-grid">
           {[
             { icon:"📐", title:"Key Stage 3", tag:"Years 7–8", desc:"Building strong foundations before GCSE. Filling gaps early, developing genuine number sense, and making sure maths feels manageable - not daunting - before the pressure of Year 9 begins.", cls:"" },
-            { icon:"📊", title:"GCSE Maths", tag:"Years 9–11", desc:"Targeted, exam-board-specific support for Higher tier. Closing gaps, mastering exam technique, and consistently boosting students' grades to 8 or 9.", cls:"" },
-            { icon:"∫", title:"A-Level Maths", tag:"Years 12–13", desc:"Deep, conceptual teaching across Pure, Statistics and Mechanics. For students who want to truly understand maths - and to carry that confidence into university. All major exam boards covered.", cls:"" },
+            { icon:"📊", title:"GCSE Maths", tag:"Years 9–11", desc:"Targeted, exam-board-specific support for Higher tier. Closing gaps, mastering exam technique, and consistently boosting students' grades to 8 or 9.", cls:"", to:"gcsemaths" },
+            { icon:"∫", title:"A-Level Maths", tag:"Years 12–13", desc:"Deep, conceptual teaching across Pure, Statistics and Mechanics. For students who want to truly understand maths - and to carry that confidence into university. All major exam boards covered.", cls:"", to:"alevelmaths" },
           ].map(s => (
             <div className={`service-card ${s.cls}`} key={s.title}>
               <div className="service-icon">{s.icon}</div>
@@ -935,6 +935,7 @@ function ServicesPage({ setPage, openContact }) {
               <p>{s.desc}</p>
               <div className="service-price"><span className="rate">{standardRate}</span><span className="per">/ hour</span></div>
               <div className="free-lesson-note">✓ First session always free</div>
+              {s.to && <Link to={s.to} className="uni-card-link" style={{marginTop:"0.8rem"}}>More on {s.title} tuition →</Link>}
             </div>
           ))}
         </div>
@@ -1829,6 +1830,129 @@ function InterviewPage({ openContact }) {
   );
 }
 
+function ALevelMathsPage({ openContact }) {
+  const standardRate = price("standard");
+  return (
+    <div className="page">
+      <div className="page-hero">
+        <div className="page-hero-inner">
+          <span className="section-label" style={{color:"var(--gold2)"}}>A-Level Maths</span>
+          <h1>A-Level Maths Tuition<br/><em>Aiming for A and A*</em></h1>
+          <p>Online one-to-one A-Level Maths and Further Maths tuition from an Oxford Mathematics graduate with a First Class degree. For students who want to genuinely understand the subject, not just pass it.</p>
+        </div>
+      </div>
+
+      <section className="section">
+        <div className="approach-cols">
+          <div className="approach-intro">
+            <span className="section-label">How I Teach A-Level Maths</span>
+            <div className="divider"/>
+            <p>A-Level Maths is where a lot of strong GCSE students suddenly struggle. The jump is real: the pace is faster, the questions are less routine, and marks increasingly go to reasoning rather than to following a method.</p>
+            <p>I teach across <strong>Pure, Mechanics and Statistics</strong>, and all the major boards, so lessons map exactly onto what a student is sitting: <strong>AQA, Edexcel and OCR (including MEI)</strong>. Teaching is always tied to the specification and the mark scheme your child is actually working to.</p>
+            <p>I also teach <strong>Further Maths</strong>, which suits the strongest students and the ones heading for maths-heavy degrees. It is a smaller, deeper subject, and it is where my own background is most useful.</p>
+            <p>Sessions are <strong>{standardRate} per hour</strong>, one to one and online, and the first lesson is free.</p>
+            <LandingCta openContact={openContact} />
+          </div>
+          <div className="approach-items">
+            {[
+              { n:"1", title:"Understanding over memorising", body:"A-Level rewards students who understand why a method works, because the questions rarely come in the form you practised. We build that understanding so unfamiliar questions feel approachable rather than alien." },
+              { n:"2", title:"Exam technique for the top grades", body:"The gap between an A and an A* is usually technique: reading the question, structuring the answer, and not dropping easy marks. We work on this explicitly, with real past-paper questions." },
+              { n:"3", title:"Ready for what comes next", body:"For students going on to maths, engineering, economics or the sciences at university, I teach in a way that builds the fluency and confidence they will need beyond A-Level." },
+            ].map(a => (
+              <div className="approach-item-row" key={a.n}>
+                <div className="approach-num-badge" aria-hidden="true">{a.n}</div>
+                <div><h4>{a.title}</h4><p>{a.body}</p></div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="section section-alt">
+        <div style={{maxWidth:"1100px",margin:"0 auto"}}>
+          <span className="section-label">Who I Work With</span>
+          <div className="divider"/>
+          <h2 className="section-title">A-Level Maths, Further Maths and Resits</h2>
+          <div className="uni-cards" style={{marginTop:"2rem"}}>
+            <div className="uni-card">
+              <div className="uni-card-icon" aria-hidden="true">📈</div>
+              <h4>A-Level Maths (Years 12 and 13)</h4>
+              <p>Full support across the two years, or targeted help with the topics that are causing trouble. Pure, Mechanics and Statistics, on any major board.</p>
+            </div>
+            <div className="uni-card">
+              <div className="uni-card-icon" aria-hidden="true">∑</div>
+              <h4>Further Maths</h4>
+              <p>For students taking the fourth A-Level or heading to a maths-heavy degree. Complex numbers, matrices, differential equations and more, taught by someone who went on to study it at Oxford.</p>
+            </div>
+            <div className="uni-card">
+              <div className="uni-card-icon" aria-hidden="true">🔁</div>
+              <h4>Resits</h4>
+              <p>Clear, focused preparation for students retaking A-Level Maths to hit the grade a university offer depends on, with a plan built around the time available.</p>
+            </div>
+            <div className="uni-card">
+              <div className="uni-card-icon" aria-hidden="true">🎓</div>
+              <h4>Stretch beyond A-Level</h4>
+              <p>For students aiming at competitive courses, I also prepare for the admissions tests that go further than A-Level. See the TMUA, STEP and Oxbridge interview pages.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <PageFooter openContact={openContact} />
+    </div>
+  );
+}
+
+function GcseMathsPage({ openContact }) {
+  const standardRate = price("standard");
+  return (
+    <div className="page">
+      <div className="page-hero">
+        <div className="page-hero-inner">
+          <span className="section-label" style={{color:"var(--gold2)"}}>GCSE Maths</span>
+          <h1>GCSE Maths Tuition<br/><em>Built for Grades 8 and 9</em></h1>
+          <p>Online one-to-one GCSE Maths tuition from an Oxford Mathematics graduate with a First Class degree. Higher tier, all major exam boards, and a genuine focus on the top grades.</p>
+        </div>
+      </div>
+
+      <section className="section">
+        <div className="approach-cols">
+          <div className="approach-intro">
+            <span className="section-label">How I Teach GCSE Maths</span>
+            <div className="divider"/>
+            <p>Most tutoring is pitched at getting a student to a pass. My students are usually aiming higher than that, for the <strong>grade 8 or 9</strong> that top sixth forms and competitive A-Level choices increasingly expect.</p>
+            <p>I teach <strong>Higher tier</strong> across all the major boards, <strong>AQA, Edexcel and OCR</strong>, always tied to the specification and mark scheme your child is sitting. For the strongest students I also cover <strong>Level 2 Further Maths</strong>, which bridges neatly into A-Level.</p>
+            <p>Reaching a 9 is less about doing more maths and more about fluency and precision: being quick and accurate with the foundations, and not dropping marks to avoidable slips. That is exactly what we work on.</p>
+            <p>Sessions are <strong>{standardRate} per hour</strong>, one to one and online, and the first lesson is free.</p>
+            <LandingCta openContact={openContact} />
+          </div>
+          <div className="approach-items">
+            {[
+              { n:"1", title:"Closing the gaps", body:"Top grades rest on solid foundations. We find the specific gaps that are quietly costing marks and close them, so the harder material has something to stand on." },
+              { n:"2", title:"Fluency and accuracy", body:"The difference between a 7 and a 9 is often speed and precision rather than new content. We practise until the core skills are automatic and the silly mistakes stop." },
+              { n:"3", title:"Exam technique", body:"Reading questions carefully, showing working that earns method marks, and managing time in the paper. Small changes in technique move grades at the top end." },
+            ].map(a => (
+              <div className="approach-item-row" key={a.n}>
+                <div className="approach-num-badge" aria-hidden="true">{a.n}</div>
+                <div><h4>{a.title}</h4><p>{a.body}</p></div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="section section-alt">
+        <div style={{maxWidth:"1100px",margin:"0 auto"}}>
+          <span className="section-label">Looking Ahead</span>
+          <div className="divider"/>
+          <h2 className="section-title">A Strong GCSE Sets Up A-Level</h2>
+          <p className="section-lead">A confident grade 8 or 9 is the best possible preparation for A-Level Maths, and it keeps the door open to Further Maths and maths-heavy degrees later. Many of my GCSE students carry on with me through sixth form. If your child is already thinking that far ahead, the <Link to="alevelmaths" className="inline-link">A-Level Maths page</Link> covers what comes next.</p>
+        </div>
+      </section>
+      <PageFooter openContact={openContact} />
+    </div>
+  );
+}
+
 function LondonPage({ openContact }) {
   const standardRate = price("standard");
   const londonSchools = SCHOOLS.filter(s => s.region === "London");
@@ -2014,13 +2138,14 @@ const FOOTER_LABELS = {
   about: "About Me", services: "Services", approach: "My Approach",
   reviews: "Reviews", faq: "FAQ & Pricing", booking: "Book a Session",
   tmua: "TMUA Preparation", step: "STEP Preparation", interview: "Oxbridge Interviews",
+  alevelmaths: "A-Level Maths", gcsemaths: "GCSE Maths",
   ukmt: "UKMT & Olympiad", satact: "SAT & ACT Maths", london: "London Maths Tuition",
   blog: "Articles",
 };
 // The main pages sit on the first footer row; specialist pages and articles
 // go on a quieter second row so the footer does not become a wall of links.
 const FOOTER_MAIN = ["about", "services", "approach", "reviews", "faq", "booking"];
-const FOOTER_MORE = ["tmua", "step", "interview", "satact", "ukmt", "london", "blog"];
+const FOOTER_MORE = ["gcsemaths", "alevelmaths", "tmua", "step", "interview", "satact", "ukmt", "london", "blog"];
 
 function PageFooter({ openContact }) {
   return (
@@ -2159,6 +2284,8 @@ export default function App() {
     interview: <InterviewPage {...pageProps} />,
     step:      <StepPage {...pageProps} />,
     ukmt:      <UkmtPage {...pageProps} />,
+    alevelmaths: <ALevelMathsPage {...pageProps} />,
+    gcsemaths: <GcseMathsPage {...pageProps} />,
     satact:    <SatActPage {...pageProps} />,
     blog:      <BlogIndexPage {...pageProps} />,
     "post-mat-tmua": <BlogPostPage {...pageProps} post={POSTS.find(p => p.id === "mat-tmua")} />,
